@@ -1,14 +1,16 @@
+import 'reflect-metadata';
 import 'normalize.css';
+
+import { Container } from 'inversify';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Hello } from './Hello';
+import { App } from './app';
 
-const App: React.FC = () => {
-    return (
-        <div>
-            <Hello />
-        </div>
-    );
-};
+const container = new Container({
+    autoBindInjectable: true,
+    defaultScope: 'Singleton',
+});
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const rootElement = document.getElementById('root');
+
+ReactDOM.render(<App container={ container } />, rootElement);

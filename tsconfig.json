@@ -3,13 +3,15 @@
         "esModuleInterop": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "jsx": "preserve",
-        "lib": ["dom", "dom.iterable", "esnext"],
+        "useDefineForClassFields": true,
+        "jsx": "react",
+        "lib": ["dom", "esnext"],
         "module": "ESNext",
         "moduleResolution": "Node",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "strict": true,
+        "strictPropertyInitialization": false,
         "target": "ES5"
     },
     "include": [

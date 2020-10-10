@@ -47,6 +47,8 @@ module.exports = {
                         loader: 'css-loader',
                         options: {
                             sourceMap: !isProduction,
+                            importLoaders: 1,
+                            modules: true,
                         },
                     },
                 ],

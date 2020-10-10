@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
 import { GreetingProvider } from '../services/greeting-provider';
 import { NameState } from '../state/nameState';
+import styles from './hello.css';
 
 @observer
 export class Hello extends PureComponent {
@@ -16,7 +17,8 @@ export class Hello extends PureComponent {
     public render(): ReactNode {
         return (
             <div>
-                <input type="text"
+                <input className={ styles.input }
+                       type="text"
                        onChange={ this.onNameChange }
                        value={ this.nameState.getName() } />
                 <h1>

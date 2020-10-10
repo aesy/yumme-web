@@ -7,8 +7,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const isProduction = process.env.NODE_ENV === 'production';
-const isTest = process.env.NODE_ENV === 'test';
+const env = process.env.NODE_ENV || process.argv[3] || 'production';
+const isProduction = env === 'production';
+const isTest = env === 'test';
 const sourcePath = path.join(__dirname, 'src');
 const buildPath = path.join(__dirname, 'build');
 const modulePath = path.join(__dirname, 'node_modules');

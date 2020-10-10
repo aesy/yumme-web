@@ -8,6 +8,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
+const isTest = process.env.NODE_ENV === 'test';
 const sourcePath = path.join(__dirname, 'src');
 const buildPath = path.join(__dirname, 'build');
 const modulePath = path.join(__dirname, 'node_modules');
@@ -20,7 +21,7 @@ module.exports = {
         path: buildPath,
         filename: isProduction ? '[contenthash].js' : '[hash].js',
     },
-    target: 'web',
+    target: isTest ? 'node' : 'web',
     resolve: {
         extensions: [ '.js', '.ts', '.tsx' ],
         modules: [

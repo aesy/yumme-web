@@ -1,6 +1,4 @@
-import 'reflect-metadata';
-import 'normalize.css';
-
+import './globals';
 import { Container } from 'inversify';
 import React from 'react';
 import ReactDOM from 'react-dom';

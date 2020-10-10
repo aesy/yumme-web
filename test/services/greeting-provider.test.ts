@@ -1,4 +1,4 @@
-import { GreetingProvider } from '../../src/services/greeting-provider';
+import { GreetingProvider } from 'services/greeting-provider';
 
 describe('GreetingProvider', () => {
     const provider = new GreetingProvider();

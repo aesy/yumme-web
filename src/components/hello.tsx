@@ -2,9 +2,9 @@ import { bind } from '@decorize/bind';
 import { resolve } from 'inversify-react';
 import { observer } from 'mobx-react';
 import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
-import { GreetingProvider } from '../services/greeting-provider';
-import { NameState } from '../state/nameState';
-import styles from './hello.css';
+import { GreetingProvider } from 'services/greeting-provider';
+import { NameState } from 'state/nameState';
+import styles from 'components/hello.css';
 
 @observer
 export class Hello extends PureComponent {

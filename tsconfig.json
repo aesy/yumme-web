@@ -12,7 +12,8 @@
         "noImplicitReturns": true,
         "strict": true,
         "strictPropertyInitialization": false,
-        "target": "ES5"
+        "target": "ES5",
+        "baseUrl": "src"
     },
     "include": ["src", "test", "typings"]
 }

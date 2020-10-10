@@ -3,9 +3,9 @@ import { Container } from 'inversify';
 import { Provider } from 'inversify-react';
 import { render } from 'enzyme';
 import { instance, mock, verify, when } from 'ts-mockito';
-import { Hello } from '../../src/components/hello';
-import { GreetingProvider } from '../../src/services/greeting-provider';
-import { NameState } from '../../src/state/nameState';
+import { Hello } from 'components/hello';
+import { GreetingProvider } from 'services/greeting-provider';
+import { NameState } from 'state/nameState';
 
 describe('Hello component', () => {
     test('It should display a greeting', () => {

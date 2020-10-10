@@ -3,7 +3,7 @@ import { Container } from 'inversify';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { createBrowserHistory } from 'history';
-import { App } from './app';
+import { App } from 'app';
 
 const container = new Container({
     autoBindInjectable: true,

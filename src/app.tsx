@@ -4,7 +4,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { Hello } from './components/hello';
 
 export interface AppProps {
-    readonly container: Container
+    readonly container: Container;
 }
 
 export class App extends PureComponent<AppProps> {

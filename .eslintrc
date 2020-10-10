@@ -1,0 +1,24 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "project": "tsconfig.json"
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ],
+    "rules": {
+        "@typescript-eslint/unbound-method": "off",
+        "@typescript-eslint/explicit-module-boundary-types": "error",
+        "react/jsx-curly-spacing": ["error", {
+            "when": "always",
+            "allowMultiline": true,
+            "spacing": {
+                "objectLiterals": "never"
+            }
+        }]
+    }
+}

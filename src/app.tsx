@@ -1,25 +1,14 @@
-import { History } from 'history';
-import { Container } from 'inversify';
-import { Provider } from 'inversify-react';
-import React, { PureComponent, ReactNode } from 'react';
-import { Router, Route, Switch } from 'react-router';
-import { Hello } from 'components/hello';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import React, { FC } from 'react';
+import { RecipeList } from '@/recipes/recipe-list';
+import { Greeter } from '@/greeting/greeter';
 
-export interface AppProps {
-    readonly history: History;
-    readonly container: Container;
-}
+export const App: FC = () => (
+    <BrowserRouter>
+        <Switch>
+            <Route exact path="/recipe" component={ RecipeList } />
+            <Route path="/" component={ Greeter } />
+        </Switch>
+    </BrowserRouter>
+);
 
-export class App extends PureComponent<AppProps> {
-    public render(): ReactNode {
-        return (
-            <Provider container={ this.props.container }>
-                <Router history={ this.props.history }>
-                    <Switch>
-                        <Route path="/" component={ Hello } />
-                    </Switch>
-                </Router>
-            </Provider>
-        );
-    }
-}

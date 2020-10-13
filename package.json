@@ -11,6 +11,7 @@
     },
     "dependencies": {
         "@decorize/bind": "^1.0.3",
+        "axios": "^0.20.0",
         "eslint-config-aesy": "aesy/eslint-config-aesy#master",
         "history": "^5.0.0",
         "inversify": "^5.0.1",

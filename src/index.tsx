@@ -1,16 +1,14 @@
-import './globals';
-import { Container } from 'inversify';
-import React from 'react';
+import '@/globals';
 import ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history';
-import { App } from 'app';
+import React from 'react';
+import { Provider } from 'inversify-react';
+import { container } from '@/container';
+import { App } from '@/app';
 
-const container = new Container({
-    autoBindInjectable: true,
-    defaultScope: 'Singleton',
-});
-
-const history = createBrowserHistory();
 const rootElement = document.getElementById('root');
 
-ReactDOM.render(<App container={ container } history={ history } />, rootElement);
+ReactDOM.render((
+    <Provider container={ container }>
+        <App />
+    </Provider>
+), rootElement);

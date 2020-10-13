@@ -1,24 +1,32 @@
 {
-    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "project": "tsconfig.json"
     },
     "extends": [
-        "plugin:react/recommended",
-        "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+        "aesy",
+        "aesy/react",
+        "aesy/typescript"
     ],
+    "env": {
+        "jest": true
+    },
     "rules": {
-        "@typescript-eslint/unbound-method": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "error",
-        "react/jsx-curly-spacing": ["error", {
-            "when": "always",
-            "allowMultiline": true,
-            "spacing": {
-                "objectLiterals": "never"
+        "import/order": [
+            "error", {
+                "pathGroups": [
+                    {
+                        "pattern": "@/**",
+                        "group": "external",
+                        "position": "after"
+                    }
+                ],
+                "pathGroupsExcludedImportTypes": ["builtin"],
+                "alphabetize": {
+                    "order": "desc"
+                }
             }
-        }]
+        ],
+        "import/no-unresolved": "off",
+        "import/no-default-export": "error"
     }
 }

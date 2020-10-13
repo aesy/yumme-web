@@ -1,13 +1,13 @@
-import React from 'react';
-import { Container } from 'inversify';
-import { Provider } from 'inversify-react';
-import { render } from 'enzyme';
 import { instance, mock, verify, when } from 'ts-mockito';
-import { Hello } from 'components/hello';
-import { GreetingProvider } from 'services/greeting-provider';
-import { NameState } from 'state/nameState';
+import React from 'react';
+import { Provider } from 'inversify-react';
+import { Container } from 'inversify';
+import { render } from 'enzyme';
+import { NameState } from '@/greeting/name-state';
+import { GreetingProvider } from '@/greeting/greeting-provider';
+import { Greeter } from '@/greeting/greeter';
 
-describe('Hello component', () => {
+describe(Greeter.name, () => {
     test('It should display a greeting', () => {
         const name = 'Alex';
         const nameState = mock(NameState);
@@ -23,7 +23,7 @@ describe('Hello component', () => {
 
         const hello = render(
             <Provider container={ container }>
-                <Hello />
+                <Greeter />
             </Provider>,
         );
         const text = hello.find('h1').text();

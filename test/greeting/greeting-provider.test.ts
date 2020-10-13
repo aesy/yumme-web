@@ -1,6 +1,6 @@
-import { GreetingProvider } from 'services/greeting-provider';
+import { GreetingProvider } from '@/greeting/greeting-provider';
 
-describe('GreetingProvider', () => {
+describe(GreetingProvider.name, () => {
     const provider = new GreetingProvider();
 
     test('It should provide a greeting', () => {

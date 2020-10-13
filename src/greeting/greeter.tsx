@@ -1,18 +1,18 @@
-import { bind } from '@decorize/bind';
-import { resolve } from 'inversify-react';
-import { observer } from 'mobx-react';
 import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
-import { GreetingProvider } from 'services/greeting-provider';
-import { NameState } from 'state/nameState';
-import styles from 'components/hello.css';
+import { observer } from 'mobx-react';
+import { resolve } from 'inversify-react';
+import { bind } from '@decorize/bind';
+import { NameState } from '@/greeting/name-state';
+import { GreetingProvider } from '@/greeting/greeting-provider';
+import styles from '@/greeting/greeter.css';
 
 @observer
-export class Hello extends PureComponent {
+export class Greeter extends PureComponent {
     @resolve(GreetingProvider)
-    private greetingProvider: GreetingProvider;
+    private readonly greetingProvider: GreetingProvider;
 
     @resolve(NameState)
-    private nameState: NameState;
+    private readonly nameState: NameState;
 
     public render(): ReactNode {
         return (
@@ -29,7 +29,7 @@ export class Hello extends PureComponent {
     }
 
     @bind
-    private onNameChange(event: ChangeEvent<HTMLInputElement>) {
+    private onNameChange(event: ChangeEvent<HTMLInputElement>): void {
         const name = event.target.value;
 
         this.nameState.setName(name);

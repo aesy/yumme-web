@@ -29,6 +29,9 @@ module.exports = {
             sourcePath,
             modulePath,
         ],
+        alias: {
+            '@': sourcePath
+        },
     },
     module: {
         rules: [

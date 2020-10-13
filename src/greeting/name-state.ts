@@ -4,7 +4,7 @@ import { injectable } from 'inversify';
 @injectable()
 export class NameState {
     @observable
-    private name = 'Unknown';
+    private name: string = 'Unknown';
 
     public constructor() {
         makeObservable(this);

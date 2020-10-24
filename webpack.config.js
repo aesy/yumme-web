@@ -44,7 +44,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.css$/,
+                test: /\.s?css$/,
                 use: [
                     isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
                     {
@@ -53,6 +53,12 @@ module.exports = {
                             sourceMap: !isProduction,
                             importLoaders: 1,
                             modules: true,
+                        },
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sourceMap: !isProduction,
                         },
                     },
                 ],

@@ -4,7 +4,7 @@ import { resolve } from 'inversify-react';
 import { bind } from '@decorize/bind';
 import { NameState } from '@/greeting/name-state';
 import { GreetingProvider } from '@/greeting/greeting-provider';
-import styles from '@/greeting/greeter.css';
+import styles from '@/greeting/greeter.scss';
 
 @observer
 export class Greeter extends PureComponent {

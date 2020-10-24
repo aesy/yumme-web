@@ -6,7 +6,7 @@
         "build": "webpack --mode production --progress --colors",
         "lint": "npm-run-all --parallel lint:scripts lint:styles",
         "lint:scripts": "eslint '{src,test}/**/*.{ts,tsx}'",
-        "lint:styles": "stylelint '{src,test}/**/*.{css,}'",
+        "lint:styles": "stylelint '{src,test}/**/*.{css,scss}'",
         "test": "jest"
     },
     "dependencies": {
@@ -58,8 +58,10 @@
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.5.2",
         "mini-css-extract-plugin": "^0.9.0",
+        "node-sass": "^4.14.1",
         "npm-run-all": "^4.1.5",
         "optimize-css-assets-webpack-plugin": "^5.0.4",
+        "sass-loader": "^10.0.4",
         "style-loader": "^1.2.1",
         "stylelint": "^13.7.2",
         "stylelint-config-standard": "^20.0.0",

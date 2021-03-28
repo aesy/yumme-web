@@ -11,4 +11,3 @@ export const App: FC = () => (
         </Switch>
     </BrowserRouter>
 );
-

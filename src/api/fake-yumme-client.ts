@@ -3,63 +3,57 @@ import { LoginResponse, Recipe, User, YummeClient } from '@/api/yumme-client';
 
 @injectable()
 export class FakeYummeClient implements YummeClient {
-    public createRecipe(): Promise<Recipe> {
-        return Promise.resolve(this.createFakeRecipe());
+    public async createRecipe(): Promise<Recipe> {
+        return this.createFakeRecipe();
     }
 
-    public deleteRecipe(): Promise<void> {
-        return Promise.resolve();
+    public async deleteRecipe(): Promise<void> {
+        // Do nothing
     }
 
-    public getAccessToken(): Promise<LoginResponse> {
-        return Promise.resolve({ accessToken: 'secret' });
+    public async getAccessToken(): Promise<LoginResponse> {
+        return { accessToken: 'secret' };
     }
 
-    public getAllRecipes(): Promise<Recipe[]> {
-        const recipes = Array.from({ length: 2 })
+    public async getAllRecipes(): Promise<Recipe[]> {
+        return Array.from({ length: 2 })
             .map((_, index) => {
                 return { ...this.createFakeRecipe(), id: index };
             });
-
-        return Promise.resolve(recipes);
     }
 
-    public getCurrentUser(): Promise<User> {
-        return Promise.resolve(this.createFakeUser());
+    public async getCurrentUser(): Promise<User> {
+        return this.createFakeUser();
     }
 
-    public getPopularRecipes(): Promise<Recipe[]> {
-        const recipes = Array.from({ length: 2 })
+    public async getPopularRecipes(): Promise<Recipe[]> {
+        return Array.from({ length: 2 })
             .map((_, index) => {
                 return { ...this.createFakeRecipe(), id: index };
             });
-
-        return Promise.resolve(recipes);
     }
 
-    public getRecentRecipes(): Promise<Recipe[]> {
-        const recipes = Array.from({ length: 2 })
+    public async getRecentRecipes(): Promise<Recipe[]> {
+        return Array.from({ length: 2 })
             .map((_, index) => {
                 return { ...this.createFakeRecipe(), id: index };
             });
-
-        return Promise.resolve(recipes);
     }
 
-    public getRecipeById(): Promise<Recipe> {
-        return Promise.resolve(this.createFakeRecipe());
+    public async getRecipeById(): Promise<Recipe> {
+        return this.createFakeRecipe();
     }
 
-    public register(): Promise<LoginResponse> {
-        return Promise.resolve({ accessToken: 'secret' });
+    public async register(): Promise<LoginResponse> {
+        return { accessToken: 'secret' };
     }
 
-    public replaceRecipe(): Promise<Recipe> {
-        return Promise.resolve(this.createFakeRecipe());
+    public async replaceRecipe(): Promise<Recipe> {
+        return this.createFakeRecipe();
     }
 
-    public updateRecipe(): Promise<Recipe> {
-        return Promise.resolve(this.createFakeRecipe());
+    public async updateRecipe(): Promise<Recipe> {
+        return this.createFakeRecipe();
     }
 
     private createFakeRecipe(): Recipe {

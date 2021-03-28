@@ -79,6 +79,7 @@ module.exports = {
     },
     plugins: [
         new webpack.EnvironmentPlugin({
+            YUMME_SERVER: process.env.YUMME_SERVER,
             NODE_ENV: isProduction ? 'production' : 'development',
             DEBUG: false,
         }),

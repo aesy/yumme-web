@@ -16,6 +16,8 @@
         ["@babel/proposal-class-properties", {
             "loose" : false
         }],
-        "@babel/proposal-object-rest-spread"
+        "@babel/proposal-object-rest-spread",
+        "babel-plugin-parameter-decorator",
+        "babel-plugin-transform-typescript-metadata"
     ]
 }

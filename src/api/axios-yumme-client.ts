@@ -9,21 +9,22 @@ import {
     User,
     YummeClient,
 } from '@/api/yumme-client';
+import { AXIOS_CLIENT_TYPE } from '@/api/axios-client';
 
 @injectable()
-export class YummeClientImpl implements YummeClient {
+export class AxiosYummeClient implements YummeClient {
     public constructor(
-        @inject('YummeAxiosClient')
+        @inject(AXIOS_CLIENT_TYPE)
         private readonly axios: AxiosInstance,
     ) {}
 
-    public async createRecipe(request: UpdateRecipeRequest): Promise<Recipe> {
-        const url = '/recipes';
+    public createRecipe(request: UpdateRecipeRequest): Promise<Recipe> {
+        const url = '/recipe';
 
         return this.axios.post<UpdateRecipeRequest, Recipe>(url, request);
     }
 
-    public async deleteRecipe(id: number): Promise<void> {
+    public deleteRecipe(id: number): Promise<void> {
         const url = `/recipe/${ id }`;
 
         return this.axios.delete(url);
@@ -36,20 +37,20 @@ export class YummeClientImpl implements YummeClient {
         return { accessToken };
     }
 
-    public async getAllRecipes(): Promise<Recipe[]> {
-        const url = '/recipes';
+    public getAllRecipes(): Promise<Recipe[]> {
+        const url = '/recipe';
 
         return this.axios.get<void, Recipe[]>(url);
     }
 
-    public async getCurrentUser(): Promise<User> {
+    public getCurrentUser(): Promise<User> {
         const url = '/user/me';
 
         return this.axios.get<void, User>(url);
     }
 
-    public async getPopularRecipes(limit?: number): Promise<Recipe[]> {
-        let url = '/recipes/popular';
+    public getPopularRecipes(limit?: number): Promise<Recipe[]> {
+        let url = '/recipe/popular';
 
         if (limit !== undefined) {
             url += `?limit=${ limit }`;
@@ -58,8 +59,8 @@ export class YummeClientImpl implements YummeClient {
         return this.axios.get<void, Recipe[]>(url);
     }
 
-    public async getRecentRecipes(limit?: number): Promise<Recipe[]> {
-        let url = '/recipes/recent';
+    public getRecentRecipes(limit?: number): Promise<Recipe[]> {
+        let url = '/recipe/recent';
 
         if (limit !== undefined) {
             url += `?limit=${ limit }`;
@@ -68,7 +69,7 @@ export class YummeClientImpl implements YummeClient {
         return this.axios.get<void, Recipe[]>(url);
     }
 
-    public async getRecipeById(id: number): Promise<Recipe> {
+    public getRecipeById(id: number): Promise<Recipe> {
         const url = `/recipe/${ id }`;
 
         return this.axios.get<void, Recipe>(url);
@@ -81,13 +82,13 @@ export class YummeClientImpl implements YummeClient {
         return { accessToken };
     }
 
-    public async replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe> {
+    public replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe> {
         const url = `/recipe/${ id }`;
 
         return this.axios.patch<UpdateRecipeRequest, Recipe>(url, request);
     }
 
-    public async updateRecipe(id: number, request: Partial<UpdateRecipeRequest>): Promise<Recipe> {
+    public updateRecipe(id: number, request: Partial<UpdateRecipeRequest>): Promise<Recipe> {
         const url = `/recipe/${ id }`;
 
         return this.axios.put<UpdateRecipeRequest, Recipe>(url, request);

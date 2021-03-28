@@ -63,6 +63,8 @@ To create an image, run the following command in the root directory:
 
     $ docker build . -t yumme-web --build-arg YUMME_SERVER=<domain>/api/v1/
 
+An image is created and published automatically to github packages on git tag pushes.
+
 ## Contribute
 Use the [issue tracker](https://github.com/aesy/yumme-web/issues) to report bugs or make feature 
 requests. Pull requests are welcome, but it may be a good idea to create an issue to discuss any 

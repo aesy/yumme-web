@@ -20,7 +20,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies
-      run: npm install
+      run: npm ci
     - name: Build project
       run: npm run build
   test:
@@ -33,7 +33,7 @@ jobs:
       with:
         node-version: 14.x
     - name: Install dependencies
-      run: npm install
+      run: npm ci
     - name: Lint
       run: npm run lint
     - name: Run tests

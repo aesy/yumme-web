@@ -30,7 +30,7 @@ module.exports = {
             modulePath,
         ],
         alias: {
-            '@': sourcePath
+            '@': sourcePath,
         },
     },
     module: {
@@ -52,7 +52,9 @@ module.exports = {
                         options: {
                             sourceMap: !isProduction,
                             importLoaders: 1,
-                            modules: true,
+                            modules: {
+                                exportLocalsConvention: 'camelCaseOnly',
+                            },
                         },
                     },
                     {

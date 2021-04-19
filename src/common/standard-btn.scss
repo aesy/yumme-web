@@ -1,0 +1,17 @@
+@import 'common/colors';
+@import 'common/typography';
+
+.standard-btn {
+    border: none;
+    outline: none;
+    color: $font_primary;
+    background-color: $yum_orange;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    font-size: 12px;
+    cursor: pointer;
+
+    // &:hover {
+    //     background-color: rgba($yum_orange, 0.8);
+    // }
+}

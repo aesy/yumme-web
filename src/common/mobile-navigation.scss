@@ -1,0 +1,42 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+.mobile-navigation {
+    color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: none;
+    z-index: 999;
+    height: 50px;
+    width: 100%;
+    background-color: $yum_black;
+    justify-content: space-between;
+
+    @media screen and (max-width: 800px) {
+        display: flex;
+    }
+
+    .center {
+        flex-shrink: 0;
+        transform: translateY(-20%);
+    }
+
+    .left,
+    .right {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-grow: 1;
+    }
+
+    .right {
+        .profile {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    }
+}

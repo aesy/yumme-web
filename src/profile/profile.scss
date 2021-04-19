@@ -1,0 +1,28 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+.profile {
+    display: grid;
+    background-color: #f5f5f5;
+    position: relative;
+    z-index: 1;
+    padding: 0 15px;
+
+    .view {
+        padding: 50px 15px 170px 15px;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 625px;
+        width: 100%;
+        background-color: $yum_beige;
+        z-index: -999;
+        transform: skewY(-2deg);
+        transform-origin: top left;
+    }
+}

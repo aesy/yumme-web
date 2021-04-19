@@ -1,0 +1,65 @@
+@import 'common/colors';
+@import 'common/typography';
+
+.standard-header {
+    display: inline-block;
+    background-color: $yum_brown;
+    padding: 5px;
+    color: white;
+    position: relative;
+    margin: 0 0 40px 0;
+
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top: 10px;
+        left: 10px;
+        height: 100%;
+        width: 100%;
+    }
+
+    &.brown {
+        &::before {
+            border: 1px solid $yum_brown;
+        }
+    }
+
+    &.white {
+        &::before {
+            border: 1px solid white;
+        }
+    }
+
+    &.orange {
+        &::before {
+            border: 1px solid $yum_orange;
+        }
+    }
+
+    &.small {
+        &::before {
+            top: 5px;
+            left: 5px;
+        }
+    }
+
+    &.medium {
+        &::before {
+            top: 10px;
+            left: 10px;
+        }
+    }
+
+    &.large {
+        &::before {
+            top: 15px;
+            left: 15px;
+        }
+    }
+
+    * {
+        display: inline-block;
+        margin: 0;
+    }
+}

@@ -23,13 +23,27 @@ export interface Recipe {
     description: string;
     id: number;
     image: string;
-    rating: string;
+    rating: {
+        average: number;
+        count: number;
+    };
     tags: string[];
     title: string;
 }
 
+export interface Collection {
+    id: number;
+    recipes: number[];
+    title: string;
+}
+
 export interface UpdateRecipeRequest {
-    todo: never; // TODO
+    categories: string[];
+    completionTime: number;
+    description: string;
+    public: boolean;
+    tags: string[];
+    title: string;
 }
 
 export interface YummeClient {
@@ -41,6 +55,7 @@ export interface YummeClient {
     getPopularRecipes(limit?: number): Promise<Recipe[]>;
     getRecentRecipes(limit?: number): Promise<Recipe[]>;
     getRecipeById(id: number): Promise<Recipe>;
+    getRecentCollections(limit?: number): Promise<Collection[]>;
     register(request: RegisterRequest): Promise<LoginResponse>;
     replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe>;
     updateRecipe(id: number, request: Partial<UpdateRecipeRequest>): Promise<Recipe>;

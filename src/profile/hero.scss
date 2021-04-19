@@ -1,0 +1,124 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+.hero {
+    .content {
+        @include content-standard;
+
+        color: $font_primary;
+        background-size: cover;
+        height: 400px;
+        position: relative;
+        z-index: 1;
+        display: flex;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            height: 100%;
+            width: 100%;
+            border: 2px solid white;
+            z-index: -1;
+        }
+
+        .bg {
+            flex: 1;
+            background-size: cover;
+        }
+
+        .wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+            background-color: $yum_black;
+            padding: 85px;
+            width: 600px;
+            height: 100%;
+
+            .picture {
+                img {
+                    display: block;
+                    height: 150px;
+                    width: 150px;
+                    object-fit: cover;
+                }
+            }
+
+            .details {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                margin-left: 20px;
+                height: 150px;
+
+                h1 {
+                    margin: 0;
+                }
+
+                .stats {
+                    max-width: 270px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                }
+
+                button {
+                    display: block;
+                    width: fit-content;
+                }
+            }
+        }
+
+        @media screen and (max-width: 800px) {
+            flex-direction: column-reverse;
+
+            &::before {
+                display: none;
+            }
+
+            .wrapper {
+                flex-direction: column;
+                height: 230px;
+                width: 100%;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-bottom: 20px;
+
+                .details {
+                    justify-content: space-between;
+                    text-align: center;
+                    width: 100%;
+                    margin-left: 0;
+                    height: 135px;
+
+                    .stats {
+                        max-width: none;
+                        justify-content: space-evenly;
+                    }
+
+                    button {
+                        margin: 0 auto;
+                    }
+                }
+
+                .picture {
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+
+                    img {
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 800px) {
+        margin: 0 -15px;
+    }
+}

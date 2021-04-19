@@ -1,0 +1,55 @@
+$font_header: 'Playfair Display', serif;
+$font_body: 'Open Sans', sans-serif;
+
+h1,
+h2,
+h3 {
+    font-family: $font_header;
+    letter-spacing: 2px;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+h3 {
+    font-size: 20px;
+    margin: 10px 0;
+}
+
+p,
+span {
+    letter-spacing: 1px;
+    font-family: $font_body;
+    font-size: 14px;
+    margin: 6px 0;
+}
+
+a {
+    font-family: $font_body;
+}
+
+button {
+    font-family: $font_body;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 20px;
+    }
+
+    h2,
+    h3 {
+        font-size: 18px;
+    }
+
+    p,
+    span {
+        font-size: 12px;
+    }
+}

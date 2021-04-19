@@ -1,0 +1,23 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.highlighted {
+    color: $yum_beige;
+}

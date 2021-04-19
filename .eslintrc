@@ -11,6 +11,7 @@
         "jest": true
     },
     "rules": {
+        "max-len": ["warn", 120],
         "import/order": [
             "error", {
                 "pathGroups": [

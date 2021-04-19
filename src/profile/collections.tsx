@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-export const Collections: FC = props => (
+export const Collections: FC = () => (
     <section>
         Empty view Collections
     </section>

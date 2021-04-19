@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import styles from '@/profile/hero.scss';
 import { StandardBtn } from '@/common/standard-btn';
-import defaultStyles from '@/common/default.scss';
+import defaultStyles from '@/common/global.scss';
 import { Bordered } from '@/common/bordered';
 
-export const Hero: FC = props => (
+export const Hero: FC = () => (
     <section className={ styles.hero }>
         <div className={ styles.content }>
             <div className={ styles.wrapper }>
@@ -35,7 +35,8 @@ export const Hero: FC = props => (
                     <StandardBtn>Follow Emil</StandardBtn>
                 </div>
             </div>
-            <div className={ styles.bg } style={{ backgroundImage: 'url(https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg)' }}> </div>
+            <div className={ styles.bg }
+                 style={{ backgroundImage: 'url(https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg)' }} />
         </div>
     </section>
 );

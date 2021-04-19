@@ -1,7 +1,7 @@
 @import 'common/colors';
 @import 'common/typography';
 @import 'common/content';
-@import 'common/cssFunctions';
+@import 'common/css-functions';
 
 .recent-recipes,
 .recent-collections,
@@ -22,7 +22,6 @@
     }
 
     > a {
-        flex-shrink: 0;
         margin: 0 0 0 40px;
     }
 
@@ -51,7 +50,7 @@
 .recent-collections,
 .recent-recipes {
     > ul {
-        max-width: 990px;
+        max-width: 80%;
 
         @media screen and (max-width: 1230px) {
             max-width: none;

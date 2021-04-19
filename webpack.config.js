@@ -117,7 +117,7 @@ module.exports = {
         minimize: isProduction,
         minimizer: [
             new OptimizeCSSAssetsPlugin({}),
-            // new TerserPlugin(),
+            new TerserPlugin(),
         ],
     },
 };

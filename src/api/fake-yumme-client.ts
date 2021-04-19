@@ -1,6 +1,12 @@
 import { injectable } from 'inversify';
 import { LoginResponse, Recipe, User, YummeClient, Collection } from '@/api/yumme-client';
 
+function generateId(): number {
+    const maxId = 1_000_000;
+
+    return Math.ceil(maxId * Math.random());
+}
+
 @injectable()
 export class FakeYummeClient implements YummeClient {
     public async createRecipe(): Promise<Recipe> {
@@ -15,17 +21,10 @@ export class FakeYummeClient implements YummeClient {
         return { accessToken: 'secret' };
     }
 
-    public async getAllCollections(): Promise<Collection[]> {
-        return Array.from({ length: 3 })
-            .map((_, index) => {
-                return { ...this.createFakeCollection(), id: index };
-            });
-    }
-
     public async getAllRecipes(): Promise<Recipe[]> {
         return Array.from({ length: 3 })
-            .map((_, index) => {
-                return { ...this.createFakeRecipe(), id: index };
+            .map(() => {
+                return { ...this.createFakeRecipe(), id: generateId() };
             });
     }
 
@@ -35,22 +34,22 @@ export class FakeYummeClient implements YummeClient {
 
     public async getPopularRecipes(): Promise<Recipe[]> {
         return Array.from({ length: 3 })
-            .map((_, index) => {
-                return { ...this.createFakeRecipe(), id: index };
+            .map(() => {
+                return { ...this.createFakeRecipe(), id: generateId() };
             });
     }
 
     public async getRecentCollections(): Promise<Collection[]> {
         return Array.from({ length: 4 })
-            .map((_, index) => {
-                return { ...this.createFakeCollection(), id: index };
+            .map(() => {
+                return { ...this.createFakeCollection(), id: generateId() };
             });
     }
 
     public async getRecentRecipes(): Promise<Recipe[]> {
         return Array.from({ length: 4 })
-            .map((_, index) => {
-                return { ...this.createFakeRecipe(), id: index };
+            .map(() => {
+                return { ...this.createFakeRecipe(), id: generateId() };
             });
     }
 
@@ -71,22 +70,18 @@ export class FakeYummeClient implements YummeClient {
     }
 
     private createFakeCollection(): Collection {
-        const maxId = 1000;
-
         return {
-            id: Math.ceil(maxId * Math.random()),
+            id: generateId(),
             title: 'Barbeque heaven',
-            recipes: [Math.ceil(maxId * Math.random()), Math.ceil(maxId * Math.random()), Math.ceil(maxId * Math.random()), Math.ceil(maxId * Math.random())],
+            recipes: [generateId(), generateId(), generateId(), generateId()],
         };
     }
 
     private createFakeRecipe(): Recipe {
-        const maxId = 1000;
-
         return {
             categories: ['Beef', 'Vegan', 'BBQ'],
             description: 'This easy pizza dough recipe is great for beginners and produces a soft homemade pizza crust.',
-            id: Math.ceil(maxId * Math.random()),
+            id: generateId(),
             image: 'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
             rating: {
                 average: 4,

@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { FC } from 'react';
 import { Profile } from '@/profile/profile';
+import { MobileNavigation } from '@/common/mobile-navigation';
 import { Header } from '@/common/header';
+import styles from '@/common/global.scss';
 import { Footer } from '@/common/footer';
-import styles from '@/common/default.scss';
-import { MobileNavigation } from './common/mobile-navigation';
 
 export const App: FC = () => (
     <div className={ styles.page }>
@@ -13,7 +13,6 @@ export const App: FC = () => (
         <BrowserRouter>
             <Switch>
                 <Route exact path="/profile" component={ Profile } />
-                {/* <Route path="/" component={ Greeter } /> */}
             </Switch>
         </BrowserRouter>
 
@@ -21,5 +20,4 @@ export const App: FC = () => (
 
         <Footer />
     </div>
-
 );

@@ -1,12 +1,11 @@
 import React, { FC } from 'react';
 import styles from '@/common/view-navigation.scss';
 
-type Handler = (arg: string) => void;
-
 interface ViewNavigationProps {
     readonly active: string;
-    readonly handler: Handler;
     readonly navigations: string[];
+
+    handler(arg: string): void;
 }
 
 export const ViewNavigation: FC<ViewNavigationProps> = props => (

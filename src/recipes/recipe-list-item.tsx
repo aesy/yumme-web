@@ -5,7 +5,6 @@ import styles from '@/recipes/recipe-list-item.scss';
 import { ClickableCard } from '@/common/clickable-card';
 import { Recipe } from '@/api/yumme-client';
 
-
 interface RecipeListItemProps {
     readonly recipe: Recipe;
     readonly type: 'row' | 'column';

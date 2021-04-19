@@ -7,10 +7,8 @@
         @include content-standard;
 
         color: $font_primary;
-        background-size: cover;
         height: 400px;
         position: relative;
-        z-index: 1;
         display: flex;
 
         &::before {
@@ -25,7 +23,7 @@
         }
 
         .bg {
-            flex: 1;
+            flex-grow: 1;
             background-size: cover;
         }
 

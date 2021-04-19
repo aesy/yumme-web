@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 
-export const Recipes: FC = props => (
+export const Recipes: FC = () => (
     <section>
         Empty view Recipes
     </section>

@@ -1,18 +1,17 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
-import { EmptyProps } from '@/utils/react';
 import { RecipeListItem } from '@/recipes/recipe-list-item';
 import { YUMME_CLIENT_TYPE, Recipe, YummeClient } from '@/api/yumme-client';
 
-interface State {
+interface PopularRecipeListState {
     recipes: Recipe[];
 }
 
-export class PopularRecipeList extends PureComponent<EmptyProps, State> {
+export class PopularRecipeList extends PureComponent<unknown, PopularRecipeListState> {
     @resolve(YUMME_CLIENT_TYPE)
     private readonly yummeClient: YummeClient;
 
-    public constructor(props: EmptyProps) {
+    public constructor(props: unknown) {
         super(props);
 
         this.state = {
@@ -21,11 +20,7 @@ export class PopularRecipeList extends PureComponent<EmptyProps, State> {
     }
 
     public componentDidMount(): void {
-        this.yummeClient.getPopularRecipes().then(recipes => {
-            this.setState({ recipes });
-        }).catch(err => {
-            console.error(err);
-        });
+        this.refresh();
     }
 
     public render(): ReactNode {
@@ -41,5 +36,11 @@ export class PopularRecipeList extends PureComponent<EmptyProps, State> {
                 }
             </ul>
         );
+    }
+
+    private async refresh(): Promise<void> {
+        const recipes = await this.yummeClient.getPopularRecipes();
+
+        this.setState({ recipes });
     }
 }

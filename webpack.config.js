@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const env = process.env.NODE_ENV || process.argv[3] || 'production';
 const isProduction = env === 'production';
@@ -15,8 +16,8 @@ const buildPath = path.join(__dirname, 'build');
 const modulePath = path.join(__dirname, 'node_modules');
 
 module.exports = {
-    context: sourcePath,
-    entry: 'index.tsx',
+    context: __dirname,
+    entry: path.resolve(sourcePath, 'index.tsx'),
     output: {
         publicPath: '/',
         path: buildPath,
@@ -80,6 +81,7 @@ module.exports = {
         ],
     },
     plugins: [
+        new ForkTsCheckerWebpackPlugin(),
         new webpack.EnvironmentPlugin({
             YUMME_SERVER: process.env.YUMME_SERVER,
             NODE_ENV: isProduction ? 'production' : 'development',
@@ -91,7 +93,7 @@ module.exports = {
             disable: !isProduction,
         }),
         new HtmlWebpackPlugin({
-            template: 'index.html',
+            template: path.resolve(sourcePath, 'index.html'),
             inject: true,
         }),
         new webpack.LoaderOptionsPlugin({

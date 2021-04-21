@@ -1,37 +1,31 @@
 import React, { FC } from 'react';
 import styles from '@/profile/hero.scss';
 import { StandardBtn } from '@/common/standard-btn';
-import defaultStyles from '@/common/global.scss';
-import { Bordered } from '@/common/bordered';
 
 export const Hero: FC = () => (
     <section className={ styles.hero }>
         <div className={ styles.content }>
             <div className={ styles.wrapper }>
-                <div className={ styles.picture }>
-                    <Bordered round size="large">
-                        <img className={ styles.profile } src="https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg" />
-                    </Bordered>
-                </div>
+                <img className={ styles.profileImg } src="https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg" />
                 <div className={ styles.details }>
                     <h1>Emil Wertwein</h1>
-                    <div className={ styles.stats }>
-                        <span>
-                            <span className={ defaultStyles.highlighted }>33</span>
+                    <ul className={ styles.stats }>
+                        <li>
+                            <span className={ styles.highlighted }>33</span>
                             {' '}
-                            recipes
-                        </span>
-                        <span>
-                            <span className={ defaultStyles.highlighted }>5</span>
+                            <span>recipes</span>
+                        </li>
+                        <li>
+                            <span className={ styles.highlighted }>5</span>
                             {' '}
-                            collections
-                        </span>
-                        <span>
-                            <span className={ defaultStyles.highlighted }>4.3</span>
+                            <span>collections</span>
+                        </li>
+                        <li>
+                            <span className={ styles.highlighted }>4.3</span>
                             {' '}
-                            stars on average
-                        </span>
-                    </div>
+                            <span>stars on average</span>
+                        </li>
+                    </ul>
                     <StandardBtn>Follow Emil</StandardBtn>
                 </div>
             </div>

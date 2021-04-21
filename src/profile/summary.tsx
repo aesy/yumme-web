@@ -26,9 +26,11 @@ export const Summary: FC = () => (
 
             <div className={ styles.recentRecipes }>
                 <RecentRecipeList />
-                <ClickableCard borderOffset="small">
-                    <StandardBtn>ALL RECIPES</StandardBtn>
-                </ClickableCard>
+                <div className={ styles.button }>
+                    <ClickableCard borderOffset="small">
+                        <StandardBtn>ALL RECIPES</StandardBtn>
+                    </ClickableCard>
+                </div>
             </div>
         </div>
 
@@ -39,9 +41,11 @@ export const Summary: FC = () => (
 
             <div className={ styles.recentCollections }>
                 <RecentCollectionList />
-                <ClickableCard borderOffset="small">
-                    <StandardBtn>ALL COLLECTIONS</StandardBtn>
-                </ClickableCard>
+                <div className={ styles.button }>
+                    <ClickableCard borderOffset="small">
+                        <StandardBtn>ALL COLLECTIONS</StandardBtn>
+                    </ClickableCard>
+                </div>
             </div>
         </div>
     </section>

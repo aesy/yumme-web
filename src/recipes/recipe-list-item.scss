@@ -75,14 +75,5 @@
             max-width: 170px;
             width: 100%;
         }
-
-        @media screen and (max-width: 1000px) {
-            flex-direction: column;
-
-            img {
-                height: 160px;
-                max-width: unset;
-            }
-        }
     }
 }

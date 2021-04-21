@@ -3,8 +3,8 @@ import React, { FC } from 'react';
 import { Profile } from '@/profile/profile';
 import { MobileNavigation } from '@/common/mobile-navigation';
 import { Header } from '@/common/header';
-import styles from '@/common/global.scss';
 import { Footer } from '@/common/footer';
+import styles from '@/app.scss';
 
 export const App: FC = () => (
     <div className={ styles.page }>

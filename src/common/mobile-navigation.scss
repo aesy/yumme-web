@@ -1,6 +1,8 @@
 @import 'common/colors';
 @import 'common/typography';
 @import 'common/content';
+@import 'common/breakpoints';
+@import 'common/paddings';
 
 .mobile-navigation {
     color: white;
@@ -14,12 +16,34 @@
     background-color: $yum_black;
     justify-content: space-between;
 
-    @media screen and (max-width: 800px) {
+    @media screen and (max-width: $breakpoint_tablet) {
         display: flex;
     }
 
     .center {
         transform: translateY(-20%);
+
+        .add {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+            color: $font_primary;
+            background-color: $yum_orange;
+            padding: 8px 15px;
+            letter-spacing: 2px;
+            font-size: 12px;
+            height: 55px;
+            width: 55px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 4px solid $yum_black;
+
+            svg {
+                height: 37px;
+                width: 37px;
+            }
+        }
     }
 
     .left,

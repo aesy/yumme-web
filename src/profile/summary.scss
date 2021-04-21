@@ -2,6 +2,8 @@
 @import 'common/typography';
 @import 'common/content';
 @import 'common/css-functions';
+@import 'common/breakpoints';
+@import 'common/paddings';
 
 .recent-recipes,
 .recent-collections,
@@ -21,15 +23,15 @@
         margin: 0;
     }
 
-    > a {
+    > .button {
         margin: 0 0 0 40px;
     }
 
-    @media screen and (max-width: 1230px) {
+    @media screen and (max-width: $breakpoint_content-standard) {
         flex-direction: column;
         align-items: flex-start;
 
-        > a {
+        > .button {
             margin: 40px auto 0 auto;
         }
     }
@@ -52,7 +54,7 @@
     > ul {
         max-width: 80%;
 
-        @media screen and (max-width: 1230px) {
+        @media screen and (max-width: $breakpoint_content-standard) {
             max-width: none;
         }
     }

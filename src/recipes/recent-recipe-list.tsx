@@ -1,13 +1,17 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
+import { bind } from '@decorize/bind';
 import { RecipeListItem } from '@/recipes/recipe-list-item';
 import { Recipe, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 
 interface RecentRecipeListState {
+    onSmallScreen: boolean;
     recipes: Recipe[];
 }
 
 export class RecentRecipeList extends PureComponent<unknown, RecentRecipeListState> {
+    private static readonly breakpoint: number = 640;
+
     @resolve(YUMME_CLIENT_TYPE)
     private readonly yummeClient: YummeClient;
 
@@ -16,11 +20,19 @@ export class RecentRecipeList extends PureComponent<unknown, RecentRecipeListSta
 
         this.state = {
             recipes: [],
+            onSmallScreen: window.innerWidth < RecentRecipeList.breakpoint,
         };
+
+        this.onResize = this.onResize.bind(this);
     }
 
     public componentDidMount(): void {
+        window.addEventListener('resize', this.onResize);
         this.refresh();
+    }
+
+    public componentWillUnmount(): void {
+        window.removeEventListener('resize', this.onResize);
     }
 
     public render(): ReactNode {
@@ -30,12 +42,17 @@ export class RecentRecipeList extends PureComponent<unknown, RecentRecipeListSta
                     this.state.recipes
                         .map(recipe => (
                             <li key={ recipe.id }>
-                                <RecipeListItem recipe={ recipe } type="row" />
+                                <RecipeListItem recipe={ recipe } type={ this.state.onSmallScreen ? 'column' : 'row' } />
                             </li>
                         ))
                 }
             </ul>
         );
+    }
+
+    @bind
+    private onResize(): void {
+        this.setState({ onSmallScreen: window.innerWidth < RecentRecipeList.breakpoint });
     }
 
     private async refresh(): Promise<void> {

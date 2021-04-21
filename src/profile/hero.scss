@@ -1,8 +1,14 @@
 @import 'common/colors';
 @import 'common/typography';
 @import 'common/content';
+@import 'common/breakpoints';
+@import 'common/paddings';
 
 .hero {
+    .highlighted {
+        color: $yum_beige;
+    }
+
     .content {
         @include content-standard;
 
@@ -33,34 +39,34 @@
             position: relative;
             background-color: $yum_black;
             padding: 85px;
-            width: 600px;
+            max-width: 600px;
             height: 100%;
 
-            .picture {
-                img {
-                    display: block;
-                    height: 150px;
-                    width: 150px;
-                    object-fit: cover;
-                }
+            .profile-img {
+                display: block;
+                height: 150px;
+                width: 150px;
+                object-fit: cover;
             }
 
             .details {
-                display: flex;
-                flex-direction: column;
-                justify-content: space-evenly;
                 margin-left: 20px;
-                height: 150px;
 
                 h1 {
                     margin: 0;
                 }
 
                 .stats {
-                    max-width: 270px;
+                    list-style: none;
+                    padding: 0;
+                    margin: 10px 0;
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: space-between;
+
+                    li:last-of-type {
+                        margin-top: 10px;
+                    }
                 }
 
                 button {
@@ -70,7 +76,7 @@
             }
         }
 
-        @media screen and (max-width: 800px) {
+        @media screen and (max-width: $breakpoint_tablet) {
             flex-direction: column-reverse;
 
             &::before {
@@ -78,8 +84,8 @@
             }
 
             .wrapper {
-                flex-direction: column;
-                height: 230px;
+                height: auto;
+                max-width: unset;
                 width: 100%;
                 padding-left: 10px;
                 padding-right: 10px;
@@ -90,11 +96,18 @@
                     text-align: center;
                     width: 100%;
                     margin-left: 0;
-                    height: 135px;
 
                     .stats {
                         max-width: none;
                         justify-content: space-evenly;
+
+                        li {
+                            margin: 0 8px 15px 8px;
+                        }
+
+                        li:last-of-type {
+                            margin: 0 8px;
+                        }
                     }
 
                     button {
@@ -102,21 +115,19 @@
                     }
                 }
 
-                .picture {
+                .profile-img {
+                    border: 6px solid $yum_black;
                     position: absolute;
                     top: 0;
                     left: 50%;
                     transform: translate(-50%, -50%);
-
-                    img {
-                        border-radius: 50%;
-                    }
+                    border-radius: 50%;
                 }
             }
         }
     }
 
-    @media screen and (max-width: 800px) {
-        margin: 0 -15px;
+    @media screen and (max-width: $breakpoint_tablet) {
+        margin: 0 -$padding_page;
     }
 }

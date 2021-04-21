@@ -6,9 +6,9 @@ interface ClickableCardProps {
 }
 
 export const ClickableCard: FC<ClickableCardProps> = props => (
-    <a className={ `${ styles.clickableCard } ${ styles[props.borderOffset] }` }>
+    <div className={ `${ styles.clickableCard } ${ styles[props.borderOffset] }` }>
         <div className={ styles.wrapper }>
             { props.children }
         </div>
-    </a>
+    </div>
 );

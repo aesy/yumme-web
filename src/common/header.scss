@@ -1,13 +1,15 @@
 @import 'common/colors';
 @import 'common/typography';
 @import 'common/content';
+@import 'common/breakpoints';
+@import 'common/paddings';
 
 .header {
-    padding: 70px 15px 80px 15px;
+    padding: 80px $padding_page;
     background-color: $yum_beige;
     position: relative;
 
-    @media screen and (max-width: 800px) {
+    @media screen and (max-width: $breakpoint_tablet) {
         display: none;
     }
 

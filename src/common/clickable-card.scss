@@ -1,0 +1,83 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+.clickable-card {
+    display: block;
+    position: relative;
+    cursor: pointer;
+
+    &::before {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        height: 100%;
+        width: 100%;
+        background-color: $yum_orange;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        height: 100%;
+        width: 100%;
+        top: 10px;
+        left: 10px;
+        border: 1px solid $yum_orange;
+    }
+
+    .wrapper {
+        border: 1px solid $yum_orange;
+        transition: transform 0.1s ease-out;
+    }
+
+    &:hover {
+        .wrapper {
+            border-color: lighten($yum_orange, 10%);
+            transform: translate(10px, 10px);
+        }
+    }
+
+    &.small {
+        &::after {
+            top: 5px;
+            left: 5px;
+        }
+
+        &:hover {
+            .wrapper {
+                border-color: lighten($yum_orange, 10%);
+                transform: translate(5px, 5px);
+            }
+        }
+    }
+
+    &.medium {
+        &::after {
+            top: 10px;
+            left: 10px;
+        }
+
+        &:hover {
+            .wrapper {
+                border-color: lighten($yum_orange, 10%);
+                transform: translate(10px, 10px);
+            }
+        }
+    }
+
+    &.large {
+        &::after {
+            top: 15px;
+            left: 15px;
+        }
+
+        &:hover {
+            .wrapper {
+                border-color: lighten($yum_orange, 10%);
+                transform: translate(15px, 15px);
+            }
+        }
+    }
+}

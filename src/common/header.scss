@@ -1,0 +1,70 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+@import 'common/breakpoints';
+@import 'common/paddings';
+
+.header {
+    padding: 80px $padding_page;
+    background-color: $yum_beige;
+    position: relative;
+
+    @media screen and (max-width: $breakpoint_tablet) {
+        display: none;
+    }
+
+    .content {
+        @include content-standard;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .left,
+        .right {
+            display: flex;
+            align-items: center;
+
+            ul {
+                list-style: none;
+                padding: 0;
+            }
+        }
+
+        .left {
+            * + * {
+                margin-left: 35px;
+            }
+
+            // Bryt ut till egen komponent
+            nav {
+                font-family: $font_body;
+
+                ul {
+                    li {
+                        display: flex;
+                        align-items: center;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+
+        .right {
+            * + * {
+                margin-left: 25px;
+            }
+
+            svg {
+                fill: white;
+            }
+
+            .profile {
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
+    }
+}

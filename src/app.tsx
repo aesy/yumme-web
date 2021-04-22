@@ -1,13 +1,23 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { FC } from 'react';
-import { RecipeList } from '@/recipes/recipe-list';
-import { Greeter } from '@/greeting/greeter';
+import { Profile } from '@/profile/profile';
+import { MobileNavigation } from '@/common/mobile-navigation';
+import { Header } from '@/common/header';
+import { Footer } from '@/common/footer';
+import styles from '@/app.scss';
 
 export const App: FC = () => (
-    <BrowserRouter>
-        <Switch>
-            <Route exact path="/recipe" component={ RecipeList } />
-            <Route path="/" component={ Greeter } />
-        </Switch>
-    </BrowserRouter>
+    <div className={ styles.page }>
+        <Header />
+
+        <BrowserRouter>
+            <Switch>
+                <Route exact path="/profile" component={ Profile } />
+            </Switch>
+        </BrowserRouter>
+
+        <MobileNavigation />
+
+        <Footer />
+    </div>
 );

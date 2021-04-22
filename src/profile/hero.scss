@@ -1,0 +1,133 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+@import 'common/breakpoints';
+@import 'common/paddings';
+
+.hero {
+    .highlighted {
+        color: $yum_beige;
+    }
+
+    .content {
+        @include content-standard;
+
+        color: $font_primary;
+        height: 400px;
+        position: relative;
+        display: flex;
+
+        &::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            height: 100%;
+            width: 100%;
+            border: 2px solid white;
+            z-index: -1;
+        }
+
+        .bg {
+            flex-grow: 1;
+            background-size: cover;
+        }
+
+        .wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+            background-color: $yum_black;
+            padding: 85px;
+            max-width: 600px;
+            height: 100%;
+
+            .profile-img {
+                display: block;
+                height: 150px;
+                width: 150px;
+                object-fit: cover;
+            }
+
+            .details {
+                margin-left: 20px;
+
+                h1 {
+                    margin: 0;
+                }
+
+                .stats {
+                    list-style: none;
+                    padding: 0;
+                    margin: 10px 0;
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+
+                    li:last-of-type {
+                        margin-top: 10px;
+                    }
+                }
+
+                button {
+                    display: block;
+                    width: fit-content;
+                }
+            }
+        }
+
+        @media screen and (max-width: $breakpoint_tablet) {
+            flex-direction: column-reverse;
+
+            &::before {
+                display: none;
+            }
+
+            .wrapper {
+                height: auto;
+                max-width: unset;
+                width: 100%;
+                padding-left: 10px;
+                padding-right: 10px;
+                padding-bottom: 20px;
+
+                .details {
+                    justify-content: space-between;
+                    text-align: center;
+                    width: 100%;
+                    margin-left: 0;
+
+                    .stats {
+                        max-width: none;
+                        justify-content: space-evenly;
+
+                        li {
+                            margin: 0 8px 15px 8px;
+                        }
+
+                        li:last-of-type {
+                            margin: 0 8px;
+                        }
+                    }
+
+                    button {
+                        margin: 0 auto;
+                    }
+                }
+
+                .profile-img {
+                    border: 6px solid $yum_black;
+                    position: absolute;
+                    top: 0;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    border-radius: 50%;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: $breakpoint_tablet) {
+        margin: 0 -$padding_page;
+    }
+}

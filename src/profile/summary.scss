@@ -1,0 +1,67 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+@import 'common/css-functions';
+@import 'common/breakpoints';
+@import 'common/paddings';
+
+.recent-recipes,
+.recent-collections,
+.popular-recipes {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 80px;
+
+    > ul {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+        grid-gap: 30px;
+        width: 100%;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    > .button {
+        margin: 0 0 0 40px;
+    }
+
+    @media screen and (max-width: $breakpoint_content-standard) {
+        flex-direction: column;
+        align-items: flex-start;
+
+        > .button {
+            margin: 40px auto 0 auto;
+        }
+    }
+}
+
+.recent-recipes {
+    > ul {
+        grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+    }
+}
+
+.recent-collections {
+    > ul {
+        grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+    }
+}
+
+.recent-collections,
+.recent-recipes {
+    > ul {
+        max-width: 80%;
+
+        @media screen and (max-width: $breakpoint_content-standard) {
+            max-width: none;
+        }
+    }
+}
+
+.view {
+    @include content-standard;
+
+    padding: 50px 0;
+}

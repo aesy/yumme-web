@@ -1,0 +1,22 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+.collection-list-item {
+    background-color: white;
+    text-align: center;
+
+    > .image {
+        margin: 0;
+        display: inline-block;
+        background-size: cover;
+        width: 50%;
+        vertical-align: middle;
+        padding-bottom: 50%;
+    }
+
+    h3 {
+        display: inline-block;
+        margin: 20px 0;
+    }
+}

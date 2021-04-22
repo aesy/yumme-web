@@ -1,6 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { AxiosInstance } from 'axios';
 import {
+    Collection,
     LoginRequest,
     LoginResponse,
     Recipe,
@@ -57,6 +58,16 @@ export class AxiosYummeClient implements YummeClient {
         }
 
         return this.axios.get<void, Recipe[]>(url);
+    }
+
+    public getRecentCollections(limit?: number): Promise<Collection[]> {
+        let url = '/collection';
+
+        if (limit !== undefined) {
+            url += `?limit=${ limit }`;
+        }
+
+        return this.axios.get<void, Collection[]>(url);
     }
 
     public getRecentRecipes(limit?: number): Promise<Recipe[]> {

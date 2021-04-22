@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import React, { FC } from 'react';
+import { Recipe } from '@/recipe/recipe';
 import { Profile } from '@/profile/profile';
 import { MobileNavigation } from '@/common/mobile-navigation';
 import { Header } from '@/common/header';
@@ -14,7 +15,8 @@ export const App: FC = () => (
             <Header />
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/" component={ Profile } />
+                    <Route path="/profile/:id" component={ Profile } />
+                    <Route path="/recipe/:id" component={ Recipe } />
                     <Route component={ NotFound } />
                 </Switch>
             </BrowserRouter>

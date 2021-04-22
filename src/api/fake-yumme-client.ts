@@ -94,7 +94,7 @@ export class FakeYummeClient implements YummeClient {
             id: generateId(),
             image: 'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
             rating: {
-                average: 4,
+                average: 3.6,
                 count: 33,
             },
             tags: ['Swedish'],

@@ -1,0 +1,28 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+@import 'common/breakpoints';
+@import 'common/css-functions';
+
+.ingredients {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    .ingredient {
+        position: relative;
+
+        &::before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            width: 2px;
+            left: -10px;
+            background-color: $yum_orange;
+        }
+
+        + .ingredient {
+            margin-top: 20px;
+        }
+    }
+}

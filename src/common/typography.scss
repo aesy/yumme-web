@@ -6,7 +6,8 @@ $font_body: 'Open Sans', sans-serif;
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
     font-family: $font_header;
     letter-spacing: 2px;
 }
@@ -22,6 +23,11 @@ h2 {
 h3 {
     font-size: 20px;
     margin: 10px 0;
+}
+
+h4 {
+    font-size: 18px;
+    margin: 5px 0;
 }
 
 p,
@@ -49,6 +55,10 @@ button {
     h2,
     h3 {
         font-size: 18px;
+    }
+
+    h4 {
+        font-size: 16px;
     }
 
     p,

@@ -22,8 +22,6 @@ export class RecentRecipeList extends PureComponent<unknown, RecentRecipeListSta
             recipes: [],
             onSmallScreen: window.innerWidth < RecentRecipeList.breakpoint,
         };
-
-        this.onResize = this.onResize.bind(this);
     }
 
     public componentDidMount(): void {

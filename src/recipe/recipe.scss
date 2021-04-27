@@ -117,9 +117,9 @@
 
         display: grid;
         grid-template-areas:
-            "card card details"
+            " card     card      details "
             "images directions directions";
-        grid-template-columns: minmax(300px, 420px) 1fr minmax(min-content, 450px);
+        grid-template-columns: 420px 1fr 450px;
         grid-template-rows: 540px auto;
         grid-gap: 70px 30px;
 

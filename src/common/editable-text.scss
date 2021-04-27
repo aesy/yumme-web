@@ -1,0 +1,20 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+.editable-text {
+    .edit-wrapper {
+        .text-area {
+            resize: none;
+            overflow: hidden;
+            width: 100%;
+            padding: 10px 10px;
+            outline: none;
+            border: 1px solid $yum_orange;
+            letter-spacing: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            font-style: inherit;
+        }
+    }
+}

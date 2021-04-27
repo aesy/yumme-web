@@ -13,7 +13,10 @@
     width: 100%;
 
     li {
+        background-color: #889aff;
+        position: relative;
         width: calc(50% - 2.5px);
+        padding-bottom: calc(50% - 2.5px);
         margin: 0 0 5px 0;
 
         &:nth-of-type(2n) {
@@ -22,10 +25,20 @@
     }
 
     .image {
+        position: absolute;
         margin: 0;
-        padding-bottom: calc(100% - 2.5px);
+        height: 100%;
         width: 100%;
         display: block;
-        background-size: cover;
+        object-fit: cover;
+    }
+
+    .delete-btn-wrapper {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        padding: 5px;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 5px 0 0 0;
     }
 }

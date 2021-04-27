@@ -11,6 +11,11 @@
 
     .direction {
         position: relative;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        grid-gap: 0 20px;
+        align-items: center;
+        word-break: break-all;
 
         &::before {
             content: attr(data-step);

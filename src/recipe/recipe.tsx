@@ -14,7 +14,8 @@ import { Recipe as RecipeType, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumm
 type View = 'Ingredients' | 'Directions' | 'Images';
 
 interface RecipeState {
-    recipe: RecipeType | null;
+    editing: boolean;
+    recipe?: RecipeType;
     view: View;
 }
 
@@ -34,11 +35,12 @@ export class Recipe extends PureComponent<Props, RecipeState> {
         super(props);
 
         this.state = {
-            recipe: null,
             view: 'Ingredients',
+            editing: false,
         };
 
         this.handler = this.handler.bind(this);
+        this.toggleEditing = this.toggleEditing.bind(this);
     }
 
     public componentDidMount(): void {
@@ -63,13 +65,10 @@ export class Recipe extends PureComponent<Props, RecipeState> {
         ];
         const directions = [
             'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
+            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
             'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
+            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
+            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
             'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
         ];
         const images = [
@@ -81,98 +80,123 @@ export class Recipe extends PureComponent<Props, RecipeState> {
             'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
             'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
         ];
-        const stats = [
-            {
-                type: 'Prep time',
-                value: '15min',
-            },
-            {
-                type: 'Cook time',
-                value: '15min',
-            },
-            {
-                type: 'Yield',
-                value: '4 servings',
-            },
-        ];
+        const statsProps = {
+            prepTime: '35',
+            cookTime: '25',
+            yield: '2',
+        };
 
-        return (
-            <div className={ styles.recipe }>
-                <div className={ styles.desktopView }>
-                    <div className={ styles.card }>
-                        <Card
-                            title={ this.state.recipe?.title }
-                            rating={ this.state.recipe?.rating.average }
-                            description={ this.state.recipe?.description }
-                            image={ this.state.recipe?.image } />
+
+        if (this.state.recipe) {
+            const cardProps = {
+                title: this.state.recipe.title,
+                rating: this.state.recipe.rating.average,
+                description: this.state.recipe.description,
+                image: this.state.recipe.image,
+                editing: this.state.editing,
+            };
+
+            return (
+                <div className={ styles.recipe }>
+                    <div className={ styles.desktopView }>
+                        <div className={ styles.card }>
+                            <Card { ...cardProps } />
+                        </div>
+
+                        <div className={ styles.details }>
+                            <div className={ styles.ingredients }>
+                                <h2>Ingredients</h2>
+                                <IngredientList
+                                    ingredients={ ingredients }
+                                    editing={ this.state.editing } />
+                            </div>
+
+                            <div className={ styles.stats }>
+                                <StatList
+                                    { ...statsProps }
+                                    editing={ this.state.editing } />
+                            </div>
+                        </div>
+
+
+                        <div className={ styles.images }>
+                            <ImageList
+                                images={ images }
+                                editing={ this.state.editing } />
+                        </div>
+
+                        <div className={ styles.directions }>
+                            <h2>Directions</h2>
+                            <DirectionList
+                                directions={ directions }
+                                editing={ this.state.editing } />
+                        </div>
                     </div>
 
-                    <div className={ styles.details }>
-                        <div className={ styles.ingredients }>
-                            <h2>Ingredients</h2>
-                            <IngredientList ingredients={ ingredients } />
+                    <div className={ styles.tabletView }>
+                        <div className={ styles.card }>
+                            <Card { ...cardProps } />
                         </div>
 
                         <div className={ styles.stats }>
-                            <StatList stats={ stats } />
+                            <StatList
+                                { ...statsProps }
+                                editing={ this.state.editing } />
                         </div>
-                    </div>
 
-
-                    <div className={ styles.images }>
-                        <ImageList images={ images } />
-                    </div>
-
-                    <div className={ styles.directions }>
-                        <h2>Directions</h2>
-                        <DirectionList directions={ directions } />
-                    </div>
-                </div>
-
-                <div className={ styles.tabletView }>
-                    <div className={ styles.card }>
-                        <Card
-                            title={ this.state.recipe?.title }
-                            rating={ this.state.recipe?.rating.average }
-                            description={ this.state.recipe?.description }
-                            image={ this.state.recipe?.image } />
-                    </div>
-
-                    <div className={ styles.stats }>
-                        <StatList stats={ stats } />
-                    </div>
-
-                    <div className={ styles.navigation }>
-                        <ViewNavigation active={ this.state.view } navigations={ ['Ingredients', 'Directions', 'Images'] } handler={ this.handler } />
-                    </div>
-
-                    {
-                        this.state.view === 'Ingredients' &&
-                        <div className={ styles.ingredients }>
-                            <IngredientList ingredients={ ingredients } />
+                        <div className={ styles.navigation }>
+                            <ViewNavigation
+                                active={ this.state.view }
+                                navigations={ ['Ingredients', 'Directions', 'Images'] }
+                                handler={ this.handler } />
                         </div>
-                    }
-                    {
-                        this.state.view === 'Directions' &&
-                         <div className={ styles.directions }>
-                             <DirectionList directions={ directions } />
-                         </div>
-                    }
-                    {
-                        this.state.view === 'Images' &&
-                         <div className={ styles.images }>
-                            <ImageList images={ images } />
-                         </div>
-                    }
+
+                        {
+                            this.state.view === 'Ingredients' &&
+                            <div className={ styles.ingredients }>
+                                <IngredientList
+                                    ingredients={ ingredients }
+                                    editing={ this.state.editing } />
+                            </div>
+                        }
+                        {
+                            this.state.view === 'Directions' &&
+                            <div className={ styles.directions }>
+                                <DirectionList
+                                    directions={ directions }
+                                    editing={ this.state.editing } />
+                            </div>
+                        }
+                        {
+                            this.state.view === 'Images' &&
+                            <div className={ styles.images }>
+                                <ImageList
+                                    images={ images }
+                                    editing={ this.state.editing } />
+                            </div>
+                        }
+                    </div>
+
+
+                    <div className={ styles.buttons }>
+                        {
+                            !this.state.editing
+                                ? <StandardBtn onClick={ this.toggleEditing }>EDIT RECIPE</StandardBtn>
+                             : (
+                                <>
+                                    <StandardBtn onClick={ this.toggleEditing }>SAVE RECIPE</StandardBtn>
+                                    <SubtleBtn color="red">DELETE RECIPE</SubtleBtn>
+                                </>
+                            )
+                        }
+
+                    </div>
                 </div>
+            );
+        }
 
-
-                <div className={ styles.buttons }>
-                    <StandardBtn>EDIT RECIPE</StandardBtn>
-                    <SubtleBtn color="red">DELETE RECIPE</SubtleBtn>
-                </div>
-
-            </div>
+        return (
+                <span>Loading...</span>
         );
     }
 
@@ -180,5 +204,13 @@ export class Recipe extends PureComponent<Props, RecipeState> {
         const recipe = await this.yummeClient.getRecipeById(id);
 
         this.setState({ recipe });
+    }
+
+    private toggleEditing(): void {
+        this.setState(state => {
+            return {
+                editing: !state.editing,
+            };
+        });
     }
 }

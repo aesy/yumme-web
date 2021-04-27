@@ -1,0 +1,41 @@
+@import 'common/colors';
+
+.standard-image-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(#eaeaea, 0.65);
+    transition: background-color 0.2s ease-out;
+    cursor: pointer;
+
+    input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        visibility: hidden;
+        height: 100%;
+        width: 100%;
+    }
+
+    .svg {
+        height: 80px;
+        width: 80px;
+
+        &.white {
+            fill: white;
+        }
+
+        &.gray {
+            fill: gray;
+        }
+    }
+
+    &:hover {
+        background-color: rgba(#eaeaea, 0.3);
+    }
+}

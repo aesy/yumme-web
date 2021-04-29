@@ -1,0 +1,33 @@
+@import 'common/colors';
+@import 'common/paddings';
+@import 'common/content';
+
+.registration {
+    min-height: 100vh;
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 $padding_page;
+
+    h1 {
+        font-size: 50px;
+        max-width: 600px;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 80%;
+        width: 100%;
+        background-color: $yum_beige;
+        z-index: -999;
+        transform: skewY(-2deg);
+        transform-origin: top left;
+    }
+}

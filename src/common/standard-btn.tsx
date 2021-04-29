@@ -1,8 +1,11 @@
-import React, { FC } from 'react';
+import React, { ButtonHTMLAttributes, FC } from 'react';
 import styles from '@/common/standard-btn.scss';
 
-export const StandardBtn: FC<unknown> = props => (
-    <button className={ styles.standardBtn } type="button" >
+interface StandardBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+}
+
+export const StandardBtn: FC<StandardBtnProps> = ({...props}) => (
+    <button className={ styles.standardBtn } {...props}>
         {props.children}
     </button>
 );

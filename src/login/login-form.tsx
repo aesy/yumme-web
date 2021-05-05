@@ -8,16 +8,14 @@ import { LoadingSpinner } from '@/common/loading-spinner';
 import { AuthState } from '@/authentication/auth-state';
 import { YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 
-interface RegistrationFormState {
-    email: string;
+interface LoginFormState {
     error: string | null;
-    firstName: string;
-    lastName: string;
     loading: boolean;
     password: string;
+    username: string;
 }
 
-export class RegistrationForm extends PureComponent<unknown, RegistrationFormState> {
+export class LoginForm extends PureComponent<unknown, LoginFormState> {
     @resolve(AuthState)
     private readonly authState: AuthState;
 
@@ -28,9 +26,7 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
         super(props);
 
         this.state = {
-            email: '',
-            firstName: '',
-            lastName: '',
+            username: '',
             password: '',
             loading: false,
             error: null,
@@ -56,46 +52,22 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
 
                 <form className={ styles.registrationForm } onSubmit={ this.onSubmit }>
                     <StandardInput
-                        value={ this.state.firstName }
-                        label="First name"
-                        minLength={ 1 }
-                        maxLength={ 64 }
-                        type="text"
-                        placeholder="John"
-                        name="firstName"
-                        required
-                        onChange={ this.onChange } />
-                    <StandardInput
-                        value={ this.state.lastName }
-                        label="Last name"
-                        minLength={ 1 }
-                        maxLength={ 64 }
-                        type="text"
-                        placeholder="Doe"
-                        name="lastName"
-                        required
-                        onChange={ this.onChange } />
-                    <StandardInput
-                        value={ this.state.email }
+                        value={ this.state.username }
                         label="E-mail"
-                        minLength={ 4 }
-                        maxLength={ 128 }
-                        type="text"
+                        type="email"
                         placeholder="john@doe.com"
-                        name="email"
+                        name="username"
                         required
                         onChange={ this.onChange } />
                     <StandardInput
                         value={ this.state.password }
                         label="Password"
-                        minLength={ 8 }
-                        maxLength={ 128 }
                         type="password"
                         placeholder="********"
                         name="password"
                         required
                         onChange={ this.onChange } />
-                    <StandardBtn type="submit">CREATE ACCOUNT</StandardBtn>
+                    <StandardBtn type="submit">LOG IN</StandardBtn>
                 </form>
             </>
         );
@@ -107,7 +79,7 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
 
         this.setState({
             [name]: value,
-        } as unknown as RegistrationFormState);
+        } as unknown as LoginFormState);
     }
 
     @Bind
@@ -115,10 +87,9 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
         e.preventDefault();
 
         const request = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email,
+            username: this.state.username,
             password: this.state.password,
+            grantType: 'password' as const,
         };
 
         this.setState({
@@ -126,7 +97,7 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
         });
 
         try {
-            const response = await this.yummeClient.register(request);
+            const response = await this.yummeClient.getAccessToken(request);
             this.authState.logInWithEmailAndPassword(response);
         } catch (err: any) {
             this.setState({

@@ -1,10 +1,15 @@
 export interface LoginRequest {
-    email: string;
-    password: string;
+    grantType: 'password' | 'refresh_token';
+    password?: string;
+    refreshToken?: string;
+    username?: string;
 }
 
 export interface LoginResponse {
     accessToken: string;
+    expiresIn: number;
+    refreshToken: string;
+    tokenType: 'bearer';
 }
 
 export interface RegisterRequest {

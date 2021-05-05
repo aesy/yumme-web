@@ -1,8 +1,7 @@
 @import 'common/colors';
 @import 'common/paddings';
-@import 'common/content';
 
-.registration {
+.auth-wall {
     min-height: 100vh;
     max-width: 1600px;
     width: 100%;
@@ -18,16 +17,27 @@
         max-width: 600px;
     }
 
+    .wrapper {
+        position: relative;
+        padding: 40px;
+
+        .nav {
+            margin-bottom: 20px;
+
+            ul {
+                justify-content: center;
+            }
+        }
+    }
+
     &::after {
         content: '';
+        background-color: $yum_beige;
         position: absolute;
         top: 0;
         left: 0;
-        height: 80%;
+        height: 100%;
         width: 100%;
-        background-color: $yum_beige;
         z-index: -999;
-        transform: skewY(-2deg);
-        transform-origin: top left;
     }
 }

@@ -9,13 +9,13 @@ import styles from '@/app.scss';
 import { NotFound } from './common/not-found';
 
 export const App: FC = () => (
-    <div className={styles.page}>
+    <div className={ styles.page }>
         <AuthController>
             <Header />
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/" component={Profile} />
-                    <Route component={NotFound}/>
+                    <Route exact path="/" component={ Profile } />
+                    <Route component={ NotFound } />
                 </Switch>
             </BrowserRouter>
             <MobileNavigation />

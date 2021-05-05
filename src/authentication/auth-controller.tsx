@@ -1,15 +1,11 @@
 import React, { PureComponent, ReactNode } from 'react';
-import { resolve } from 'inversify-react';
-import { AuthState } from './auth-state';
 import { observer } from 'mobx-react';
-import { Registration } from '@/registration/registration';
-
-interface AuthControllerState {
-
-}
+import { resolve } from 'inversify-react';
+import { AuthWall } from './auth-wall';
+import { AuthState } from './auth-state';
 
 @observer
-export class AuthController extends PureComponent<unknown, AuthControllerState> {
+export class AuthController extends PureComponent<unknown> {
     @resolve(AuthState)
     private readonly authState: AuthState;
 
@@ -17,21 +13,17 @@ export class AuthController extends PureComponent<unknown, AuthControllerState> 
         super(props);
     }
 
-    public componentDidMount(): void {
-
-    }
-
     public render(): ReactNode {
-        if (!this.authState.getToken()) {
+        if (!this.authState.isLoggedIn()) {
             return (
-                <Registration />
-            )
+                <AuthWall />
+            );
         }
 
         return (
-            <>
-                {this.props.children}
-            </>
+            <div>
+                { this.props.children }
+            </div>
         );
     }
 }

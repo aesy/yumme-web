@@ -33,9 +33,8 @@ export class AxiosYummeClient implements YummeClient {
 
     public async getAccessToken(request: LoginRequest): Promise<LoginResponse> {
         const url = '/auth/access_token';
-        const accessToken = await this.axios.post<LoginRequest, string>(url, request);
 
-        return { accessToken };
+        return this.axios.post<LoginRequest, LoginResponse>(url, request);
     }
 
     public getAllRecipes(): Promise<Recipe[]> {
@@ -88,9 +87,8 @@ export class AxiosYummeClient implements YummeClient {
 
     public async register(request: RegisterRequest): Promise<LoginResponse> {
         const url = '/user/register';
-        const accessToken = await this.axios.post<LoginRequest, string>(url, request);
 
-        return { accessToken };
+        return this.axios.post<LoginRequest, LoginResponse>(url, request);
     }
 
     public replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe> {

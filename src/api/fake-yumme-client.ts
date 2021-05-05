@@ -18,7 +18,12 @@ export class FakeYummeClient implements YummeClient {
     }
 
     public async getAccessToken(): Promise<LoginResponse> {
-        return { accessToken: 'secret' };
+        return {
+            accessToken: 'secret',
+            refreshToken: 'secret',
+            expiresIn: 3600000,
+            tokenType: 'bearer',
+        };
     }
 
     public async getAllRecipes(): Promise<Recipe[]> {
@@ -58,7 +63,12 @@ export class FakeYummeClient implements YummeClient {
     }
 
     public async register(): Promise<LoginResponse> {
-        return { accessToken: 'secret' };
+        return {
+            accessToken: 'secret',
+            refreshToken: 'secret',
+            expiresIn: 3600000,
+            tokenType: 'bearer',
+        };
     }
 
     public async replaceRecipe(): Promise<Recipe> {

@@ -1,9 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
 
-export function createAxiosClient(baseUrl: string): AxiosInstance {
+export function createAxiosClient(): AxiosInstance {
     return axios.create({
-        baseURL: baseUrl,
-        timeout: 1000,
+        baseURL: '/api/v1',
+        timeout: 5000,
     });
 }
 

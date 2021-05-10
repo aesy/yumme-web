@@ -23,5 +23,3 @@ jobs:
         push: true
         tags: |
           ghcr.io/${{ github.repository_owner }}/yumme-web:latest
-        build-args: |
-          YUMME_SERVER=${{ secrets.YUMME_SERVER }}

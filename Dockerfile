@@ -1,15 +1,12 @@
 FROM node:14-alpine AS build
 
-ARG YUMME_SERVER
-RUN test -n "$YUMME_SERVER"
-
 # Git is required by npm to be able to clone github dependencies
 RUN apk add --no-cache git
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN YUMME_SERVER=$YUMME_SERVER npm run build
+RUN npm run build
 
 FROM httpd:2.4-alpine
 WORKDIR /app

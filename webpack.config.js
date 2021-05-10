@@ -83,7 +83,7 @@ module.exports = {
     plugins: [
         new ForkTsCheckerWebpackPlugin(),
         new webpack.EnvironmentPlugin({
-            YUMME_SERVER: process.env.YUMME_SERVER,
+            MOCK_SERVER: process.env.MOCK_SERVER,
             NODE_ENV: isProduction ? 'production' : 'development',
             DEBUG: false,
         }),
@@ -111,6 +111,13 @@ module.exports = {
         progress: true,
         noInfo: false,
         stats: 'minimal',
+        proxy: {
+            '/api/v1': {
+                target: process.env.YUMME_SERVER,
+                secure: false,
+                changeOrigin: true
+            },
+        }
     },
     devtool: isProduction ? false : 'eval-source-map',
     optimization: {

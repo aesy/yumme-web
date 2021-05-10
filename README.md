@@ -35,10 +35,17 @@ To serve the application using a local development server, the following command
 
 The web server is accessible at `localhost:3000`.
 
-If no backend server url is provided, a fake API client implementation is used. To use a real backend, provide a 
-`YUMME_SERVER` environment variable during build:
+A fake API client implementation can be used by providing a `MOCK_SERVER` environment variable 
+during build. 
 
-    $ YUMME_SERVER=<domain>/api/v1/ npm run start
+    $ MOCK_SERVER=true npm run start
+
+To use a real backend locally, instead provide a `YUMME_SERVER` environment variable:
+
+    $ YUMME_SERVER=<domain> npm run start
+
+This will proxy all API requests in order to avoid CORS issues. In producation this environment 
+variable is not provided, which causes API requests to target the same domain as the frontend. 
 
 #### Test 
 
@@ -61,7 +68,7 @@ To run unit tests, use:
 
 To create an image, run the following command in the root directory:
 
-    $ docker build . -t yumme-web --build-arg YUMME_SERVER=<domain>/api/v1/
+    $ docker build . -t yumme-web
 
 An image is created and published automatically to github packages on git tag pushes.
 

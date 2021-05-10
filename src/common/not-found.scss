@@ -1,0 +1,14 @@
+@import 'common/colors';
+@import 'common/paddings';
+@import 'common/content';
+
+.not-found {
+    @include content-standard;
+
+    padding: 0 $padding_page;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

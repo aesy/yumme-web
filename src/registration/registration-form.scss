@@ -1,0 +1,33 @@
+.registration-form {
+    max-width: 500px;
+    width: 100%;
+
+    input {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    button {
+        display: block;
+        margin-left: auto;
+    }
+}
+
+.loadingWrapper {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.err {
+    display: block;
+    margin: 20px 0;
+    text-align: center;
+    color: red;
+}

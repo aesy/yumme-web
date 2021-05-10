@@ -1,0 +1,68 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+.static-card {
+    display: block;
+    position: relative;
+    background-color: white;
+    border: 1px solid $yum_orange;
+
+    &::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        height: 100%;
+        width: 100%;
+        top: 10px;
+        left: 10px;
+        border: 1px solid $yum_orange;
+    }
+
+    // OFFSET
+    &.small {
+        &::after {
+            top: 5px;
+            left: 5px;
+        }
+    }
+
+    &.medium {
+        &::after {
+            top: 10px;
+            left: 10px;
+        }
+    }
+
+    &.large {
+        &::after {
+            top: 15px;
+            left: 15px;
+        }
+    }
+
+    // COLORS
+    &.white {
+        border: 2px solid white;
+
+        &::after {
+            border: 2px solid white;
+        }
+    }
+
+    &.black {
+        border: 2px solid black;
+
+        &::after {
+            border: 2px solid black;
+        }
+    }
+
+    &.orange {
+        border: 2px solid $yum_orange;
+
+        &::after {
+            border: 2px solid $yum_orange;
+        }
+    }
+}

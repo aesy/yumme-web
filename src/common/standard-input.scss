@@ -1,0 +1,16 @@
+@import 'common/colors';
+@import 'common/typography';
+
+.standard-input {
+    width: 100%;
+    padding: 10px 10px;
+    outline: none;
+    border: 1px solid $yum_orange;
+    font-family: $font_body;
+}
+
+.label {
+    font-size: 12px;
+    font-family: $font_body;
+    margin-bottom: 6px;
+}

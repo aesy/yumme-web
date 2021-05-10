@@ -1,0 +1,43 @@
+@import 'common/colors';
+@import 'common/paddings';
+
+.auth-wall {
+    min-height: 100vh;
+    max-width: 1600px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 $padding_page;
+
+    h1 {
+        font-size: 50px;
+        max-width: 600px;
+    }
+
+    .wrapper {
+        position: relative;
+        padding: 40px;
+
+        .nav {
+            margin-bottom: 20px;
+
+            ul {
+                justify-content: center;
+            }
+        }
+    }
+
+    &::after {
+        content: '';
+        background-color: $yum_beige;
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        z-index: -999;
+    }
+}

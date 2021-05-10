@@ -1,0 +1,24 @@
+@import 'common/colors';
+@import 'common/typography';
+
+.subtle-btn {
+    border: none;
+    outline: none;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-color: transparent;
+    font-size: 12px;
+    cursor: pointer;
+
+    &.red {
+        color: #ff6464;
+    }
+
+    &.beige {
+        color: $yum_beige;
+    }
+
+    &.orange {
+        color: $yum_orange;
+    }
+}

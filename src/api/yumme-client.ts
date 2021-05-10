@@ -1,37 +1,41 @@
+/* eslint-disable */
+
 export interface LoginRequest {
-    grantType: 'password' | 'refresh_token';
+    grant_type: 'password' | 'refresh_token';
     password?: string;
-    refreshToken?: string;
+    refresh_token?: string;
     username?: string;
 }
 
 export interface LoginResponse {
-    accessToken: string;
-    expiresIn: number;
-    refreshToken: string;
-    tokenType: 'bearer';
+    access_token: string;
+    expires_in: number;
+    refresh_token: string;
+    token_type: 'bearer';
 }
 
 export interface RegisterRequest {
-    email: string;
-    firstName: string;
-    lastName: string;
+    user_name: string;
+    display_name: string;
     password: string;
 }
 
 export interface User {
-    email: string;
+    user_name: string;
+    display_name: string;
 }
 
 export interface Recipe {
     categories: string[];
-    cookTime: number;
+    cook_time: number;
     description: string;
     directions: string[];
     id: number;
     images: string[];
-    ingredients: string[];
-    prepTime: number;
+    ingredients: {
+        name: string;
+    }[];
+    prep_time: number;
     rating: {
         average: number;
         count: number;
@@ -49,12 +53,12 @@ export interface Collection {
 
 export interface UpdateRecipeRequest {
     categories: string[];
-    cookTime: number;
+    cook_time: number;
     description: string;
     directions: string[];
     images: string[];
     ingredients: string[];
-    prepTime: number;
+    prep_time: number;
     public: boolean;
     tags: string[];
     title: string;

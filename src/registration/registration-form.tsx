@@ -9,12 +9,11 @@ import { AuthState } from '@/authentication/auth-state';
 import { YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 
 interface RegistrationFormState {
-    email: string;
+    displayName: string;
     error: string | null;
-    firstName: string;
-    lastName: string;
     loading: boolean;
     password: string;
+    username: string;
 }
 
 export class RegistrationForm extends PureComponent<unknown, RegistrationFormState> {
@@ -28,9 +27,8 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
         super(props);
 
         this.state = {
-            email: '',
-            firstName: '',
-            lastName: '',
+            username: '',
+            displayName: '',
             password: '',
             loading: false,
             error: null,
@@ -56,7 +54,7 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
 
                 <form className={ styles.registrationForm } onSubmit={ this.onSubmit }>
                     <StandardInput
-                        value={ this.state.firstName }
+                        value={ this.state.username }
                         label="First name"
                         minLength={ 1 }
                         maxLength={ 64 }
@@ -66,22 +64,12 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
                         required
                         onChange={ this.onChange } />
                     <StandardInput
-                        value={ this.state.lastName }
-                        label="Last name"
-                        minLength={ 1 }
-                        maxLength={ 64 }
-                        type="text"
-                        placeholder="Doe"
-                        name="lastName"
-                        required
-                        onChange={ this.onChange } />
-                    <StandardInput
-                        value={ this.state.email }
-                        label="E-mail"
+                        value={ this.state.displayName }
+                        label="Display name"
                         minLength={ 4 }
                         maxLength={ 128 }
                         type="text"
-                        placeholder="john@doe.com"
+                        placeholder="John Doe"
                         name="email"
                         required
                         onChange={ this.onChange } />
@@ -115,9 +103,10 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
         e.preventDefault();
 
         const request = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email,
+            // eslint-disable-next-line
+            user_name: this.state.username,
+            // eslint-disable-next-line
+            display_name: this.state.displayName,
             password: this.state.password,
         };
 

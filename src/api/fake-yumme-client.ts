@@ -19,10 +19,14 @@ export class FakeYummeClient implements YummeClient {
 
     public async getAccessToken(): Promise<LoginResponse> {
         return {
-            accessToken: 'secret',
-            refreshToken: 'secret',
-            expiresIn: 3600000,
-            tokenType: 'bearer',
+            // eslint-disable-next-line
+            access_token: 'secret',
+            // eslint-disable-next-line
+            refresh_token: 'secret',
+            // eslint-disable-next-line
+            expires_in: 3600000,
+            // eslint-disable-next-line
+            token_type: 'bearer',
         };
     }
 
@@ -64,10 +68,14 @@ export class FakeYummeClient implements YummeClient {
 
     public async register(): Promise<LoginResponse> {
         return {
-            accessToken: 'secret',
-            refreshToken: 'secret',
-            expiresIn: 3600000,
-            tokenType: 'bearer',
+            // eslint-disable-next-line
+            access_token: 'secret',
+            // eslint-disable-next-line
+            refresh_token: 'secret',
+            // eslint-disable-next-line
+            expires_in: 3600000,
+            // eslint-disable-next-line
+            token_type: 'bearer',
         };
     }
 
@@ -101,13 +109,13 @@ export class FakeYummeClient implements YummeClient {
             ],
             id: generateId(),
             ingredients: [
-                '1 pound raw peeled and deveined shrimp',
-                '1 pound raw peeled and deveined shrimp',
-                '1 pound raw peeled and deveined shrimp',
-                '1 pound raw peeled and deveined shrimp',
-                '1 pound raw peeled and deveined shrimp',
-                '1 pound raw peeled and deveined shrimp',
-                '1 pound raw peeled and deveined shrimp',
+                { name: '1 pound raw peeled and deveined shrimp' },
+                { name: '1 pound raw peeled and deveined shrimp' },
+                { name: '1 pound raw peeled and deveined shrimp' },
+                { name: '1 pound raw peeled and deveined shrimp' },
+                { name: '1 pound raw peeled and deveined shrimp' },
+                { name: '1 pound raw peeled and deveined shrimp' },
+                { name: '1 pound raw peeled and deveined shrimp' },
             ],
             images: [
                 'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
@@ -122,8 +130,10 @@ export class FakeYummeClient implements YummeClient {
                 average: 3.6,
                 count: 33,
             },
-            prepTime: 1000,
-            cookTime: 1500,
+            // eslint-disable-next-line
+            prep_time: 1000,
+            // eslint-disable-next-line
+            cook_time: 1500,
             yield: 3,
             tags: ['Swedish'],
             title: 'Cheese burger',
@@ -132,7 +142,10 @@ export class FakeYummeClient implements YummeClient {
 
     private createFakeUser(): User {
         return {
-            email: 'user@yum.me',
+            // eslint-disable-next-line
+            user_name: 'user',
+            // eslint-disable-next-line
+            display_name: 'User',
         };
     }
 }

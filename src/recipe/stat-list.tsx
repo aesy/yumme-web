@@ -25,7 +25,7 @@ export class StatList extends Component<StatListProps, unknown> {
                             <h4>Prep time</h4>
                         </StandardHeader>
                         <div className={ styles.inputWrapper }>
-                            <input type="number" min={ 1 } max={ 240 } value={ Math.round(this.props.recipe.prepTime / 60) } onChange={ this.editPrepTime } />
+                            <input type="number" min={ 1 } max={ 240 } value={ Math.round(this.props.recipe.prep_time / 60) } onChange={ this.editPrepTime } />
                         </div>
                         <span className={ styles.unit }>
                             min
@@ -36,7 +36,7 @@ export class StatList extends Component<StatListProps, unknown> {
                             <h4>Cook time</h4>
                         </StandardHeader>
                         <div className={ styles.inputWrapper }>
-                            <input type="number" min={ 1 } max={ 240 } value={ Math.round(this.props.recipe.cookTime / 60) } onChange={ this.editCookTime } />
+                            <input type="number" min={ 1 } max={ 240 } value={ Math.round(this.props.recipe.cook_time / 60) } onChange={ this.editCookTime } />
                         </div>
                         <span className={ styles.unit }>
                             min
@@ -64,7 +64,7 @@ export class StatList extends Component<StatListProps, unknown> {
                         <h4>Prep time</h4>
                     </StandardHeader>
                     <span className={ styles.value }>
-                        { Math.round(this.props.recipe.prepTime / 60) }
+                        { Math.round(this.props.recipe.prep_time / 60) }
                     </span>
                     <span className={ styles.unit }>
                         min
@@ -76,7 +76,7 @@ export class StatList extends Component<StatListProps, unknown> {
                         <h4>Cook time</h4>
                     </StandardHeader>
                     <span className={ styles.value }>
-                        { Math.round(this.props.recipe.cookTime / 60) }
+                        { Math.round(this.props.recipe.cook_time / 60) }
                     </span>
                     <span className={ styles.unit }>
                         min
@@ -102,7 +102,8 @@ export class StatList extends Component<StatListProps, unknown> {
     private editCookTime(ev: React.ChangeEvent<HTMLInputElement>): void {
         const recipe = this.props.recipe;
         const value = ev.target.value;
-        recipe.cookTime = Number(value) * 60;
+        // eslint-disable-next-line
+        recipe.cook_time = Number(value) * 60;
 
         this.props.updateRecipe(recipe);
     }
@@ -111,7 +112,8 @@ export class StatList extends Component<StatListProps, unknown> {
     private editPrepTime(ev: React.ChangeEvent<HTMLInputElement>): void {
         const recipe = this.props.recipe;
         const value = ev.target.value;
-        recipe.prepTime = Number(value) * 60;
+        // eslint-disable-next-line
+        recipe.prep_time = Number(value) * 60;
 
         this.props.updateRecipe(recipe);
     }

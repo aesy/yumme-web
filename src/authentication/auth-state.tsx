@@ -77,8 +77,8 @@ export class AuthState {
     }
 
     public logInWithEmailAndPassword(response: LoginResponse): void {
-        this.setAccessToken(response.accessToken);
-        this.storeRefreshToken(response.refreshToken);
+        this.setAccessToken(response.access_token);
+        this.storeRefreshToken(response.refresh_token);
     }
 
     @action
@@ -94,13 +94,15 @@ export class AuthState {
 
     private async refreshAccessToken(token: string): Promise<string> {
         const request = {
-            grantType: 'refresh_token' as const,
-            refreshToken: token,
+            // eslint-disable-next-line
+            grant_type: 'refresh_token' as const,
+            // eslint-disable-next-line
+            refresh_token: token,
         };
         const response = await this.yummeClient.getAccessToken(request);
-        this.setAccessToken(response.accessToken);
-        this.storeRefreshToken(response.refreshToken);
+        this.setAccessToken(response.access_token);
+        this.storeRefreshToken(response.refresh_token);
 
-        return response.accessToken;
+        return response.access_token;
     }
 }

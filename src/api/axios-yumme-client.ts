@@ -22,31 +22,47 @@ export class AxiosYummeClient implements YummeClient {
     public createRecipe(request: UpdateRecipeRequest): Promise<Recipe> {
         const url = '/recipe';
 
-        return this.axios.post<UpdateRecipeRequest, Recipe>(url, request);
+        return this.axios.post<Recipe>(url, request)
+            .then(response => response.data);
     }
 
     public deleteRecipe(id: number): Promise<void> {
         const url = `/recipe/${ id }`;
 
-        return this.axios.delete(url);
+        return this.axios.delete(url)
+            .then(() => undefined);
     }
 
     public async getAccessToken(request: LoginRequest): Promise<LoginResponse> {
-        const url = '/auth/access_token';
+        const url = '/auth/token';
+        const data = new URLSearchParams();
+        data.append('grant_type', request.grant_type);
 
-        return this.axios.post<LoginRequest, LoginResponse>(url, request);
+        if (request.username !== undefined && request.password !== undefined) {
+            data.append('username', request.username);
+            data.append('password', request.password);
+        } else if (request.refresh_token !== undefined) {
+            data.append('refresh_token', request.refresh_token);
+        }
+
+        return this.axios.post<LoginResponse>(url, data, {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        }).then(response => response.data);
     }
 
     public getAllRecipes(): Promise<Recipe[]> {
         const url = '/recipe';
 
-        return this.axios.get<void, Recipe[]>(url);
+        return this.axios.get<Recipe[]>(url)
+            .then(response => response.data);
     }
 
     public getCurrentUser(): Promise<User> {
         const url = '/user/me';
 
-        return this.axios.get<void, User>(url);
+        return this.axios.get<User>(url)
+            .then(response => response.data);
     }
 
     public getPopularRecipes(limit?: number): Promise<Recipe[]> {
@@ -56,7 +72,8 @@ export class AxiosYummeClient implements YummeClient {
             url += `?limit=${ limit }`;
         }
 
-        return this.axios.get<void, Recipe[]>(url);
+        return this.axios.get<Recipe[]>(url)
+            .then(response => response.data);
     }
 
     public getRecentCollections(limit?: number): Promise<Collection[]> {
@@ -66,7 +83,8 @@ export class AxiosYummeClient implements YummeClient {
             url += `?limit=${ limit }`;
         }
 
-        return this.axios.get<void, Collection[]>(url);
+        return this.axios.get<Collection[]>(url)
+            .then(response => response.data);
     }
 
     public getRecentRecipes(limit?: number): Promise<Recipe[]> {
@@ -76,30 +94,35 @@ export class AxiosYummeClient implements YummeClient {
             url += `?limit=${ limit }`;
         }
 
-        return this.axios.get<void, Recipe[]>(url);
+        return this.axios.get<Recipe[]>(url)
+            .then(response => response.data);
     }
 
     public getRecipeById(id: number): Promise<Recipe> {
         const url = `/recipe/${ id }`;
 
-        return this.axios.get<void, Recipe>(url);
+        return this.axios.get<Recipe>(url)
+            .then(response => response.data);
     }
 
     public async register(request: RegisterRequest): Promise<LoginResponse> {
         const url = '/user/register';
 
-        return this.axios.post<LoginRequest, LoginResponse>(url, request);
+        return this.axios.post<LoginResponse>(url, request)
+            .then(response => response.data);
     }
 
     public replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe> {
         const url = `/recipe/${ id }`;
 
-        return this.axios.patch<UpdateRecipeRequest, Recipe>(url, request);
+        return this.axios.patch<Recipe>(url, request)
+            .then(response => response.data);
     }
 
     public updateRecipe(id: number, request: Partial<UpdateRecipeRequest>): Promise<Recipe> {
         const url = `/recipe/${ id }`;
 
-        return this.axios.put<UpdateRecipeRequest, Recipe>(url, request);
+        return this.axios.put<Recipe>(url, request)
+            .then(response => response.data);
     }
 }

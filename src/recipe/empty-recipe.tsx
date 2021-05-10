@@ -28,8 +28,10 @@ export class EmptyRecipe extends Component<RouteComponentProps, EmptyRecipeState
         this.state = {
             recipe: {
                 categories: [],
-                cookTime: 10,
-                prepTime: 10,
+                // eslint-disable-next-line
+                cook_time: 10,
+                // eslint-disable-next-line
+                prep_time: 10,
                 yield: 2,
                 description: 'The PERFECT recipe for..',
                 directions: [],
@@ -116,13 +118,16 @@ export class EmptyRecipe extends Component<RouteComponentProps, EmptyRecipeState
 
         const request = {
             categories: this.state.recipe.categories,
-            cookTime: this.state.recipe.cookTime,
+            // eslint-disable-next-line
+            cook_time: this.state.recipe.cook_time,
             description: this.state.recipe.description,
             public: true,
             directions: this.state.recipe.directions,
             images: this.state.recipe.images,
-            ingredients: this.state.recipe.ingredients,
-            prepTime: this.state.recipe.prepTime,
+            ingredients: this.state.recipe.ingredients
+                .map(ingredient => ingredient.name),
+            // eslint-disable-next-line
+            prep_time: this.state.recipe.prep_time,
             tags: this.state.recipe.tags,
             title: this.state.recipe.title,
             yield: this.state.recipe.yield,

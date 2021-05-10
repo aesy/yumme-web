@@ -53,9 +53,9 @@ export class LoginForm extends PureComponent<unknown, LoginFormState> {
                 <form className={ styles.registrationForm } onSubmit={ this.onSubmit }>
                     <StandardInput
                         value={ this.state.username }
-                        label="E-mail"
-                        type="email"
-                        placeholder="john@doe.com"
+                        label="Username"
+                        type="text"
+                        placeholder="username"
                         name="username"
                         required
                         onChange={ this.onChange } />
@@ -87,9 +87,10 @@ export class LoginForm extends PureComponent<unknown, LoginFormState> {
         e.preventDefault();
 
         const request = {
-            username: this.state.username,
-            password: this.state.password,
-            grantType: 'password' as const,
+            username: 'admin',
+            password: 'admin',
+            // eslint-disable-next-line
+            grant_type: 'password' as const,
         };
 
         this.setState({

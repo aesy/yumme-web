@@ -142,20 +142,23 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
 
         const request = {
             categories: this.state.editedRecipe.categories,
-            cookTime: this.state.editedRecipe.cookTime,
+            // eslint-disable-next-line
+            cook_time: this.state.editedRecipe.cook_time,
             description: this.state.editedRecipe.description,
             public: true,
             directions: this.state.editedRecipe.directions,
             images: this.state.editedRecipe.images,
-            ingredients: this.state.editedRecipe.ingredients,
-            prepTime: this.state.editedRecipe.prepTime,
+            ingredients: this.state.editedRecipe.ingredients
+                .map(ingredient => ingredient.name),
+            // eslint-disable-next-line
+            prep_time: this.state.editedRecipe.prep_time,
             tags: this.state.editedRecipe.tags,
             title: this.state.editedRecipe.title,
             yield: this.state.editedRecipe.yield,
         };
         const recipe = await this.yummeClient.updateRecipe(Number(this.props.match.params.id), request);
 
-        this.refresh(recipe.id);
+        await this.refresh(recipe.id);
     }
 
     @Bind

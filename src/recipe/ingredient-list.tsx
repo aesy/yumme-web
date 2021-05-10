@@ -67,7 +67,7 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
                                     onClick={ (): void => this.selectInput(i) }>
                                     <div className={ styles.item }>
                                         <span className={ styles.dot } />
-                                        <p>{ingredient}</p>
+                                        <p>{ingredient.name}</p>
                                     </div>
                                     <div className={ editStyles.editButtons }>
                                         <EditSharpIcon className={ editStyles.edit } />
@@ -106,7 +106,7 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
                             <li key={ i } className={ styles.ingredient }>
                                 <div className={ styles.item }>
                                     <span className={ styles.dot } />
-                                    <p>{ingredient}</p>
+                                    <p>{ingredient.name}</p>
                                 </div>
                             </li>
                         ))
@@ -160,14 +160,14 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
         if (previousSelectedInput === null) {
             this.setState({
                 selectedInput: identifier,
-                selectedInputValue: ingredient,
+                selectedInputValue: ingredient.name,
             });
         }
 
         this.trySaveInput(() => {
             this.setState({
                 selectedInput: identifier,
-                selectedInputValue: ingredient,
+                selectedInputValue: ingredient.name,
             });
         });
     }
@@ -184,7 +184,9 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
             return;
         }
 
-        recipe.ingredients.push(this.state.addIngredientInputValue);
+        recipe.ingredients.push({
+            name: this.state.addIngredientInputValue,
+        });
         this.props.updateRecipe(recipe);
         this.setState({ addIngredientInputValue: '' });
     }
@@ -213,7 +215,7 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
             return;
         }
 
-        recipe.ingredients[selectedInput] = value;
+        recipe.ingredients[selectedInput] = { name: value };
         this.props.updateRecipe(recipe);
         callback();
     }

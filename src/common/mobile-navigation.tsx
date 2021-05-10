@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import React, { FC } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import NotificationsSharpIcon from '@material-ui/icons/NotificationsSharp';
@@ -13,9 +14,9 @@ export const MobileNavigation: FC = () => (
         </div>
 
         <div className={ styles.center }>
-            <button className={ styles.add } type="button">
+            <Link to="/recipe/new" className={ styles.add } type="button">
                 <AddIcon />
-            </button>
+            </Link>
         </div>
 
         <div className={ styles.right }>

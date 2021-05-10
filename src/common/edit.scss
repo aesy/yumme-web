@@ -1,0 +1,52 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+.edit-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    * + * {
+        margin-top: 10px;
+    }
+
+    .edit,
+    .add,
+    .delete,
+    .save {
+        cursor: pointer;
+
+        &.invalid {
+            cursor: default;
+            pointer-events: none;
+            fill: grey;
+        }
+    }
+
+    .edit,
+    .add {
+        fill: $yum_orange;
+
+        &:hover {
+            fill: lighten($yum_orange, 10%);
+        }
+    }
+
+    .delete {
+        fill: #f66;
+
+        &:hover {
+            fill: lighten(#f66, 10%);
+        }
+    }
+
+    .save {
+        fill: #52a351;
+
+        &:hover {
+            fill: lighten(#52a351, 10%);
+        }
+    }
+}

@@ -25,15 +25,20 @@ export interface User {
 
 export interface Recipe {
     categories: string[];
+    cookTime: number;
     description: string;
+    directions: string[];
     id: number;
-    image: string;
+    images: string[];
+    ingredients: string[];
+    prepTime: number;
     rating: {
         average: number;
         count: number;
     };
     tags: string[];
     title: string;
+    yield: number;
 }
 
 export interface Collection {
@@ -44,11 +49,16 @@ export interface Collection {
 
 export interface UpdateRecipeRequest {
     categories: string[];
-    completionTime: number;
+    cookTime: number;
     description: string;
+    directions: string[];
+    images: string[];
+    ingredients: string[];
+    prepTime: number;
     public: boolean;
     tags: string[];
     title: string;
+    yield: number;
 }
 
 export interface YummeClient {

@@ -14,7 +14,7 @@
         "@material-ui/core": "^4.11.3",
         "@material-ui/icons": "^4.11.2",
         "axios": "^0.20.0",
-        "history": "^5.0.0",
+        "history": "^4.10.1",
         "inversify": "^5.0.1",
         "inversify-react": "^0.4.3",
         "mobx": "^6.0.1",

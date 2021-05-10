@@ -105,7 +105,7 @@ module.exports = {
         compress: true,
         port: 3000,
         contentBase: buildPath,
-        host: 'localhost',
+        host: '0.0.0.0',
         historyApiFallback: true,
         inline: false,
         progress: true,

@@ -12,49 +12,74 @@
     .direction {
         position: relative;
 
-        &::before {
-            content: attr(data-step);
-            font-family: "Playfair Display", serif;
+        .label {
+            display: inline-block;
+            font-family: $font_header, serif;
             letter-spacing: 2px;
-            transform: rotateZ(-90deg) translate(25%, -200%);
-            white-space: nowrap;
-            position: absolute;
-            left: -40px;
-            top: 50%;
+            font-weight: bold;
+            border-bottom: 1px solid $yum_orange;
+            padding: 0 10px 10px 0;
+            margin-bottom: 10px;
         }
 
-        &::after {
-            content: "";
-            position: absolute;
-            width: 1px;
-            height: calc(100% + 10px);
-            background-color: $yum_orange;
-            left: -20px;
-            top: 50%;
-            transform: translateY(-50%);
+        .editable {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-gap: 0 20px;
+            align-items: center;
+            transition: color 0.1s ease-out;
+            cursor: pointer;
+
+            &:hover {
+                color: $yum_orange;
+            }
         }
+
+        p {
+            margin: 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        // &::before {
+        //     content: attr(data-step);
+        //     font-family: "Playfair Display", serif;
+        //     letter-spacing: 2px;
+        //     transform: rotateZ(-90deg) translate(25%, -200%);
+        //     white-space: nowrap;
+        //     position: absolute;
+        //     left: -40px;
+        //     top: 50%;
+        // }
+
+        // &::after {
+        //     content: "";
+        //     position: absolute;
+        //     width: 1px;
+        //     height: calc(100% + 10px);
+        //     background-color: $yum_orange;
+        //     left: -20px;
+        //     top: 50%;
+        //     transform: translateY(-50%);
+        // }
 
         + .direction {
             margin-top: 50px;
         }
     }
 
-    @media screen and (max-width: $breakpoint_tablet) {
-        .direction {
-            &::before {
-                left: 0;
-                top: -30px;
-                border-bottom: 1px solid $yum_orange;
-                transform: none;
-            }
+    // @media screen and (max-width: $breakpoint_tablet) {
+    //     .direction {
+    //         &::before {
+    //             left: 0;
+    //             top: -30px;
+    //             border-bottom: 1px solid $yum_orange;
+    //             transform: none;
+    //         }
 
-            &::after {
-                display: none;
-            }
-
-            + .direction {
-                margin-top: 70px;
-            }
-        }
-    }
+    //         &::after {
+    //             display: none;
+    //         }
+    //     }
+    // }
 }

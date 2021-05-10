@@ -1,0 +1,100 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+@import 'common/breakpoints';
+@import 'common/css-functions';
+
+.recipe-view-desktop {
+    @include content-standard;
+
+    display: grid;
+    grid-template-areas:
+        " top     top      top "
+        " aside directions directions";
+    grid-template-columns: 40% 1fr;
+    grid-gap: 50px 30px;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 950px;
+        width: 100%;
+        background-color: $yum_beige;
+        z-index: -999;
+        transform: skewY(-2deg);
+        transform-origin: top left;
+    }
+
+    .directions,
+    .ingredients,
+    .images {
+        align-self: flex-start;
+    }
+
+    .directions,
+    .ingredients {
+        position: relative;
+        background-color: white;
+        border: 1px solid $yum_beige;
+        padding: 50px 30px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            height: 100%;
+            width: 100%;
+            top: 10px;
+            left: 10px;
+            border: 1px solid $yum_beige;
+        }
+
+        h2 {
+            margin-bottom: 40px;
+            font-size: 26px;
+            text-align: center;
+        }
+    }
+
+    .card,
+    .stats {
+        position: relative;
+
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            height: 100%;
+            width: 100%;
+            top: 10px;
+            left: 10px;
+            border: 2px solid white;
+        }
+    }
+
+    .directions {
+        grid-area: directions;
+    }
+
+    .aside {
+        grid-area: aside;
+
+        .images {
+            margin-top: 40px;
+        }
+    }
+
+    .top {
+        grid-area: top;
+        display: grid;
+        grid-template-columns: 1fr  auto;
+
+        .stats {
+            margin-left: 40px;
+            padding: 0 25px;
+            background-color: white;
+        }
+    }
+}

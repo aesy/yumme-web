@@ -12,7 +12,6 @@ export class AuthState {
     public constructor(
         @inject(YUMME_CLIENT_TYPE)
         private readonly yummeClient: YummeClient,
-
         @inject(AXIOS_CLIENT_TYPE) @optional()
         axios: AxiosInstance | null,
     ) {
@@ -54,21 +53,23 @@ export class AuthState {
             },
         );
 
-        axios.interceptors.response.use(response => response,
-                                        async error => {
-                                            const refreshToken = this.getRefreshToken();
-                                            const originalRequest = error.config;
+        axios.interceptors.response.use(
+            response => response,
+            async error => {
+                const refreshToken = this.getRefreshToken();
+                const originalRequest = error.config;
 
-                                            if (error.response.status === 403 && originalRequest.retry !== undefined && refreshToken !== null) {
-                                                originalRequest.retry = true;
-                                                const accessToken = await this.refreshAccessToken(refreshToken);
-                                                axios.defaults.headers.common.Authorization = `Bearer ${ accessToken }`;
+                if (error.response.status === 403 && originalRequest.retry !== undefined && refreshToken !== null) {
+                    originalRequest.retry = true;
+                    const accessToken = await this.refreshAccessToken(refreshToken);
+                    axios.defaults.headers.common.Authorization = `Bearer ${ accessToken }`;
 
-                                                return axios(originalRequest);
-                                            }
+                    return axios(originalRequest);
+                }
 
-                                            throw error;
-                                        });
+                throw error;
+            },
+        );
     }
 
     public isLoggedIn(): boolean {

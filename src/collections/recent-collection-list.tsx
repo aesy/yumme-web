@@ -49,7 +49,7 @@ export class RecentCollectionList extends PureComponent<unknown, RecentCollectio
         for (const id of collection.recipes) {
             const recipe = await this.yummeClient.getRecipeById(id);
 
-            images.push(recipe.image);
+            images.push(recipe.images[0]);
         }
 
         return images;

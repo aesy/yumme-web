@@ -26,7 +26,7 @@ export const Hero: FC = () => (
                             <span>stars on average</span>
                         </li>
                     </ul>
-                    <StandardBtn>Follow Emil</StandardBtn>
+                    <StandardBtn type="button">Follow Emil</StandardBtn>
                 </div>
             </div>
             <div className={ styles.bg }

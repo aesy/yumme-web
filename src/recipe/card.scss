@@ -11,20 +11,47 @@
     height: 100%;
 
     .card-image {
-        flex: 1;
+        background-color: #889aff;
+        position: relative;
+        height: 400px;
         width: 100%;
         background-size: cover;
     }
 
     .card-content {
-        padding: 30px;
+        flex-grow: 1;
+        padding: 30px 80px;
         background-color: white;
 
         h1 {
-            text-align: center;
-            font-weight: 400;
+            font-weight: bold;
             font-size: 28px;
             margin: 0;
+        }
+
+        p,
+        h1 {
+            text-align: center;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        .editable {
+            transition: color 0.1s ease-out;
+            cursor: pointer;
+            text-align: left;
+            position: relative;
+
+            .edit {
+                position: absolute;
+                right: -40px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            &:hover {
+                color: $yum_orange;
+            }
         }
 
         .rating {
@@ -44,6 +71,18 @@
 
             svg {
                 fill: $yum_yellow;
+            }
+        }
+    }
+
+    @media screen and (max-width: $breakpoint_tablet) {
+        .card-content {
+            padding: 30px 50px;
+        }
+
+        .editable {
+            .edit {
+                right: -25px;
             }
         }
     }

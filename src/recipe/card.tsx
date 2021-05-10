@@ -58,7 +58,7 @@ export class Card extends Component<CardProps, CardState> {
                 <div className={ `${ styles.card }` }>
                     <div
                         className={ styles.cardImage }
-                        style={{ backgroundImage: `url(${ this.props.recipe.images[0] })` }}>
+                        style={{ backgroundImage: `url(/api/v1/recipe/${ this.props.recipe.id }/image/${ this.props.recipe.images[0] })` }}>
                         <StandardImageInput
                             color="white"
                             errors={ this.state.imageErrors }
@@ -124,7 +124,7 @@ export class Card extends Component<CardProps, CardState> {
 
         return (
             <div className={ styles.card }>
-                <div className={ styles.cardImage } style={{ backgroundImage: `url(${ this.props.recipe.images[0] })` }} />
+                <div className={ styles.cardImage } style={{ backgroundImage: `url(/api/v1/recipe/${ this.props.recipe.id }/image/${ this.props.recipe.images[0] })` }} />
                 <div className={ styles.cardContent }>
                     <h1>{this.props.recipe.title}</h1>
 

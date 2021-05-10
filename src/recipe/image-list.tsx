@@ -59,7 +59,7 @@ export class ImageList extends Component<ImageListProps, ImageListState> {
                     this.props.recipe.images
                         .map((image, i) => (
                             <li key={ i }>
-                                <img className={ styles.image } src={ image } />
+                                <img className={ styles.image } src={ `/api/v1/recipe/${ this.props.recipe.id }/image/${ image }` } />
                             </li>
                         ))
                 }

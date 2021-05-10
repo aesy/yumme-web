@@ -43,7 +43,7 @@ export class Card extends Component<CardProps, CardState> {
         const half = 0.5;
 
 
-        for (let i = 0; i < this.props.recipe.rating.average - 1; i++) {
+        for (let i = 0; i < this.props.recipe.rating.average; i++) {
             rating.push(<StarSharpIcon />);
         }
 

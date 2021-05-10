@@ -1,0 +1,81 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+@import 'common/breakpoints';
+@import 'common/css-functions';
+
+.recipe-view-tablet {
+    @include content-standard;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 1000px;
+        width: 100%;
+        background-color: $yum_beige;
+        z-index: -999;
+        transform: skewY(-2deg);
+        transform-origin: top left;
+    }
+
+    .card {
+        margin: 0 -15px;
+
+        &::after {
+            top: 5px;
+            left: 0;
+            border: none;
+            border-bottom: 2px solid white;
+        }
+    }
+
+    .stats {
+        border: 2px solid white;
+        padding: 20px 0;
+        margin: 3px -15px;
+        border-left: none;
+        border-right: none;
+    }
+
+    .navigation {
+        margin: 30px 0;
+    }
+
+    .ingredients {
+        position: relative;
+        background-color: white;
+        padding: 20px 20px 20px 30px;
+        border: 1px solid $yum_beige;
+
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            height: 100%;
+            width: 100%;
+            top: 10px;
+            left: 10px;
+            border: 1px solid $yum_beige;
+        }
+    }
+
+    .directions {
+        padding: 50px 20px 20px 20px;
+        position: relative;
+        background-color: white;
+        border: 1px solid $yum_beige;
+
+        &::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            height: 100%;
+            width: 100%;
+            top: 10px;
+            left: 10px;
+            border: 1px solid $yum_beige;
+        }
+    }
+}

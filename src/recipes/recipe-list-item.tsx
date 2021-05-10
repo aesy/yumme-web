@@ -15,7 +15,7 @@ export const RecipeListItem: FC<RecipeListItemProps> = props => (
     <Link to={ `/recipe/${ props.recipe.id }` }>
         <ClickableCard borderOffset="medium">
             <article className={ `${ styles.recipeListItem } ${ styles[props.type] }` }>
-                <img src={ props.recipe.image } />
+                <img src={ props.recipe.images[0] } />
 
                 <div className={ styles.info }>
                     <div className={ styles.top }>

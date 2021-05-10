@@ -28,7 +28,7 @@ export const Summary: FC = () => (
                 <RecentRecipeList />
                 <div className={ styles.button }>
                     <ClickableCard borderOffset="small">
-                        <StandardBtn>ALL RECIPES</StandardBtn>
+                        <StandardBtn type="button">ALL RECIPES</StandardBtn>
                     </ClickableCard>
                 </div>
             </div>
@@ -43,7 +43,7 @@ export const Summary: FC = () => (
                 <RecentCollectionList />
                 <div className={ styles.button }>
                     <ClickableCard borderOffset="small">
-                        <StandardBtn>ALL COLLECTIONS</StandardBtn>
+                        <StandardBtn type="button">ALL COLLECTIONS</StandardBtn>
                     </ClickableCard>
                 </div>
             </div>

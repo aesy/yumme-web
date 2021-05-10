@@ -1,32 +1,37 @@
 import React, { Component, ReactNode } from 'react';
 import EditSharpIcon from '@material-ui/icons/EditSharp';
 import DeleteSharpIcon from '@material-ui/icons/DeleteSharp';
-import CheckCircleSharpIcon from '@material-ui/icons/CheckCircleSharp';
 import AddCircleSharpIcon from '@material-ui/icons/AddCircleSharp';
 import { Bind } from '@decorize/bind';
 import styles from '@/recipe/ingredient-list.scss';
 import { EditableText } from '@/common/editable-text';
 import editStyles from '@/common/edit.scss';
+import { Recipe } from '@/api/yumme-client';
 
-interface Props {
+interface IngredientListProps {
     editing: boolean;
-    ingredients: string[];
+    recipe: Recipe;
+    updateRecipe(recipe: Recipe): void;
 }
 
 interface IngredientListState {
-    current: number | null;
-    ingredients: string[];
-    newIngredient: string;
+    addIngredientInputErrors: string[];
+    addIngredientInputValue: string;
+    selectedInput: number | null;
+    selectedInputErrors: string[];
+    selectedInputValue: string;
 }
 
-export class IngredientList extends Component<Props, IngredientListState> {
-    public constructor(props: Props) {
+export class IngredientList extends Component<IngredientListProps, IngredientListState> {
+    public constructor(props: IngredientListProps) {
         super(props);
 
         this.state = {
-            current: null,
-            ingredients: this.props.ingredients,
-            newIngredient: '',
+            selectedInput: null,
+            selectedInputValue: '',
+            selectedInputErrors: [],
+            addIngredientInputValue: '',
+            addIngredientInputErrors: [],
         };
     }
 
@@ -34,47 +39,55 @@ export class IngredientList extends Component<Props, IngredientListState> {
         if (this.props.editing) {
             return (
                 <ul className={ styles.ingredients }>
-                    {
-                        this.state.ingredients
-                            .map((ingredient, i) => (
-                                <li key={ i } className={ styles.ingredient }>
-                                    {
-                                        this.state.current === i
-                                        ? (
-                                            <>
-                                                <EditableText
-                                                    tag="p"
-                                                    placeholder=""
-                                                    value={ ingredient }
-                                                    onChange={ this.editOnChange } />
-                                                <div className={ editStyles.editButtons }>
-                                                    <DeleteSharpIcon className={ editStyles.delete } onClick={ (): void => this.delete(i) } />
-                                                    <CheckCircleSharpIcon className={ editStyles.save } onClick={ (): void => this.toggleEdit(i) } />
-                                                </div>
-                                            </>
-                                        )
-                                        : (
-                                            <>
-                                                <p>{ingredient}</p>
-                                                <div className={ `${ editStyles.editButtons } ${ styles.deleteBtnWrapper }` }>
-                                                    <EditSharpIcon className={ editStyles.edit } onClick={ (): void => this.toggleEdit(i) } />
-                                                </div>
-                                            </>
-                                        )
-                                    }
+                {
+                    this.props.recipe.ingredients
+                        .map((ingredient, i) => this.state.selectedInput === i
+                            ? (
+                                <li
+                                    key={ i }
+                                    className={ `${ styles.ingredient } ${ styles.editing }` }>
+                                    <EditableText
+                                        tag="p"
+                                        value={ this.state.selectedInputValue }
+                                        placeholder=""
+                                        errors={ this.state.selectedInputErrors }
+                                        onKeyDownEnter={ this.deselectInput }
+                                        onChange={ this.editOnChange } />
+                                        <div className={ editStyles.editButtons }>
+                                            <DeleteSharpIcon
+                                                className={ editStyles.delete }
+                                                onClick={ (): void => this.delete(i) } />
+                                        </div>
+                                </li>
+                            )
+                            : (
+                                <li
+                                    key={ i }
+                                    className={ `${ styles.ingredient } ${ styles.editable }` }
+                                    onClick={ (): void => this.selectInput(i) }>
+                                    <div className={ styles.item }>
+                                        <span className={ styles.dot } />
+                                        <p>{ingredient}</p>
+                                    </div>
+                                    <div className={ editStyles.editButtons }>
+                                        <EditSharpIcon className={ editStyles.edit } />
+                                    </div>
                                 </li>
                             ))
-                    }
+                }
 
                     <li className={ styles.ingredient }>
                         <EditableText
                             tag="p"
+                            value={ this.state.addIngredientInputValue }
                             placeholder="Add ingredient"
-                            value={ this.state.newIngredient }
+                            errors={ this.state.addIngredientInputErrors }
+                            onKeyDownEnter={ this.tryAdd }
                             onChange={ this.addOnChange } />
-
                         <div className={ editStyles.editButtons }>
-                            <AddCircleSharpIcon className={ editStyles.add } onClick={ this.add } />
+                            <AddCircleSharpIcon
+                                className={ editStyles.add }
+                                onClick={ this.tryAdd } />
                         </div>
                     </li>
                 </ul>
@@ -82,84 +95,139 @@ export class IngredientList extends Component<Props, IngredientListState> {
         }
 
         return (
-            <ul className={ styles.ingredients }>
+            this.props.recipe.ingredients.length <= 0
+                ? <p>No ingredients added..</p>
+
+                : (
+                <ul className={ styles.ingredients }>
                 {
-                    this.state.ingredients
+                    this.props.recipe.ingredients
                         .map((ingredient, i) => (
                             <li key={ i } className={ styles.ingredient }>
-                                <p>{ingredient}</p>
+                                <div className={ styles.item }>
+                                    <span className={ styles.dot } />
+                                    <p>{ingredient}</p>
+                                </div>
                             </li>
                         ))
                 }
-            </ul>
+                </ul>
+                )
         );
     }
 
     @Bind
-    private add(): void {
-        this.setState(state => {
-            if (state.newIngredient) {
-                const ingredients = state.ingredients.splice(0);
-                ingredients.push(state.newIngredient);
-
-                return {
-                    ingredients,
-                    newIngredient: '',
-                };
-            }
-
-            return null;
-        });
-    }
-
-    @Bind
-    private addOnChange(value: string): void {
-        this.setState({
-            newIngredient: value,
-        });
+    private addOnChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
+        this.setState({ addIngredientInputValue: ev.target.value });
     }
 
     @Bind
     private delete(identifier: number): void {
-        this.setState(state => {
-            const ingredients = state.ingredients.splice(0);
-            ingredients.splice(identifier, 1);
+        const recipe = this.props.recipe;
+        recipe.ingredients.splice(identifier, 1);
+        this.props.updateRecipe(recipe);
 
-            return {
-                ingredients,
-                current: null,
-            };
+        this.setState({
+            selectedInput: null,
         });
     }
 
     @Bind
-    private editOnChange(value: string): void {
-        this.setState(state => {
-            if (state.current !== null) {
-                const ingredients = state.ingredients.splice(0);
+    private deselectInput(): void {
+        const selectedInput = this.state.selectedInput;
 
-                ingredients[state.current] = value;
+        if (selectedInput === null) {
+            return;
+        }
 
-                return {
-                    ingredients,
-                };
-            }
-
-            return null;
+        this.trySaveInput(() => {
+            this.setState({ selectedInput: null });
         });
     }
 
 
     @Bind
-    private toggleEdit(identifier: number): void {
-        if (this.state.current !== identifier) {
+    private editOnChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
+        this.setState({ selectedInputValue: ev.target.value });
+    }
+
+    @Bind
+    private selectInput(identifier: number): void {
+        const recipe = this.props.recipe;
+        const previousSelectedInput = this.state.selectedInput;
+        const ingredient = recipe.ingredients[identifier];
+
+        if (previousSelectedInput === null) {
             this.setState({
-                current: identifier,
-            });
-        } else {
-            this.setState({
-                current: null,
+                selectedInput: identifier,
+                selectedInputValue: ingredient,
             });
         }
+
+        this.trySaveInput(() => {
+            this.setState({
+                selectedInput: identifier,
+                selectedInputValue: ingredient,
+            });
+        });
+    }
+
+    @Bind
+    private tryAdd(): void {
+        const recipe = this.props.recipe;
+        const value = this.state.addIngredientInputValue;
+        const addIngredientInputErrors = this.validate(value);
+
+        this.setState({ addIngredientInputErrors });
+
+        if (addIngredientInputErrors.length) {
+            return;
+        }
+
+        recipe.ingredients.push(this.state.addIngredientInputValue);
+        this.props.updateRecipe(recipe);
+        this.setState({ addIngredientInputValue: '' });
+    }
+
+
+    @Bind
+    private trySaveInput(callback: () => void): void {
+        const recipe = this.props.recipe;
+        const selectedInput = this.state.selectedInput;
+        const value = this.state.selectedInputValue;
+        const selectedInputErrors = this.validate(value);
+
+        if (selectedInput === null) {
+            return;
+        }
+
+        if (!value) {
+            this.delete(selectedInput);
+
+            return;
+        }
+
+        this.setState({ selectedInputErrors });
+
+        if (selectedInputErrors.length) {
+            return;
+        }
+
+        recipe.ingredients[selectedInput] = value;
+        this.props.updateRecipe(recipe);
+        callback();
+    }
+
+
+    private validate(value: string): string[] {
+        const errors: string[] = [];
+        const min = 1;
+        const max = 200;
+
+        if (value.length < min || value.length > max) {
+            errors.push(`Ingredient must be between ${ min } and ${ max } letters.`);
+        }
+
+        return errors;
     }
 }

@@ -10,20 +10,37 @@
     padding: 0;
 
     .ingredient {
-        position: relative;
         display: grid;
+        grid-gap: 0 10px;
         grid-template-columns: 1fr auto;
-        grid-gap: 0 20px;
-        align-items: center;
-        word-break: break-all;
+        // align-items: center;
 
-        &::before {
-            content: '';
-            position: absolute;
-            height: 100%;
-            width: 2px;
-            left: -10px;
-            background-color: $yum_orange;
+        .item {
+            display: flex;
+
+            .dot {
+                width: 2px;
+                background-color: $yum_orange;
+                margin-right: 10px;
+            }
+        }
+
+        &.editable {
+            // display: grid;
+            // grid-template-columns: 1fr auto;
+            // grid-gap: 0 20px;
+            align-items: center;
+            transition: color 0.1s ease-out;
+            cursor: pointer;
+
+            &:hover {
+                color: $yum_orange;
+            }
+        }
+
+        p {
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         + .ingredient {

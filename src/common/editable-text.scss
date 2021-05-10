@@ -2,8 +2,19 @@
 @import 'common/typography';
 @import 'common/content';
 
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
 .editable-text {
+    position: relative;
+    width: 100%;
+
     .edit-wrapper {
+        line-height: 0;
+        margin: 0;
+
         .text-area {
             resize: none;
             overflow: hidden;
@@ -15,6 +26,23 @@
             font-family: inherit;
             font-size: inherit;
             font-style: inherit;
+
+            &.invalid {
+                border: 1px solid #ff6961;
+            }
+        }
+    }
+
+    .errors {
+        width: 100%;
+        background-color: #ff6961;
+        color: white;
+        padding: 0 20px 0 40px;
+        margin: 0;
+        animation: fadeIn 0.5s forwards;
+
+        .error {
+            padding: 10px 0;
         }
     }
 }

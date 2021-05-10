@@ -1,216 +1,180 @@
-import React, { PureComponent, ReactNode } from 'react';
+/* eslint-disable max-lines-per-function */
+import { RouteComponentProps } from 'react-router-dom';
+import React, { Component, MouseEvent, ReactNode } from 'react';
+import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
-import { StatList } from '@/recipe/stat-list';
+import { Bind } from '@decorize/bind';
 import styles from '@/recipe/recipe.scss';
-import { IngredientList } from '@/recipe/ingredient-list';
-import { ImageList } from '@/recipe/image-list';
-import { DirectionList } from '@/recipe/direction-list';
-import { Card } from '@/recipe/card';
-import { ViewNavigation } from '@/common/view-navigation';
 import { SubtleBtn } from '@/common/subtle-btn';
 import { StandardBtn } from '@/common/standard-btn';
+import { LoadingSpinner } from '@/common/loading-spinner';
 import { Recipe as RecipeType, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
-
-type View = 'Ingredients' | 'Directions' | 'Images';
+import { RecipeViewTablet } from './recipe-view-tablet';
+import { RecipeViewDesktop } from './recipe-view-desktop';
 
 interface RecipeState {
+    currentRecipe?: RecipeType;
+    editedRecipe?: RecipeType;
     editing: boolean;
-    recipe?: RecipeType;
-    view: View;
+    loading: boolean;
+    tabletView: boolean;
 }
 
-interface Props {
-    match: {
-        params: {
-            id: number;
-        };
-    };
+interface MatchParams {
+    id: string;
 }
 
-export class Recipe extends PureComponent<Props, RecipeState> {
+@observer
+export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeState> {
     @resolve(YUMME_CLIENT_TYPE)
     private readonly yummeClient: YummeClient;
 
-    public constructor(props: Props) {
+    private readonly breakpoint: number = 811;
+
+    public constructor(props: RouteComponentProps<MatchParams>) {
         super(props);
 
         this.state = {
-            view: 'Ingredients',
             editing: false,
+            loading: false,
+            tabletView: window.innerWidth < this.breakpoint,
         };
-
-        this.handler = this.handler.bind(this);
-        this.toggleEditing = this.toggleEditing.bind(this);
     }
 
     public componentDidMount(): void {
-        this.refresh(this.props.match.params.id);
+        window.addEventListener('resize', this.onResize);
+        this.refresh(Number(this.props.match.params.id));
     }
 
-    public handler(view: string): void {
-        this.setState({
-            view: view as View,
-        });
+    public componentWillUnmount(): void {
+        window.removeEventListener('resize', this.onResize);
     }
+
 
     public render(): ReactNode {
-        const ingredients = [
-            '1 pound raw peeled and deveined shrimp',
-            '1 pound raw peeled and deveined shrimp',
-            '1 pound raw peeled and deveined shrimp',
-            '1 pound raw peeled and deveined shrimp',
-            '1 pound raw peeled and deveined shrimp',
-            '1 pound raw peeled and deveined shrimp',
-            '1 pound raw peeled and deveined shrimp',
-        ];
-        const directions = [
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-        ];
-        const images = [
-            'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-            'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-            'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-            'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-            'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-            'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-            'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-        ];
-        const statsProps = {
-            prepTime: '35',
-            cookTime: '25',
-            yield: '2',
-        };
-
-
-        if (this.state.recipe) {
-            const cardProps = {
-                title: this.state.recipe.title,
-                rating: this.state.recipe.rating.average,
-                description: this.state.recipe.description,
-                image: this.state.recipe.image,
-                editing: this.state.editing,
-            };
+        if (this.state.currentRecipe && this.state.editedRecipe) {
+            const recipe = this.state.editing ? this.state.editedRecipe : this.state.currentRecipe;
 
             return (
                 <div className={ styles.recipe }>
-                    <div className={ styles.desktopView }>
-                        <div className={ styles.card }>
-                            <Card { ...cardProps } />
-                        </div>
-
-                        <div className={ styles.details }>
-                            <div className={ styles.ingredients }>
-                                <h2>Ingredients</h2>
-                                <IngredientList
-                                    ingredients={ ingredients }
-                                    editing={ this.state.editing } />
-                            </div>
-
-                            <div className={ styles.stats }>
-                                <StatList
-                                    { ...statsProps }
-                                    editing={ this.state.editing } />
-                            </div>
-                        </div>
-
-
-                        <div className={ styles.images }>
-                            <ImageList
-                                images={ images }
-                                editing={ this.state.editing } />
-                        </div>
-
-                        <div className={ styles.directions }>
-                            <h2>Directions</h2>
-                            <DirectionList
-                                directions={ directions }
-                                editing={ this.state.editing } />
-                        </div>
-                    </div>
-
-                    <div className={ styles.tabletView }>
-                        <div className={ styles.card }>
-                            <Card { ...cardProps } />
-                        </div>
-
-                        <div className={ styles.stats }>
-                            <StatList
-                                { ...statsProps }
-                                editing={ this.state.editing } />
-                        </div>
-
-                        <div className={ styles.navigation }>
-                            <ViewNavigation
-                                active={ this.state.view }
-                                navigations={ ['Ingredients', 'Directions', 'Images'] }
-                                handler={ this.handler } />
-                        </div>
-
-                        {
-                            this.state.view === 'Ingredients' &&
-                            <div className={ styles.ingredients }>
-                                <IngredientList
-                                    ingredients={ ingredients }
-                                    editing={ this.state.editing } />
-                            </div>
-                        }
-                        {
-                            this.state.view === 'Directions' &&
-                            <div className={ styles.directions }>
-                                <DirectionList
-                                    directions={ directions }
-                                    editing={ this.state.editing } />
-                            </div>
-                        }
-                        {
-                            this.state.view === 'Images' &&
-                            <div className={ styles.images }>
-                                <ImageList
-                                    images={ images }
-                                    editing={ this.state.editing } />
-                            </div>
-                        }
-                    </div>
-
+                    {
+                        !this.state.tabletView
+                        ? (
+                            <RecipeViewDesktop
+                                recipe={ recipe }
+                                editing={ this.state.editing }
+                                updateRecipe={ this.updateRecipe } />
+                        )
+                        : (
+                            <RecipeViewTablet
+                                recipe={ recipe }
+                                editing={ this.state.editing }
+                                updateRecipe={ this.updateRecipe } />
+                        )
+                    }
 
                     <div className={ styles.buttons }>
                         {
-                            !this.state.editing
-                                ? <StandardBtn onClick={ this.toggleEditing }>EDIT RECIPE</StandardBtn>
-                             : (
+                            this.state.loading && (
+                                <div className={ styles.loadingWrapper }>
+                                    <LoadingSpinner />
+                                </div>
+                            )
+                        }
+                        {
+                            this.state.editing && !this.state.loading && (
                                 <>
-                                    <StandardBtn onClick={ this.toggleEditing }>SAVE RECIPE</StandardBtn>
+                                    <StandardBtn type="button" onClick={ this.saveRecipe }>
+                                        SAVE RECIPE
+                                    </StandardBtn>
+                                    <StandardBtn
+                                        type="button"
+                                        onClick={ this.toggleEditing }>
+                                            CANCEL EDITING
+                                    </StandardBtn>
+                                </>
+                            )
+                        }
+                        {
+                            !this.state.editing && !this.state.loading && (
+                                <>
+                                    <StandardBtn
+                                        type="button"
+                                        onClick={ this.toggleEditing }>
+                                        EDIT RECIPE
+                                    </StandardBtn>
                                     <SubtleBtn color="red">DELETE RECIPE</SubtleBtn>
                                 </>
                             )
                         }
-
                     </div>
                 </div>
             );
         }
 
-        return (
-                <span>Loading...</span>
-        );
+        return <div>dsad</div>;
     }
 
+    @Bind
+    private onResize(): void {
+        this.setState({ tabletView: window.innerWidth < this.breakpoint });
+    }
+
+    @Bind
     private async refresh(id: number): Promise<void> {
         const recipe = await this.yummeClient.getRecipeById(id);
 
-        this.setState({ recipe });
+        this.setState({
+            editing: false,
+            loading: false,
+            currentRecipe: JSON.parse(JSON.stringify(recipe)) as RecipeType,
+            editedRecipe: JSON.parse(JSON.stringify(recipe)) as RecipeType,
+        });
     }
 
-    private toggleEditing(): void {
+    @Bind
+    private async saveRecipe(ev: MouseEvent<HTMLButtonElement>): Promise<void> {
+        this.setState({ loading: true });
+
+        if (!this.state.editedRecipe) {
+            return;
+        }
+
+        const request = {
+            categories: this.state.editedRecipe.categories,
+            cookTime: this.state.editedRecipe.cookTime,
+            description: this.state.editedRecipe.description,
+            public: true,
+            directions: this.state.editedRecipe.directions,
+            images: this.state.editedRecipe.images,
+            ingredients: this.state.editedRecipe.ingredients,
+            prepTime: this.state.editedRecipe.prepTime,
+            tags: this.state.editedRecipe.tags,
+            title: this.state.editedRecipe.title,
+            yield: this.state.editedRecipe.yield,
+        };
+        const recipe = await this.yummeClient.updateRecipe(Number(this.props.match.params.id), request);
+
+        this.refresh(recipe.id);
+    }
+
+    @Bind
+    private toggleEditing(ev: MouseEvent<HTMLButtonElement>): void {
+        ev.preventDefault();
+
         this.setState(state => {
             return {
                 editing: !state.editing,
             };
         });
+    }
+
+    @Bind
+    private updateRecipe(recipe: RecipeType): void {
+        this.setState(
+            {
+                editedRecipe: recipe,
+            },
+        );
     }
 }

@@ -17,6 +17,12 @@
     .delete,
     .save {
         cursor: pointer;
+
+        &.invalid {
+            cursor: default;
+            pointer-events: none;
+            fill: grey;
+        }
     }
 
     .edit,

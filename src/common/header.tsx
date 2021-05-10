@@ -21,7 +21,7 @@ export const Header: FC = () => (
                     </nav>
                 </div>
                 <div className={ styles.right }>
-                    <StandardLinkBtn path="/new">+ ADD RECIPE</StandardLinkBtn>
+                    <StandardLinkBtn path="/recipe/new">+ ADD RECIPE</StandardLinkBtn>
                     <ChatBubbleSharpIcon />
                     <NotificationsSharpIcon />
                     <img className={ styles.profile } src="https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg" />

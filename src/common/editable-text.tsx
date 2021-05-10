@@ -1,40 +1,36 @@
-import React, { Component, ReactNode, RefObject } from 'react';
+import React, { Component, FocusEvent, ReactNode, RefObject, TextareaHTMLAttributes } from 'react';
 import { Bind } from '@decorize/bind';
 import styles from '@/common/editable-text.scss';
 
-interface EditableTextProps {
-    placeholder: string;
+interface EditableTextProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+    errors: string[];
     tag: string;
-    value: string;
-
-    onChange?(val: string): void;
+    onKeyDownEnter?(): void;
 }
 
-interface EditableTextState {
-    value: string;
-}
-
-export class EditableText extends Component<EditableTextProps, EditableTextState> {
+export class EditableText extends Component<EditableTextProps, unknown> {
     private readonly input: RefObject<HTMLTextAreaElement>;
 
     public constructor(props: EditableTextProps) {
         super(props);
-
         this.input = React.createRef();
     }
 
     public componentDidMount(): void {
         this.setHeight();
+
+        this.input.current?.focus();
+        this.input.current?.addEventListener('keydown', this.onKeyDownEnter);
+
+        window.addEventListener('resize', this.setHeight);
     }
 
-    public componentDidUpdate(): void {
-        this.setHeight();
-    }
 
     public render(): ReactNode {
+        this.setHeight();
+
         return (
             <div className={ `${ styles.editableText }` }>
-
                 {
                     React.createElement(
                         this.props.tag,
@@ -42,28 +38,55 @@ export class EditableText extends Component<EditableTextProps, EditableTextState
                             className: styles.editWrapper,
                         },
                         <textarea
-                            className={ styles.textArea }
                             ref={ this.input }
-                            placeholder={ this.props.placeholder }
-                            value={ this.props.value }
-                            onChange={ this.onChange } />,
-                        )
+                            className={ `${ styles.textArea } ${ this.props.errors.length ? styles.invalid : '' }` }
+                            onFocus={ this.onFocus }
+                            { ...this.props } />,
+                    )
+                }
+                {
+                    this.props.errors.length !== 0 && (
+                        <ul className={ styles.errors }>
+                        {
+                            this.props.errors.map((error, j) => (
+                                <li
+                                    key={ j }
+                                    className={ styles.error }>
+                                    <p>
+                                        {error}
+                                    </p>
+                                </li>
+                            ))
+                        }
+                        </ul>
+                    )
                 }
             </div>
         );
     }
 
+    private onFocus(ev: FocusEvent<HTMLTextAreaElement>): void {
+        const value = ev.target.value;
+        ev.target.setSelectionRange(value.length, value.length);
+    }
+
     @Bind
-    private onChange(el: React.ChangeEvent<HTMLTextAreaElement>): void {
-        if (this.props.onChange) {
-            this.props.onChange(el.target.value);
+    private onKeyDownEnter(ev: KeyboardEvent): void {
+        const key = ev.key;
+
+        if (key === 'Enter') {
+            ev.preventDefault();
+
+            if (this.props.onKeyDownEnter) {
+                this.props.onKeyDownEnter();
+            }
         }
     }
 
     @Bind
     private setHeight(): void {
         if (this.input.current) {
-            this.input.current.style.height = '5px';
+            this.input.current.style.height = '0';
             this.input.current.style.height = `${ this.input.current.scrollHeight }px`;
         }
     }

@@ -5,6 +5,7 @@
 @import 'common/paddings';
 
 .header {
+    z-index: 999;
     padding: 80px $padding_page;
     background-color: $yum_beige;
     position: relative;

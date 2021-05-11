@@ -1,0 +1,87 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+
+.recipe-list-item-placeholder {
+    display: flex;
+    position: relative;
+    width: 100%;
+    background: white;
+    background-size: 200% 200%;
+    animation: backgroundAnimation 3s ease infinite;
+
+    .img-placeholder {
+        background: linear-gradient(270deg, #b9b9b9, lighten(#b9b9b9, 10%));
+        background-size: 400% 400%;
+        animation: backgroundAnimation 1.5s ease infinite;
+    }
+
+    .text-placeholder {
+        flex-grow: 1;
+        padding: 10px 20px;
+
+        span {
+            display: block;
+            background: linear-gradient(270deg, #b9b9b9, lighten(#b9b9b9, 10%));
+            background-size: 200% 200%;
+            animation: backgroundAnimation 3s ease infinite;
+        }
+
+        .top-placeholder {
+            display: flex;
+            justify-content: space-between;
+
+            span {
+                height: 15px;
+                width: 30%;
+            }
+        }
+
+        .title-placeholder {
+            margin: 10px 0;
+            height: 23px;
+            width: 60%;
+        }
+
+        .description-placeholder {
+            width: 100%;
+            height: 50px;
+        }
+    }
+
+    &.row {
+        height: 170px;
+
+        .img-placeholder {
+            height: 100%;
+            width: 170px;
+        }
+    }
+
+    &.column {
+        flex-direction: column;
+        height: 330px;
+
+        .img-placeholder {
+            height: 160px;
+            width: 100%;
+        }
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        top: 10px;
+        left: 10px;
+        height: 100%;
+        width: 100%;
+        border: 1px solid $yum_beige;
+    }
+}
+
+@keyframes backgroundAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

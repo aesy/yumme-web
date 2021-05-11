@@ -45,7 +45,7 @@ export class LoginForm extends PureComponent<unknown, LoginFormState> {
                 {
                     this.state.loading && (
                         <div className={ styles.loadingWrapper }>
-                            <LoadingSpinner />
+                            <LoadingSpinner color="orange" />
                         </div>
                     )
                 }
@@ -87,8 +87,8 @@ export class LoginForm extends PureComponent<unknown, LoginFormState> {
         e.preventDefault();
 
         const request = {
-            username: 'admin',
-            password: 'admin',
+            username: this.state.username,
+            password: this.state.password,
             // eslint-disable-next-line
             grant_type: 'password' as const,
         };

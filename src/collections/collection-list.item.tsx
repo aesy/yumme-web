@@ -11,10 +11,12 @@ interface CollectionListProps {
 export const CollectionListItem: FC<CollectionListProps> = props => (
     <ClickableCard borderOffset="medium">
         <article className={ styles.collectionListItem }>
+            <div className={ styles.images }>
             {
                 props.images
                     .map((image, index) => <span key={ index } className={ styles.image } style={{ backgroundImage: `url(${ image })` }} />)
             }
+            </div>
             <h3>
                 { props.collection.title }
             </h3>

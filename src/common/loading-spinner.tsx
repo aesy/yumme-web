@@ -1,11 +1,15 @@
 import React, { FC } from 'react';
 import styles from '@/common/loading-spinner.scss';
 
-export const LoadingSpinner: FC<unknown> = () => (
-<div className={ styles.ellipsis }>
-    <div />
-    <div />
-    <div />
-    <div />
-</div>
+interface LoadingSpinnerProps {
+    color: 'white' | 'orange';
+}
+
+export const LoadingSpinner: FC<LoadingSpinnerProps> = props => (
+    <div className={ `${ styles.ellipsis } ${ styles[props.color] }` }>
+        <div />
+        <div />
+        <div />
+        <div />
+    </div>
 );

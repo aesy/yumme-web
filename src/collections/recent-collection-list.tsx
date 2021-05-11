@@ -1,7 +1,9 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
+import styles from '@/collections/collection-list.scss';
 import { CollectionListItem } from '@/collections/collection-list.item';
 import { Collection, YUMME_CLIENT_TYPE, YummeClient } from '@/api/yumme-client';
+import { CollectionListItemPlaceholder } from './collection-list-item-placeholder';
 
 interface CollectionWithImages {
     collection: Collection;
@@ -9,19 +11,21 @@ interface CollectionWithImages {
 }
 
 interface RecentCollectionListState {
-    collections: CollectionWithImages[];
+    collections?: CollectionWithImages[];
 }
 
-export class RecentCollectionList extends PureComponent<unknown, RecentCollectionListState> {
+interface RecentCollectionListProps {
+    amount: number;
+}
+
+export class RecentCollectionList extends Component<RecentCollectionListProps, RecentCollectionListState> {
     @resolve(YUMME_CLIENT_TYPE)
     private readonly yummeClient: YummeClient;
 
-    public constructor(props: unknown) {
+    public constructor(props: RecentCollectionListProps) {
         super(props);
 
-        this.state = {
-            collections: [],
-        };
+        this.state = {};
     }
 
     public componentDidMount(): void {
@@ -29,16 +33,42 @@ export class RecentCollectionList extends PureComponent<unknown, RecentCollectio
     }
 
     public render(): ReactNode {
+        const placeholders = [];
+
+        for (let i = 0; i < this.props.amount; i++) {
+            placeholders.push(<CollectionListItemPlaceholder />);
+        }
+
+        if (!this.state.collections) {
+            return (
+                <ul>
+                {
+                    placeholders.map((placeholder, i) => (
+                        <li key={ i }>
+                            { placeholder }
+                        </li>
+                    ))
+                }
+                </ul>
+            );
+        }
+
+        if (!this.state.collections.length) {
+            return (
+                <p>Seems like there aren&apos;t any :(</p>
+            );
+        }
+
         return (
             <ul>
-                {
-                    this.state.collections
-                        .map(elem => (
-                            <li key={ elem.collection.id }>
-                                <CollectionListItem collection={ elem.collection } images={ elem.images } />
-                            </li>
-                        ))
-                }
+            {
+                this.state.collections
+                    .map(elem => (
+                        <li className={ styles.collectionListItem } key={ elem.collection.id }>
+                            <CollectionListItem collection={ elem.collection } images={ elem.images } />
+                        </li>
+                    ))
+            }
             </ul>
         );
     }

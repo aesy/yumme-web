@@ -23,6 +23,7 @@ export interface RegisterRequest {
 export interface User {
     user_name: string;
     display_name: string;
+    id: number;
 }
 
 export interface Recipe {
@@ -56,13 +57,16 @@ export interface UpdateRecipeRequest {
     cook_time: number;
     description: string;
     directions: string[];
-    images: string[];
     ingredients: string[];
     prep_time: number;
     public: boolean;
     tags: string[];
     title: string;
     yield: number;
+}
+
+export interface ImageUploadResult {
+    name: string
 }
 
 export interface YummeClient {
@@ -78,6 +82,7 @@ export interface YummeClient {
     register(request: RegisterRequest): Promise<LoginResponse>;
     replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe>;
     updateRecipe(id: number, request: Partial<UpdateRecipeRequest>): Promise<Recipe>;
+    uploadImage(id: number, file: File): Promise<ImageUploadResult>;
 }
 
 export const YUMME_CLIENT_TYPE = Symbol.for('YummeClient');

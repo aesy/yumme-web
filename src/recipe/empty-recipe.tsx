@@ -29,9 +29,9 @@ export class EmptyRecipe extends Component<RouteComponentProps, EmptyRecipeState
             recipe: {
                 categories: [],
                 // eslint-disable-next-line
-                cook_time: 10,
+                cook_time: 600,
                 // eslint-disable-next-line
-                prep_time: 10,
+                prep_time: 600,
                 yield: 2,
                 description: 'The PERFECT recipe for..',
                 directions: [],

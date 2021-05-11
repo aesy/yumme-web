@@ -7,18 +7,7 @@
 .recipe-view-tablet {
     @include content-standard;
 
-    &::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 1000px;
-        width: 100%;
-        background-color: $yum_beige;
-        z-index: -999;
-        transform: skewY(-2deg);
-        transform-origin: top left;
-    }
+    position: relative;
 
     .card {
         margin: 0 -15px;

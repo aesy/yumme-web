@@ -48,14 +48,6 @@ export const RecipeViewDesktop: FC<RecipeViewDesktopProps> = props => (
             </div>
         </div>
 
-
-        {/* <div className={ styles.images }>
-            <ImageList
-                recipe={ props.recipe }
-                editing={ props.editing }
-                updateRecipe={ props.updateRecipe } />
-        </div> */}
-
         <div className={ styles.directions }>
             <h2>Directions</h2>
             <DirectionList

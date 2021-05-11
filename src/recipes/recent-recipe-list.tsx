@@ -1,26 +1,31 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
 import { bind } from '@decorize/bind';
+import styles from '@/recipes/recipe-list.scss';
+import { RecipeListItemPlaceholder } from '@/recipes/recipe-list-item-placeholder';
 import { RecipeListItem } from '@/recipes/recipe-list-item';
 import { Recipe, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 
 interface RecentRecipeListState {
     onSmallScreen: boolean;
-    recipes: Recipe[];
+    recipes?: Recipe[];
 }
 
-export class RecentRecipeList extends PureComponent<unknown, RecentRecipeListState> {
-    private static readonly breakpoint: number = 640;
+interface RecentRecipeListProps {
+    amount: number;
+}
 
+export class RecentRecipeList extends PureComponent<RecentRecipeListProps, RecentRecipeListState> {
     @resolve(YUMME_CLIENT_TYPE)
     private readonly yummeClient: YummeClient;
 
-    public constructor(props: unknown) {
+    private readonly breakpoint: number = 640;
+
+    public constructor(props: RecentRecipeListProps) {
         super(props);
 
         this.state = {
-            recipes: [],
-            onSmallScreen: window.innerWidth < RecentRecipeList.breakpoint,
+            onSmallScreen: window.innerWidth < this.breakpoint,
         };
     }
 
@@ -34,27 +39,54 @@ export class RecentRecipeList extends PureComponent<unknown, RecentRecipeListSta
     }
 
     public render(): ReactNode {
+        const placeholders = [];
+
+        for (let i = 0; i < this.props.amount; i++) {
+            placeholders.push(<RecipeListItemPlaceholder type={ this.state.onSmallScreen ? 'column' : 'row' } />);
+        }
+
+        if (!this.state.recipes) {
+            return (
+                <ul>
+                {
+                    placeholders.map((placeholder, i) => (
+                        <li key={ i }>
+                            { placeholder }
+                        </li>
+                    ))
+                }
+                </ul>
+            );
+        }
+
+        if (!this.state.recipes.length) {
+            return (
+                <p>Seems like there aren&apos;t any :(</p>
+            );
+        }
+
         return (
             <ul>
-                {
-                    this.state.recipes
-                        .map(recipe => (
-                            <li key={ recipe.id }>
-                                <RecipeListItem recipe={ recipe } type={ this.state.onSmallScreen ? 'column' : 'row' } />
-                            </li>
-                        ))
-                }
+            {
+                this.state.recipes
+                    .map(recipe => (
+                        <li className={ styles.recipeListItem } key={ recipe.id }>
+                            <RecipeListItem recipe={ recipe } type={ this.state.onSmallScreen ? 'column' : 'row' } />
+                        </li>
+                    ))
+            }
             </ul>
         );
     }
 
     @bind
     private onResize(): void {
-        this.setState({ onSmallScreen: window.innerWidth < RecentRecipeList.breakpoint });
+        this.setState({ onSmallScreen: window.innerWidth < this.breakpoint });
     }
 
+    @bind
     private async refresh(): Promise<void> {
-        const recipes = await this.yummeClient.getRecentRecipes();
+        const recipes = await this.yummeClient.getRecentRecipes(this.props.amount);
 
         this.setState({ recipes });
     }

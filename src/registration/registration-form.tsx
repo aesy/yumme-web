@@ -47,7 +47,7 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
                 {
                     this.state.loading && (
                         <div className={ styles.loadingWrapper }>
-                            <LoadingSpinner />
+                            <LoadingSpinner color="orange" />
                         </div>
                     )
                 }

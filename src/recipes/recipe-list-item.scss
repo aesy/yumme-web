@@ -5,6 +5,7 @@
 .recipe-list-item {
     display: flex;
     width: 100%;
+    background-color: gray;
 
     img {
         display: block;
@@ -29,7 +30,7 @@
                 align-items: center;
 
                 svg {
-                    margin-right: 3px;
+                    margin-right: 7px;
                 }
             }
 
@@ -62,6 +63,7 @@
 
     &.column {
         flex-direction: column;
+        height: 330px;
 
         img {
             height: 160px;
@@ -71,6 +73,7 @@
 
     &.row {
         flex-direction: row;
+        height: 170px;
 
         img {
             max-width: 170px;

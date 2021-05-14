@@ -50,15 +50,11 @@ export class Header extends Component<unknown, HeaderState> {
                         <StandardLinkBtn path="/recipe/new">+ ADD RECIPE</StandardLinkBtn>
                         <ChatBubbleSharpIcon />
                         <NotificationsSharpIcon />
-                        {
-                            this.state.currentUser && (
-                                <Link to={ `/profile/${ this.state.currentUser.id || 1 }` }>
-                                    <img
-                                        className={ styles.profile }
-                                        src={ DefaultProfileImage } />
-                                </Link>
-                            )
-                        }
+                        <Link to={ `/profile/${ this.state.currentUser?.id ?? 1 }` }>
+                            <img
+                                className={ styles.profile }
+                                src={ DefaultProfileImage } />
+                        </Link>
                     </div>
                 </div>
             </header>

@@ -1,28 +1,47 @@
 import { Link } from 'react-router-dom';
-import React, { FC } from 'react';
+import React, { Component, ReactNode } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import NotificationsSharpIcon from '@material-ui/icons/NotificationsSharp';
 import ChatBubbleSharpIcon from '@material-ui/icons/ChatBubbleSharp';
 import AddIcon from '@material-ui/icons/Add';
 import DefaultProfileImage from '@/images/DefaultProfileImage.png';
 import styles from '@/common/mobile-navigation.scss';
+import { User } from '@/api/yumme-client';
 
-export const MobileNavigation: FC = () => (
-    <div className={ styles.mobileNavigation }>
-        <div className={ styles.left }>
-            <SearchIcon />
-            <ChatBubbleSharpIcon />
-        </div>
+interface MobileNavigationState {
+    currentUser?: User;
+}
 
-        <div className={ styles.center }>
-            <Link to="/recipe/new" className={ styles.add } type="button">
-                <AddIcon />
-            </Link>
-        </div>
+export class MobileNavigation extends Component<unknown, MobileNavigationState> {
+    public constructor(props: unknown) {
+        super(props);
 
-        <div className={ styles.right }>
-            <NotificationsSharpIcon />
-            <img className={ styles.profile } src={ DefaultProfileImage } />
-        </div>
-    </div>
-);
+        this.state = {};
+    }
+
+    public render(): ReactNode {
+        return (
+            <div className={ styles.mobileNavigation }>
+                <div className={ styles.left }>
+                    <SearchIcon />
+                    <ChatBubbleSharpIcon />
+                </div>
+
+                <div className={ styles.center }>
+                    <Link to="/recipe/new" className={ styles.add } type="button">
+                        <AddIcon />
+                    </Link>
+                </div>
+
+                <div className={ styles.right }>
+                    <NotificationsSharpIcon />
+                    <Link to={ `/profile/${ this.state.currentUser?.id ?? 1 }` }>
+                        <img
+                            className={ styles.profile }
+                            src={ DefaultProfileImage } />
+                    </Link>
+                </div>
+            </div>
+        );
+    }
+}

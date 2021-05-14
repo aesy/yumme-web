@@ -6,7 +6,7 @@ import { StandardInput } from '@/common/standard-input';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
 import { AuthState } from '@/authentication/auth-state';
-import { YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
+import { YummeClient, YUMME_CLIENT_TYPE, AuthError } from '@/api/yumme-client';
 
 interface RegistrationFormState {
     displayName: string;
@@ -54,23 +54,23 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
 
                 <form className={ styles.registrationForm } onSubmit={ this.onSubmit }>
                     <StandardInput
-                        value={ this.state.username }
-                        label="First name"
+                        value={ this.state.displayName }
+                        label="Display name"
                         minLength={ 1 }
                         maxLength={ 64 }
                         type="text"
-                        placeholder="John"
-                        name="firstName"
+                        placeholder="John Doe"
+                        name="displayName"
                         required
                         onChange={ this.onChange } />
                     <StandardInput
-                        value={ this.state.displayName }
-                        label="Display name"
+                        value={ this.state.username }
+                        label="Username"
                         minLength={ 4 }
-                        maxLength={ 128 }
+                        maxLength={ 64 }
                         type="text"
-                        placeholder="John Doe"
-                        name="email"
+                        placeholder="epicjohn1337"
+                        name="username"
                         required
                         onChange={ this.onChange } />
                     <StandardInput
@@ -114,17 +114,26 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
                 display_name: this.state.displayName,
                 password: this.state.password,
             });
-            const response = await this.yummeClient.getAccessToken({
-                // eslint-disable-next-line
-                grant_type: 'password',
-                username: this.state.username,
-                password: this.state.password,
-            });
-            this.authState.logInWithEmailAndPassword(response);
-        } catch (err: any) {
+        } catch (err: unknown) {
             this.setState({
                 loading: false,
-                error: err,
+                error: String(err),
+            });
+        }
+
+        try {
+            const response = await this.yummeClient.getAccessToken({
+                username: this.state.username,
+                password: this.state.password,
+                // eslint-disable-next-line
+                grant_type: 'password' as const,
+            });
+
+            this.authState.logInWithEmailAndPassword(response);
+        } catch (err: unknown) {
+            this.setState({
+                loading: false,
+                error: (err as AuthError).error_description,
             });
         }
     }

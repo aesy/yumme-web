@@ -6,7 +6,7 @@ import { StandardInput } from '@/common/standard-input';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
 import { AuthState } from '@/authentication/auth-state';
-import { YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
+import { YummeClient, YUMME_CLIENT_TYPE, AuthError } from '@/api/yumme-client';
 
 interface LoginFormState {
     error: string | null;
@@ -86,24 +86,23 @@ export class LoginForm extends PureComponent<unknown, LoginFormState> {
     private async onSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
         e.preventDefault();
 
-        const request = {
-            username: this.state.username,
-            password: this.state.password,
-            // eslint-disable-next-line
-            grant_type: 'password' as const,
-        };
-
         this.setState({
             loading: true,
         });
 
         try {
-            const response = await this.yummeClient.getAccessToken(request);
+            const response = await this.yummeClient.getAccessToken({
+                username: this.state.username,
+                password: this.state.password,
+                // eslint-disable-next-line
+                grant_type: 'password' as const,
+            });
+
             this.authState.logInWithEmailAndPassword(response);
-        } catch (err: any) {
+        } catch (err: unknown) {
             this.setState({
                 loading: false,
-                error: err,
+                error: (err as AuthError).error_description,
             });
         }
     }

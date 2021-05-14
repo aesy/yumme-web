@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { inject, injectable, optional } from 'inversify';
 import { AxiosInstance } from 'axios';
-import { LoginResponse, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
+import { LoginResponse, YummeClient, YUMME_CLIENT_TYPE, LoginRequest } from '@/api/yumme-client';
 import { AXIOS_CLIENT_TYPE } from '@/api/axios-client';
 
 @injectable()
@@ -24,7 +24,11 @@ export class AuthState {
         }
 
         if (token !== null) {
-            this.refreshAccessToken(token);
+            try {
+                this.refreshAccessToken(token);
+            } catch {
+                // Do nothing
+            }
         }
     }
 
@@ -61,7 +65,15 @@ export class AuthState {
 
                 if (error.response.status === 403 && originalRequest.retry !== undefined && refreshToken !== null) {
                     originalRequest.retry = true;
-                    const accessToken = await this.refreshAccessToken(refreshToken);
+
+                    let accessToken: string;
+
+                    try {
+                        accessToken = await this.refreshAccessToken(refreshToken);
+                    } catch {
+                        throw error;
+                    }
+
                     axios.defaults.headers.common.Authorization = `Bearer ${ accessToken }`;
 
                     return axios(originalRequest);

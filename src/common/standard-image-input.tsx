@@ -7,7 +7,6 @@ interface StandardImageInputProps extends InputHTMLAttributes<HTMLInputElement> 
     errors: string[];
 }
 
-
 export const StandardImageInput: FC<StandardImageInputProps> = ({ color, errors, ...props }) => {
     const input = React.createRef<HTMLInputElement>();
 

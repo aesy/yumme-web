@@ -1,6 +1,6 @@
 /* eslint-disable max-lines-per-function */
 import { RouteComponentProps } from 'react-router-dom';
-import React, { Component, MouseEvent, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
 import { Bind } from '@decorize/bind';
@@ -50,7 +50,6 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
         window.removeEventListener('resize', this.onResize);
     }
 
-
     public render(): ReactNode {
         const recipe = this.state.editing ? this.state.editedRecipe : this.state.currentRecipe;
 
@@ -95,7 +94,9 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
                 {
                     this.state.editing && !this.state.loading && (
                         <>
-                            <StandardBtn type="button" onClick={ this.saveRecipe }>
+                            <StandardBtn
+                                type="button"
+                                onClick={ this.saveRecipe }>
                                 SAVE RECIPE
                             </StandardBtn>
                             <StandardBtn
@@ -114,13 +115,30 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
                                 onClick={ this.toggleEditing }>
                                 EDIT RECIPE
                             </StandardBtn>
-                            <SubtleBtn color="red">DELETE RECIPE</SubtleBtn>
+                            <SubtleBtn
+                                color="red"
+                                onClick={ this.deleteRecipe }>
+                                DELETE RECIPE
+                            </SubtleBtn>
                         </>
                     )
                 }
                 </div>
             </div>
         );
+    }
+
+    @Bind
+    private async deleteRecipe(): Promise<void> {
+        this.setState({ loading: true });
+
+        try {
+            await this.yummeClient.deleteRecipe(Number(this.props.match.params.id));
+        } catch {
+            this.setState({ loading: false });
+        }
+
+        this.props.history.push('/');
     }
 
     @Bind
@@ -141,7 +159,7 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
     }
 
     @Bind
-    private async saveRecipe(ev: MouseEvent<HTMLButtonElement>): Promise<void> {
+    private async saveRecipe(): Promise<void> {
         this.setState({ loading: true });
 
         if (!this.state.editedRecipe) {
@@ -169,9 +187,7 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
     }
 
     @Bind
-    private toggleEditing(ev: MouseEvent<HTMLButtonElement>): void {
-        ev.preventDefault();
-
+    private toggleEditing(): void {
         this.setState(state => {
             return {
                 editing: !state.editing,

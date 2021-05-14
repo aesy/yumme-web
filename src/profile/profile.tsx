@@ -18,7 +18,7 @@ interface MatchParams {
 }
 
 export class Profile extends Component<RouteComponentProps<MatchParams>, ProfileState> {
-    public constructor(props: unknown) {
+    public constructor(props: RouteComponentProps<MatchParams>) {
         super(props);
 
         this.state = {

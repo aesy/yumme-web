@@ -84,7 +84,7 @@ export class EmptyRecipe extends Component<RouteComponentProps, EmptyRecipeState
                         this.state.loading
                         ? (
                             <div className={ styles.loadingWrapper }>
-                                <LoadingSpinner />
+                                <LoadingSpinner color="orange" />
                             </div>
                         )
                         : <StandardBtn

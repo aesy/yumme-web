@@ -108,11 +108,11 @@ export class AxiosYummeClient implements YummeClient {
             .then(response => response.data);
     }
 
-    public async register(request: RegisterRequest): Promise<LoginResponse> {
+    public async register(request: RegisterRequest): Promise<void> {
         const url = '/user/register';
 
         return this.axios.post<LoginResponse>(url, request)
-            .then(response => response.data);
+            .then(() => undefined);
     }
 
     public replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe> {

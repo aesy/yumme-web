@@ -1,5 +1,10 @@
 /* eslint-disable */
 
+export interface AuthError {
+    error: string;
+    error_description: string;
+}
+
 export interface LoginRequest {
     grant_type: 'password' | 'refresh_token';
     password?: string;
@@ -79,7 +84,7 @@ export interface YummeClient {
     getRecentRecipes(limit?: number): Promise<Recipe[]>;
     getRecipeById(id: number): Promise<Recipe>;
     getRecentCollections(limit?: number): Promise<Collection[]>;
-    register(request: RegisterRequest): Promise<LoginResponse>;
+    register(request: RegisterRequest): Promise<void>;
     replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe>;
     updateRecipe(id: number, request: Partial<UpdateRecipeRequest>): Promise<Recipe>;
     uploadImage(id: number, file: File): Promise<ImageUploadResult>;

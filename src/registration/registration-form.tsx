@@ -102,20 +102,24 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
     private async onSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
         e.preventDefault();
 
-        const request = {
-            // eslint-disable-next-line
-            user_name: this.state.username,
-            // eslint-disable-next-line
-            display_name: this.state.displayName,
-            password: this.state.password,
-        };
-
         this.setState({
             loading: true,
         });
 
         try {
-            const response = await this.yummeClient.register(request);
+            await this.yummeClient.register({
+                // eslint-disable-next-line
+                user_name: this.state.username,
+                // eslint-disable-next-line
+                display_name: this.state.displayName,
+                password: this.state.password,
+            });
+            const response = await this.yummeClient.getAccessToken({
+                // eslint-disable-next-line
+                grant_type: 'password',
+                username: this.state.username,
+                password: this.state.password,
+            });
             this.authState.logInWithEmailAndPassword(response);
         } catch (err: any) {
             this.setState({

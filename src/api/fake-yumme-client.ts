@@ -66,17 +66,8 @@ export class FakeYummeClient implements YummeClient {
         return this.createFakeRecipe();
     }
 
-    public async register(): Promise<LoginResponse> {
-        return {
-            // eslint-disable-next-line
-            access_token: 'secret',
-            // eslint-disable-next-line
-            refresh_token: 'secret',
-            // eslint-disable-next-line
-            expires_in: 3600000,
-            // eslint-disable-next-line
-            token_type: 'bearer',
-        };
+    public async register(): Promise<void> {
+        // Do nothing
     }
 
     public async replaceRecipe(): Promise<Recipe> {
@@ -88,7 +79,9 @@ export class FakeYummeClient implements YummeClient {
     }
 
     public async uploadImage(): Promise<ImageUploadResult> {
-        // Woop
+        return {
+            name: 'woop',
+        };
     }
 
     private createFakeCollection(): Collection {

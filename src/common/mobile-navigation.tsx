@@ -4,6 +4,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import NotificationsSharpIcon from '@material-ui/icons/NotificationsSharp';
 import ChatBubbleSharpIcon from '@material-ui/icons/ChatBubbleSharp';
 import AddIcon from '@material-ui/icons/Add';
+import DefaultProfileImage from '@/images/DefaultProfileImage.png';
 import styles from '@/common/mobile-navigation.scss';
 
 export const MobileNavigation: FC = () => (
@@ -21,7 +22,7 @@ export const MobileNavigation: FC = () => (
 
         <div className={ styles.right }>
             <NotificationsSharpIcon />
-            <img className={ styles.profile } src="https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg" />
+            <img className={ styles.profile } src={ DefaultProfileImage } />
         </div>
     </div>
 );

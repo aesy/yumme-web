@@ -25,6 +25,11 @@ export class EditableText extends Component<EditableTextProps, unknown> {
         window.addEventListener('resize', this.setHeight);
     }
 
+    public componentWillUnmount(): void {
+        this.input.current?.removeEventListener('keydown', this.onKeyDownEnter);
+
+        window.removeEventListener('resize', this.setHeight);
+    }
 
     public render(): ReactNode {
         this.setHeight();

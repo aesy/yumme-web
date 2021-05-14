@@ -63,7 +63,7 @@ export class AuthState {
                 const refreshToken = this.getRefreshToken();
                 const originalRequest = error.config;
 
-                if (error.response.status === 403 && originalRequest.retry !== undefined && refreshToken !== null) {
+                if (error.response !== undefined && error.response.status === 403 && originalRequest.retry !== undefined && refreshToken !== null) {
                     originalRequest.retry = true;
 
                     let accessToken: string;

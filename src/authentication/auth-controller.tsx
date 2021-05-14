@@ -1,6 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
+import styles from '@/app.scss';
 import { AuthWall } from './auth-wall';
 import { AuthState } from './auth-state';
 
@@ -21,7 +22,7 @@ export class AuthController extends PureComponent<unknown> {
         }
 
         return (
-            <div>
+            <div className={ styles.page }>
                 { this.props.children }
             </div>
         );

@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { LoginResponse, Recipe, User, YummeClient, Collection } from '@/api/yumme-client';
+import { LoginResponse, Recipe, User, YummeClient, Collection, ImageUploadResult } from '@/api/yumme-client';
 
 function generateId(): number {
     const maxId = 1_000_000;
@@ -66,17 +66,8 @@ export class FakeYummeClient implements YummeClient {
         return this.createFakeRecipe();
     }
 
-    public async register(): Promise<LoginResponse> {
-        return {
-            // eslint-disable-next-line
-            access_token: 'secret',
-            // eslint-disable-next-line
-            refresh_token: 'secret',
-            // eslint-disable-next-line
-            expires_in: 3600000,
-            // eslint-disable-next-line
-            token_type: 'bearer',
-        };
+    public async register(): Promise<void> {
+        // Do nothing
     }
 
     public async replaceRecipe(): Promise<Recipe> {
@@ -85,6 +76,12 @@ export class FakeYummeClient implements YummeClient {
 
     public async updateRecipe(): Promise<Recipe> {
         return this.createFakeRecipe();
+    }
+
+    public async uploadImage(): Promise<ImageUploadResult> {
+        return {
+            name: 'woop',
+        };
     }
 
     private createFakeCollection(): Collection {
@@ -146,6 +143,7 @@ export class FakeYummeClient implements YummeClient {
             user_name: 'user',
             // eslint-disable-next-line
             display_name: 'User',
+            id: 1,
         };
     }
 }

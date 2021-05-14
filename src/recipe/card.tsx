@@ -4,6 +4,7 @@ import StarHalfSharpIcon from '@material-ui/icons/StarHalfSharp';
 import EditSharpIcon from '@material-ui/icons/EditSharp';
 import { Bind } from '@decorize/bind';
 import styles from '@/recipe/card.scss';
+import DefaultRecipeImage from '@/images/DefaultRecipeImage.jpg';
 import { StandardImageInput } from '@/common/standard-image-input';
 import { EditableText } from '@/common/editable-text';
 import editStyles from '@/common/edit.scss';
@@ -58,34 +59,36 @@ export class Card extends Component<CardProps, CardState> {
                 <div className={ `${ styles.card }` }>
                     <div
                         className={ styles.cardImage }
-                        style={{ backgroundImage: `url(/api/v1/recipe/${ this.props.recipe.id }/image/${ this.props.recipe.images[0] })` }}>
+                        style={{ backgroundImage: this.props.recipe.images[0]
+                        ? `url(${ this.props.recipe.images[0] })`
+                        : `url(${ DefaultRecipeImage })` }}>
                         <StandardImageInput
                             color="white"
                             errors={ this.state.imageErrors }
                             onChange={ this.tryEditImage } />
                     </div>
                     <div className={ styles.cardContent }>
-                        {
-                            this.state.selectedInput === 'title'
-                            ? (
-                                <EditableText
-                                    tag="h1"
-                                    value={ this.state.titleInputValue }
-                                    placeholder="Title"
-                                    errors={ this.state.titleErrors }
-                                    onKeyDownEnter={ this.deselectInput }
-                                    onChange={ this.titleOnChange } />
-                            )
-                            : (
-                                <div className={ styles.editable } onClick={ (): void => this.selectInput('title') }>
-                                    <h1>{this.props.recipe.title}</h1>
-                                    <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
-                                        <EditSharpIcon className={ editStyles.edit } />
-                                    </div>
+                    {
+                        this.state.selectedInput === 'title'
+                        ? (
+                            <EditableText
+                                tag="h1"
+                                value={ this.state.titleInputValue }
+                                placeholder="Title"
+                                errors={ this.state.titleErrors }
+                                onKeyDownEnter={ this.deselectInput }
+                                onChange={ this.titleOnChange } />
+                        )
+                        : (
+                            <div className={ styles.editable } onClick={ (): void => this.selectInput('title') }>
+                                <h1>{this.props.recipe.title}</h1>
+                                <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
+                                    <EditSharpIcon className={ editStyles.edit } />
                                 </div>
-                            )
+                            </div>
+                        )
 
-                        }
+                    }
 
                         <ul className={ styles.rating }>
                             {
@@ -97,26 +100,26 @@ export class Card extends Component<CardProps, CardState> {
                             }
                         </ul>
 
-                        {
-                            this.state.selectedInput === 'description'
-                            ? (
-                                <EditableText
-                                    tag="p"
-                                    value={ this.state.descriptionInputValue }
-                                    placeholder="Description"
-                                    errors={ this.state.descriptionErrors }
-                                    onKeyDownEnter={ this.deselectInput }
-                                    onChange={ this.descriptionOnChange } />
-                            )
-                            : (
-                                <div className={ styles.editable } onClick={ (): void => this.selectInput('description') }>
-                                    <p>{this.props.recipe.description}</p>
-                                    <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
-                                        <EditSharpIcon className={ editStyles.edit } />
-                                    </div>
+                    {
+                        this.state.selectedInput === 'description'
+                        ? (
+                            <EditableText
+                                tag="p"
+                                value={ this.state.descriptionInputValue }
+                                placeholder="Description"
+                                errors={ this.state.descriptionErrors }
+                                onKeyDownEnter={ this.deselectInput }
+                                onChange={ this.descriptionOnChange } />
+                        )
+                        : (
+                            <div className={ styles.editable } onClick={ (): void => this.selectInput('description') }>
+                                <p>{this.props.recipe.description}</p>
+                                <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
+                                    <EditSharpIcon className={ editStyles.edit } />
                                 </div>
-                            )
-                        }
+                            </div>
+                        )
+                    }
                     </div>
                 </div>
             );
@@ -124,8 +127,12 @@ export class Card extends Component<CardProps, CardState> {
 
         return (
             <div className={ styles.card }>
-                <div className={ styles.cardImage } style={{ backgroundImage: `url(/api/v1/recipe/${ this.props.recipe.id }/image/${ this.props.recipe.images[0] })` }} />
-                <div className={ styles.cardContent }>
+                <div
+                    className={ styles.cardImage }
+                    style={{ backgroundImage: this.props.recipe.images[0]
+                        ? `url(${ this.props.recipe.images[0] })`
+                        : `url(${ DefaultRecipeImage })` }} />
+                    <div className={ styles.cardContent }>
                     <h1>{this.props.recipe.title}</h1>
 
                     <ul className={ styles.rating }>
@@ -136,7 +143,7 @@ export class Card extends Component<CardProps, CardState> {
                     </ul>
 
                     <p>{this.props.recipe.description}</p>
-                </div>
+                    </div>
             </div>
         );
     }
@@ -280,8 +287,6 @@ export class Card extends Component<CardProps, CardState> {
                 if (image.height < minHeight || image.width < minWidth) {
                     imageErrors.push(`Image needs to be atleast ${ minWidth }x${ minHeight }`);
                 }
-
-                console.log(imageErrors);
 
                 this.setState({ imageErrors });
 

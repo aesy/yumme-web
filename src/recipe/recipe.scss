@@ -4,10 +4,62 @@
 @import 'common/breakpoints';
 @import 'common/css-functions';
 
+@keyframes fadeSlideIn {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.recipe-loading-wrapper {
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 800px;
+        width: 100%;
+        background-color: $yum_beige;
+        z-index: -999;
+        transform: skewY(-2deg);
+        transform-origin: top left;
+    }
+}
+
 .recipe {
     padding: 0 15px;
+    position: relative;
 
-    .loading-wrapper {
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 800px;
+        width: 100%;
+        background-color: $yum_beige;
+        z-index: -999;
+        transform: skewY(-2deg);
+        transform-origin: top left;
+    }
+
+    .recipe-wrapper {
+        animation: fadeSlideIn 0.8s forwards;
+    }
+
+    .save-loading-wrapper {
         height: 29px;
         display: flex;
         justify-content: center;

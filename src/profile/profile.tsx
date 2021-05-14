@@ -1,4 +1,5 @@
-import React, { PureComponent, ReactNode } from 'react';
+import { RouteComponentProps } from 'react-router-dom';
+import React, { Component, ReactNode } from 'react';
 import { Summary } from '@/profile/summary';
 import { Recipes } from '@/profile/recipes';
 import styles from '@/profile/profile.scss';
@@ -12,8 +13,12 @@ interface ProfileState {
     view: View;
 }
 
-export class Profile extends PureComponent<unknown, ProfileState> {
-    public constructor(props: unknown) {
+interface MatchParams {
+    id: string;
+}
+
+export class Profile extends Component<RouteComponentProps<MatchParams>, ProfileState> {
+    public constructor(props: RouteComponentProps<MatchParams>) {
         super(props);
 
         this.state = {
@@ -32,7 +37,7 @@ export class Profile extends PureComponent<unknown, ProfileState> {
     public render(): ReactNode {
         return (
             <div className={ styles.profile }>
-                <Hero />
+                <Hero id={ this.props.match.params.id } />
                 <ViewNavigation active={ this.state.view } navigations={ ['Summary', 'Recipes', 'Collections'] } handler={ this.handler } />
 
                 { this.state.view === 'Summary' && <Summary /> }

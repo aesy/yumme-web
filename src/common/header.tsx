@@ -1,31 +1,74 @@
-import React, { FC } from 'react';
+import { Link } from 'react-router-dom';
+import React, { Component, FC, ReactNode } from 'react';
+import { observer } from 'mobx-react';
+import { resolve } from 'inversify-react';
 import NotificationsSharpIcon from '@material-ui/icons/NotificationsSharp';
 import ExpandMoreSharpIcon from '@material-ui/icons/ExpandMoreSharp';
 import ChatBubbleSharpIcon from '@material-ui/icons/ChatBubbleSharp';
+import { bind } from '@decorize/bind';
+import DefaultProfileImage from '@/images/DefaultProfileImage.png';
 import styles from '@/common/header.scss';
+import { User, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 import { StandardLinkBtn } from './standard-link-btn';
 
-export const Header: FC = () => (
-        <header className={ styles.header }>
-            <div className={ styles.content }>
-                <div className={ styles.left }>
-                    <span>Logo</span>
-                    <nav>
-                        <ul>
-                            <li>
-                                Browse
-                                {' '}
-                                <ExpandMoreSharpIcon />
-                            </li>
-                        </ul>
-                    </nav>
+interface HeaderState {
+    currentUser?: User;
+}
+
+@observer
+export class Header extends Component<unknown, HeaderState> {
+    @resolve(YUMME_CLIENT_TYPE)
+    private readonly yummeClient: YummeClient;
+
+    public constructor(props: unknown) {
+        super(props);
+
+        this.state = {};
+    }
+
+    public componentDidMount(): void {
+        this.onRefresh();
+    }
+
+    public render(): ReactNode {
+        return (
+            <header className={ styles.header }>
+                <div className={ styles.content }>
+                    <div className={ styles.left }>
+                        <span>Logo</span>
+                        <nav>
+                            <ul>
+                                <li>
+                                    Browse
+                                    {' '}
+                                    <ExpandMoreSharpIcon />
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div className={ styles.right }>
+                        <StandardLinkBtn path="/recipe/new">+ ADD RECIPE</StandardLinkBtn>
+                        <ChatBubbleSharpIcon />
+                        <NotificationsSharpIcon />
+                        {
+                            this.state.currentUser && (
+                                <Link to={ `/profile/${ this.state.currentUser.id || 1 }` }>
+                                    <img
+                                        className={ styles.profile }
+                                        src={ DefaultProfileImage } />
+                                </Link>
+                            )
+                        }
+                    </div>
                 </div>
-                <div className={ styles.right }>
-                    <StandardLinkBtn path="/recipe/new">+ ADD RECIPE</StandardLinkBtn>
-                    <ChatBubbleSharpIcon />
-                    <NotificationsSharpIcon />
-                    <img className={ styles.profile } src="https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg" />
-                </div>
-            </div>
-        </header>
-);
+            </header>
+        );
+    }
+
+    @bind
+    private async onRefresh(): Promise<void> {
+        const currentUser = await this.yummeClient.getCurrentUser();
+
+        this.setState({ currentUser });
+    }
+}

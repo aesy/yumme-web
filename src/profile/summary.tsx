@@ -15,7 +15,7 @@ export const Summary: FC = () => (
             </StandardHeader>
 
             <div className={ styles.popularRecipes }>
-                <PopularRecipeList />
+                <PopularRecipeList amount={ 3 } />
             </div>
         </div>
 
@@ -25,7 +25,7 @@ export const Summary: FC = () => (
             </StandardHeader>
 
             <div className={ styles.recentRecipes }>
-                <RecentRecipeList />
+                <RecentRecipeList amount={ 4 } />
                 <div className={ styles.button }>
                     <ClickableCard borderOffset="small">
                         <StandardBtn type="button">ALL RECIPES</StandardBtn>
@@ -40,7 +40,7 @@ export const Summary: FC = () => (
             </StandardHeader>
 
             <div className={ styles.recentCollections }>
-                <RecentCollectionList />
+                <RecentCollectionList amount={ 4 } />
                 <div className={ styles.button }>
                     <ClickableCard borderOffset="small">
                         <StandardBtn type="button">ALL COLLECTIONS</StandardBtn>

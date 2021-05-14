@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import { AxiosInstance } from 'axios';
 import {
     Collection,
+    ImageUploadResult,
     LoginRequest,
     LoginResponse,
     Recipe,
@@ -87,6 +88,7 @@ export class AxiosYummeClient implements YummeClient {
             .then(response => response.data);
     }
 
+
     public getRecentRecipes(limit?: number): Promise<Recipe[]> {
         let url = '/recipe/recent';
 
@@ -98,6 +100,7 @@ export class AxiosYummeClient implements YummeClient {
             .then(response => response.data);
     }
 
+
     public getRecipeById(id: number): Promise<Recipe> {
         const url = `/recipe/${ id }`;
 
@@ -105,11 +108,11 @@ export class AxiosYummeClient implements YummeClient {
             .then(response => response.data);
     }
 
-    public async register(request: RegisterRequest): Promise<LoginResponse> {
+    public async register(request: RegisterRequest): Promise<void> {
         const url = '/user/register';
 
         return this.axios.post<LoginResponse>(url, request)
-            .then(response => response.data);
+            .then(() => undefined);
     }
 
     public replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe> {
@@ -123,6 +126,17 @@ export class AxiosYummeClient implements YummeClient {
         const url = `/recipe/${ id }`;
 
         return this.axios.put<Recipe>(url, request)
+            .then(response => response.data);
+    }
+
+    public uploadImage(id: number, file: File): Promise<ImageUploadResult> {
+        const formData = new FormData();
+
+        formData.append('file', file);
+
+        const url = `/recipe/${ id }/image`;
+
+        return this.axios.post<ImageUploadResult>(url, formData)
             .then(response => response.data);
     }
 }

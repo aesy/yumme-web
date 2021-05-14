@@ -52,67 +52,75 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
 
 
     public render(): ReactNode {
-        if (this.state.currentRecipe && this.state.editedRecipe) {
-            const recipe = this.state.editing ? this.state.editedRecipe : this.state.currentRecipe;
+        const recipe = this.state.editing ? this.state.editedRecipe : this.state.currentRecipe;
 
+        if (!recipe) {
             return (
-                <div className={ styles.recipe }>
-                    {
-                        !this.state.tabletView
-                        ? (
-                            <RecipeViewDesktop
-                                recipe={ recipe }
-                                editing={ this.state.editing }
-                                updateRecipe={ this.updateRecipe } />
-                        )
-                        : (
-                            <RecipeViewTablet
-                                recipe={ recipe }
-                                editing={ this.state.editing }
-                                updateRecipe={ this.updateRecipe } />
-                        )
-                    }
-
-                    <div className={ styles.buttons }>
-                        {
-                            this.state.loading && (
-                                <div className={ styles.loadingWrapper }>
-                                    <LoadingSpinner />
-                                </div>
-                            )
-                        }
-                        {
-                            this.state.editing && !this.state.loading && (
-                                <>
-                                    <StandardBtn type="button" onClick={ this.saveRecipe }>
-                                        SAVE RECIPE
-                                    </StandardBtn>
-                                    <StandardBtn
-                                        type="button"
-                                        onClick={ this.toggleEditing }>
-                                            CANCEL EDITING
-                                    </StandardBtn>
-                                </>
-                            )
-                        }
-                        {
-                            !this.state.editing && !this.state.loading && (
-                                <>
-                                    <StandardBtn
-                                        type="button"
-                                        onClick={ this.toggleEditing }>
-                                        EDIT RECIPE
-                                    </StandardBtn>
-                                    <SubtleBtn color="red">DELETE RECIPE</SubtleBtn>
-                                </>
-                            )
-                        }
-                    </div>
+                <div className={ styles.recipeLoadingWrapper }>
+                    <LoadingSpinner color="white" />
                 </div>
             );
         }
 
-        return <div>dsad</div>;
+        return (
+            <div className={ styles.recipe }>
+            {
+                !this.state.tabletView
+                ? (
+                    <div className={ styles.recipeWrapper }>
+                        <RecipeViewDesktop
+                            recipe={ recipe }
+                            editing={ this.state.editing }
+                            updateRecipe={ this.updateRecipe } />
+                    </div>
+                )
+                : (
+                    <div className={ styles.recipeWrapper }>
+                        <RecipeViewTablet
+                            recipe={ recipe }
+                            editing={ this.state.editing }
+                            updateRecipe={ this.updateRecipe } />
+                    </div>
+                )
+            }
+
+                <div className={ styles.buttons }>
+                {
+                    this.state.loading && (
+                        <div className={ styles.saveLoadingWrapper }>
+                            <LoadingSpinner color="orange" />
+                        </div>
+                    )
+                }
+                {
+                    this.state.editing && !this.state.loading && (
+                        <>
+                            <StandardBtn type="button" onClick={ this.saveRecipe }>
+                                SAVE RECIPE
+                            </StandardBtn>
+                            <StandardBtn
+                                type="button"
+                                onClick={ this.toggleEditing }>
+                                    CANCEL EDITING
+                            </StandardBtn>
+                        </>
+                    )
+                }
+                {
+                    !this.state.editing && !this.state.loading && (
+                        <>
+                            <StandardBtn
+                                type="button"
+                                onClick={ this.toggleEditing }>
+                                EDIT RECIPE
+                            </StandardBtn>
+                            <SubtleBtn color="red">DELETE RECIPE</SubtleBtn>
+                        </>
+                    )
+                }
+                </div>
+            </div>
+        );
     }
 
     @Bind
@@ -147,7 +155,6 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
             description: this.state.editedRecipe.description,
             public: true,
             directions: this.state.editedRecipe.directions,
-            images: this.state.editedRecipe.images,
             ingredients: this.state.editedRecipe.ingredients
                 .map(ingredient => ingredient.name),
             // eslint-disable-next-line

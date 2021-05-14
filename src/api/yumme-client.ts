@@ -1,5 +1,10 @@
 /* eslint-disable */
 
+export interface AuthError {
+    error: string;
+    error_description: string;
+}
+
 export interface LoginRequest {
     grant_type: 'password' | 'refresh_token';
     password?: string;
@@ -23,6 +28,7 @@ export interface RegisterRequest {
 export interface User {
     user_name: string;
     display_name: string;
+    id: number;
 }
 
 export interface Recipe {
@@ -56,13 +62,16 @@ export interface UpdateRecipeRequest {
     cook_time: number;
     description: string;
     directions: string[];
-    images: string[];
     ingredients: string[];
     prep_time: number;
     public: boolean;
     tags: string[];
     title: string;
     yield: number;
+}
+
+export interface ImageUploadResult {
+    name: string
 }
 
 export interface YummeClient {
@@ -75,9 +84,10 @@ export interface YummeClient {
     getRecentRecipes(limit?: number): Promise<Recipe[]>;
     getRecipeById(id: number): Promise<Recipe>;
     getRecentCollections(limit?: number): Promise<Collection[]>;
-    register(request: RegisterRequest): Promise<LoginResponse>;
+    register(request: RegisterRequest): Promise<void>;
     replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe>;
     updateRecipe(id: number, request: Partial<UpdateRecipeRequest>): Promise<Recipe>;
+    uploadImage(id: number, file: File): Promise<ImageUploadResult>;
 }
 
 export const YUMME_CLIENT_TYPE = Symbol.for('YummeClient');

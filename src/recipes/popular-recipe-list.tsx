@@ -1,10 +1,10 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
-import { bind } from '@decorize/bind';
+import { Bind } from '@decorize/bind';
 import styles from '@/recipes/recipe-list.scss';
+import { RecipeListItemPlaceholder } from '@/recipes/recipe-list-item-placeholder';
 import { RecipeListItem } from '@/recipes/recipe-list-item';
 import { YUMME_CLIENT_TYPE, Recipe, YummeClient } from '@/api/yumme-client';
-import { RecipeListItemPlaceholder } from './recipe-list-item-placeholder';
 
 interface PopularRecipeListState {
     recipes?: Recipe[];
@@ -38,13 +38,13 @@ export class PopularRecipeList extends PureComponent<RecentRecipeListProps, Popu
         if (!this.state.recipes) {
             return (
                 <ul>
-                {
-                    placeholders.map((placeholder, i) => (
-                        <li key={ i }>
-                            { placeholder }
-                        </li>
-                    ))
-                }
+                    {
+                        placeholders.map((placeholder, i) => (
+                            <li key={ i }>
+                                { placeholder }
+                            </li>
+                        ))
+                    }
                 </ul>
             );
         }
@@ -57,19 +57,19 @@ export class PopularRecipeList extends PureComponent<RecentRecipeListProps, Popu
 
         return (
             <ul>
-            {
-                this.state.recipes
-                    .map(recipe => (
-                        <li className={ styles.recipeListItem } key={ recipe.id }>
-                            <RecipeListItem recipe={ recipe } type="column" />
-                        </li>
-                    ))
-            }
+                {
+                    this.state.recipes
+                        .map(recipe => (
+                            <li className={ styles.recipeListItem } key={ recipe.id }>
+                                <RecipeListItem recipe={ recipe } type="column" />
+                            </li>
+                        ))
+                }
             </ul>
         );
     }
 
-    @bind
+    @Bind
     private async refresh(): Promise<void> {
         const recipes = await this.yummeClient.getPopularRecipes(this.props.amount);
 

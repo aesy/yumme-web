@@ -1,6 +1,6 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
-import { bind } from '@decorize/bind';
+import { Bind } from '@decorize/bind';
 import styles from '@/recipes/recipe-list.scss';
 import { RecipeListItemPlaceholder } from '@/recipes/recipe-list-item-placeholder';
 import { RecipeListItem } from '@/recipes/recipe-list-item';
@@ -48,13 +48,13 @@ export class RecentRecipeList extends PureComponent<RecentRecipeListProps, Recen
         if (!this.state.recipes) {
             return (
                 <ul>
-                {
-                    placeholders.map((placeholder, i) => (
-                        <li key={ i }>
-                            { placeholder }
-                        </li>
-                    ))
-                }
+                    {
+                        placeholders.map((placeholder, i) => (
+                            <li key={ i }>
+                                { placeholder }
+                            </li>
+                        ))
+                    }
                 </ul>
             );
         }
@@ -67,24 +67,25 @@ export class RecentRecipeList extends PureComponent<RecentRecipeListProps, Recen
 
         return (
             <ul>
-            {
-                this.state.recipes
-                    .map(recipe => (
-                        <li className={ styles.recipeListItem } key={ recipe.id }>
-                            <RecipeListItem recipe={ recipe } type={ this.state.onSmallScreen ? 'column' : 'row' } />
-                        </li>
-                    ))
-            }
+                {
+                    this.state.recipes
+                        .map(recipe => (
+                            <li className={ styles.recipeListItem } key={ recipe.id }>
+                                <RecipeListItem recipe={ recipe }
+                                                type={ this.state.onSmallScreen ? 'column' : 'row' } />
+                            </li>
+                        ))
+                }
             </ul>
         );
     }
 
-    @bind
+    @Bind
     private onResize(): void {
         this.setState({ onSmallScreen: window.innerWidth < this.breakpoint });
     }
 
-    @bind
+    @Bind
     private async refresh(): Promise<void> {
         const recipes = await this.yummeClient.getRecentRecipes(this.props.amount);
 

@@ -88,7 +88,6 @@ export class AxiosYummeClient implements YummeClient {
             .then(response => response.data);
     }
 
-
     public getRecentRecipes(limit?: number): Promise<Recipe[]> {
         let url = '/recipe/recent';
 
@@ -99,7 +98,6 @@ export class AxiosYummeClient implements YummeClient {
         return this.axios.get<Recipe[]>(url)
             .then(response => response.data);
     }
-
 
     public getRecipeById(id: number): Promise<Recipe> {
         const url = `/recipe/${ id }`;

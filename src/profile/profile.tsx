@@ -38,7 +38,11 @@ export class Profile extends Component<RouteComponentProps<MatchParams>, Profile
         return (
             <div className={ styles.profile }>
                 <Hero id={ this.props.match.params.id } />
-                <ViewNavigation active={ this.state.view } navigations={ ['Summary', 'Recipes', 'Collections'] } handler={ this.handler } />
+
+                <ViewNavigation
+                    active={ this.state.view }
+                    navigations={ ['Summary', 'Recipes', 'Collections'] }
+                    handler={ this.handler } />
 
                 { this.state.view === 'Summary' && <Summary /> }
 

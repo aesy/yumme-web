@@ -1,9 +1,9 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
+import { AuthWall } from '@/authentication/auth-wall';
+import { AuthState } from '@/authentication/auth-state';
 import styles from '@/app.scss';
-import { AuthWall } from './auth-wall';
-import { AuthState } from './auth-state';
 
 @observer
 export class AuthController extends PureComponent<unknown> {

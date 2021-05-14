@@ -2,8 +2,8 @@ import React, { Component, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
 import styles from '@/collections/collection-list.scss';
 import { CollectionListItem } from '@/collections/collection-list.item';
+import { CollectionListItemPlaceholder } from '@/collections/collection-list-item-placeholder';
 import { Collection, YUMME_CLIENT_TYPE, YummeClient } from '@/api/yumme-client';
-import { CollectionListItemPlaceholder } from './collection-list-item-placeholder';
 
 interface CollectionWithImages {
     collection: Collection;
@@ -42,13 +42,13 @@ export class RecentCollectionList extends Component<RecentCollectionListProps, R
         if (!this.state.collections) {
             return (
                 <ul>
-                {
-                    placeholders.map((placeholder, i) => (
-                        <li key={ i }>
-                            { placeholder }
-                        </li>
-                    ))
-                }
+                    {
+                        placeholders.map((placeholder, i) => (
+                            <li key={ i }>
+                                { placeholder }
+                            </li>
+                        ))
+                    }
                 </ul>
             );
         }
@@ -61,14 +61,14 @@ export class RecentCollectionList extends Component<RecentCollectionListProps, R
 
         return (
             <ul>
-            {
-                this.state.collections
-                    .map(elem => (
-                        <li className={ styles.collectionListItem } key={ elem.collection.id }>
-                            <CollectionListItem collection={ elem.collection } images={ elem.images } />
-                        </li>
-                    ))
-            }
+                {
+                    this.state.collections
+                        .map(elem => (
+                            <li className={ styles.collectionListItem } key={ elem.collection.id }>
+                                <CollectionListItem collection={ elem.collection } images={ elem.images } />
+                            </li>
+                        ))
+                }
             </ul>
         );
     }

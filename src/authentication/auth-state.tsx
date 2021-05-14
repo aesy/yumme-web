@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { inject, injectable, optional } from 'inversify';
 import { AxiosInstance } from 'axios';
-import { LoginResponse, YummeClient, YUMME_CLIENT_TYPE, LoginRequest } from '@/api/yumme-client';
+import { LoginResponse, YUMME_CLIENT_TYPE, YummeClient } from '@/api/yumme-client';
 import { AXIOS_CLIENT_TYPE } from '@/api/axios-client';
 
 @injectable()
@@ -32,18 +32,22 @@ export class AuthState {
         }
     }
 
-    public getAccessToken(): string | null {
-        return this.accessToken;
+    public isLoggedIn(): boolean {
+        return Boolean(this.accessToken);
     }
 
-    public getRefreshToken(): string | null {
+    public logInWithEmailAndPassword(response: LoginResponse): void {
+        this.setAccessToken(response.access_token);
+        this.storeRefreshToken(response.refresh_token);
+    }
+
+    private getRefreshToken(): string | null {
         const key = 'yum_refreshToken';
-        const token = localStorage.getItem(key);
 
-        return token;
+        return localStorage.getItem(key);
     }
 
-    public intercept(axios: AxiosInstance): void {
+    private intercept(axios: AxiosInstance): void {
         axios.interceptors.request.use(
             async config => {
                 if (this.accessToken !== null) {
@@ -84,26 +88,6 @@ export class AuthState {
         );
     }
 
-    public isLoggedIn(): boolean {
-        return Boolean(this.accessToken);
-    }
-
-    public logInWithEmailAndPassword(response: LoginResponse): void {
-        this.setAccessToken(response.access_token);
-        this.storeRefreshToken(response.refresh_token);
-    }
-
-    @action
-    public setAccessToken(token: string): void {
-        this.accessToken = token;
-    }
-
-    public storeRefreshToken(token: string): void {
-        const key = 'yum_refreshToken';
-
-        localStorage.setItem(key, token);
-    }
-
     private async refreshAccessToken(token: string): Promise<string> {
         const request = {
             // eslint-disable-next-line
@@ -116,5 +100,16 @@ export class AuthState {
         this.storeRefreshToken(response.refresh_token);
 
         return response.access_token;
+    }
+
+    @action
+    private setAccessToken(token: string): void {
+        this.accessToken = token;
+    }
+
+    private storeRefreshToken(token: string): void {
+        const key = 'yum_refreshToken';
+
+        localStorage.setItem(key, token);
     }
 }

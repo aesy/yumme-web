@@ -53,17 +53,17 @@ export class EditableText extends Component<EditableTextProps, unknown> {
                 {
                     errors.length !== 0 && (
                         <ul className={ styles.errors }>
-                        {
-                            errors.map((error, j) => (
-                                <li
-                                    key={ j }
-                                    className={ styles.error }>
-                                    <p>
-                                        {error}
-                                    </p>
-                                </li>
-                            ))
-                        }
+                            {
+                                errors.map((error, j) => (
+                                    <li
+                                        key={ j }
+                                        className={ styles.error }>
+                                        <p>
+                                            { error }
+                                        </p>
+                                    </li>
+                                ))
+                            }
                         </ul>
                     )
                 }

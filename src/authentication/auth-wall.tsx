@@ -34,7 +34,10 @@ export class AuthWall extends PureComponent<unknown, AuthWallState> {
                 <StaticCard color="white" borderOffset="large">
                     <div className={ styles.wrapper }>
                         <div className={ styles.nav }>
-                            <ViewNavigation active={ this.state.view } navigations={ ['Sign up', 'Log in'] } handler={ this.handler } />
+                            <ViewNavigation
+                                active={ this.state.view }
+                                navigations={ ['Sign up', 'Log in'] }
+                                handler={ this.handler } />
                         </div>
                         { this.state.view === 'Sign up' && <RegistrationForm /> }
                         { this.state.view === 'Log in' && <LoginForm /> }

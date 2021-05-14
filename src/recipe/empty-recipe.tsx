@@ -3,11 +3,11 @@ import React, { Component, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
 import { Bind } from '@decorize/bind';
 import styles from '@/recipe/recipe.scss';
+import { RecipeViewTablet } from '@/recipe/recipe-view-tablet';
+import { RecipeViewDesktop } from '@/recipe/recipe-view-desktop';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
 import { Recipe, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
-import { RecipeViewTablet } from './recipe-view-tablet';
-import { RecipeViewDesktop } from './recipe-view-desktop';
 
 interface EmptyRecipeState {
     editing: boolean;
@@ -63,35 +63,29 @@ export class EmptyRecipe extends Component<RouteComponentProps, EmptyRecipeState
     public render(): ReactNode {
         return (
             <div className={ styles.recipe }>
-                    {
-                        !this.state.tabletView
-                        ? (
-                            <RecipeViewDesktop
-                                recipe={ this.state.recipe }
-                                editing={ this.state.editing }
-                                updateRecipe={ this.updateRecipe } />
-                        )
-                        : (
-                            <RecipeViewTablet
-                                recipe={ this.state.recipe }
-                                editing={ this.state.editing }
-                                updateRecipe={ this.updateRecipe } />
-                        )
-                    }
+                {
+                    this.state.tabletView
+                        ? <RecipeViewTablet
+                            recipe={ this.state.recipe }
+                            editing={ this.state.editing }
+                            updateRecipe={ this.updateRecipe } />
+                        : <RecipeViewDesktop
+                            recipe={ this.state.recipe }
+                            editing={ this.state.editing }
+                            updateRecipe={ this.updateRecipe } />
+                }
 
                 <div className={ styles.buttons }>
                     {
                         this.state.loading
-                        ? (
-                            <div className={ styles.loadingWrapper }>
+                            ? <div className={ styles.loadingWrapper }>
                                 <LoadingSpinner color="orange" />
-                            </div>
-                        )
-                        : <StandardBtn
+                              </div>
+                            : <StandardBtn
                                 type="button"
                                 onClick={ this.uploadRecipe }>
                                 SAVE RECIPE
-                          </StandardBtn>
+                              </StandardBtn>
                     }
                 </div>
             </div>

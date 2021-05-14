@@ -40,52 +40,53 @@ export class DirectionList extends Component<DirectionListProps, DirectionListSt
         if (this.props.editing) {
             return (
                 <ul className={ styles.directions }>
-                {
-                    this.props.recipe.directions
-                        .map((direction, i) => (
-                            <li key={ i } className={ styles.direction }>
-                                <span className={ styles.label }>
-                                    STEP
-                                    {' '}
-                                    {i + 1}
-                                </span>
+                    {
+                        this.props.recipe.directions
+                            .map((direction, i) => (
+                                <li key={ i } className={ styles.direction }>
+                                    <span className={ styles.label }>
+                                        STEP
+                                        { ' ' }
+                                        { i + 1 }
+                                    </span>
 
-                            {
-                                this.state.selectedInput === i
-                                ? (
-                                    <div className={ styles.editable }>
-                                        <EditableText
-                                            tag="p"
-                                            value={ this.state.selectedInputValue }
-                                            placeholder=""
-                                            errors={ this.state.selectedInputErrors }
-                                            onKeyDownEnter={ this.deselectInput }
-                                            onChange={ this.editOnChange } />
-                                        <div className={ editStyles.editButtons }>
-                                            <DeleteSharpIcon
-                                                className={ editStyles.delete }
-                                                onClick={ (): void => this.delete(i) } />
-                                        </div>
-                                    </div>
-                                )
-                                : (
-                                    <div className={ styles.editable } onClick={ (): void => this.selectInput(i) }>
-                                        <p>{direction}</p>
-                                        <div className={ editStyles.editButtons }>
-                                            <EditSharpIcon className={ editStyles.edit } />
-                                        </div>
-                                    </div>
-                                )
-                            }
-                            </li>
-                        ))
-                }
+                                    {
+                                        this.state.selectedInput === i
+                                            ? (
+                                                <div className={ styles.editable }>
+                                                    <EditableText
+                                                        tag="p"
+                                                        value={ this.state.selectedInputValue }
+                                                        placeholder=""
+                                                        errors={ this.state.selectedInputErrors }
+                                                        onKeyDownEnter={ this.deselectInput }
+                                                        onChange={ this.editOnChange } />
+                                                    <div className={ editStyles.editButtons }>
+                                                        <DeleteSharpIcon
+                                                            className={ editStyles.delete }
+                                                            onClick={ (): void => this.delete(i) } />
+                                                    </div>
+                                                </div>
+                                            )
+                                            : (
+                                                <div className={ styles.editable }
+                                                     onClick={ (): void => this.selectInput(i) }>
+                                                    <p>{ direction }</p>
+                                                    <div className={ editStyles.editButtons }>
+                                                        <EditSharpIcon className={ editStyles.edit } />
+                                                    </div>
+                                                </div>
+                                            )
+                                    }
+                                </li>
+                            ))
+                    }
 
                     <li className={ styles.direction }>
                         <span className={ styles.label }>
                             STEP
-                            {' '}
-                            {this.props.recipe.directions.length + 1}
+                            { ' ' }
+                            { this.props.recipe.directions.length + 1 }
                         </span>
                         <div className={ styles.editable }>
                             <EditableText
@@ -109,25 +110,24 @@ export class DirectionList extends Component<DirectionListProps, DirectionListSt
         return (
             this.props.recipe.directions.length <= 0
                 ? <p>No directions added..</p>
-
                 : (
-                <ul className={ styles.directions }>
-                    {
-                        this.props.recipe.directions
-                            .map((direction, i) => (
-                                <li key={ i } className={ styles.direction }>
+                    <ul className={ styles.directions }>
+                        {
+                            this.props.recipe.directions
+                                .map((direction, i) => (
+                                    <li key={ i } className={ styles.direction }>
                                     <span className={ styles.label }>
                                         STEP
-                                        {' '}
-                                        {i + 1}
+                                        { ' ' }
+                                        { i + 1 }
                                     </span>
-                                    <div className={ styles.content }>
-                                        <p>{direction}</p>
-                                    </div>
-                                </li>
-                            ))
-                    }
-                </ul>
+                                        <div className={ styles.content }>
+                                            <p>{ direction }</p>
+                                        </div>
+                                    </li>
+                                ))
+                        }
+                    </ul>
                 )
         );
     }

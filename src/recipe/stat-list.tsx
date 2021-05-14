@@ -25,7 +25,11 @@ export class StatList extends Component<StatListProps, unknown> {
                             <h4>Prep time</h4>
                         </StandardHeader>
                         <div className={ styles.inputWrapper }>
-                            <input type="number" min={ 1 } max={ 240 } value={ Math.round(this.props.recipe.prep_time / 60) } onChange={ this.editPrepTime } />
+                            <input type="number"
+                                   min={ 1 }
+                                   max={ 240 }
+                                   value={ Math.round(this.props.recipe.prep_time / 60) }
+                                   onChange={ this.editPrepTime } />
                         </div>
                         <span className={ styles.unit }>
                             min
@@ -36,7 +40,11 @@ export class StatList extends Component<StatListProps, unknown> {
                             <h4>Cook time</h4>
                         </StandardHeader>
                         <div className={ styles.inputWrapper }>
-                            <input type="number" min={ 1 } max={ 240 } value={ Math.round(this.props.recipe.cook_time / 60) } onChange={ this.editCookTime } />
+                            <input type="number"
+                                   min={ 1 }
+                                   max={ 240 }
+                                   value={ Math.round(this.props.recipe.cook_time / 60) }
+                                   onChange={ this.editCookTime } />
                         </div>
                         <span className={ styles.unit }>
                             min
@@ -47,7 +55,11 @@ export class StatList extends Component<StatListProps, unknown> {
                             <h4>Yield</h4>
                         </StandardHeader>
                         <div className={ styles.inputWrapper }>
-                            <input type="number" min={ 1 } max={ 12 } value={ this.props.recipe.yield } onChange={ this.editYield } />
+                            <input type="number"
+                                   min={ 1 }
+                                   max={ 12 }
+                                   value={ this.props.recipe.yield }
+                                   onChange={ this.editYield } />
                         </div>
                         <span className={ styles.unit }>
                             servings

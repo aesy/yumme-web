@@ -19,7 +19,6 @@
         border: 1px solid $yum_orange;
     }
 
-    // OFFSET
     &.small {
         &::after {
             top: 5px;
@@ -41,7 +40,6 @@
         }
     }
 
-    // COLORS
     &.white {
         border: 2px solid white;
 

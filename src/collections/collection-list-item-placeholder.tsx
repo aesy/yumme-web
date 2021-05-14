@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styles from '@/collections/collection-list-item-placeholder.scss';
 
-export const CollectionListItemPlaceholder: FC<unknown> = props => (
+export const CollectionListItemPlaceholder: FC<unknown> = () => (
     <div className={ styles.collectionListItemPlaceholder }>
         <div className={ styles.imagesPlaceholder }>
             <span className={ styles.imagePlaceholder } />

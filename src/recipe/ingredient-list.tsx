@@ -39,42 +39,42 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
         if (this.props.editing) {
             return (
                 <ul className={ styles.ingredients }>
-                {
-                    this.props.recipe.ingredients
-                        .map((ingredient, i) => this.state.selectedInput === i
-                            ? (
-                                <li
-                                    key={ i }
-                                    className={ `${ styles.ingredient } ${ styles.editing }` }>
-                                    <EditableText
-                                        tag="p"
-                                        value={ this.state.selectedInputValue }
-                                        placeholder=""
-                                        errors={ this.state.selectedInputErrors }
-                                        onKeyDownEnter={ this.deselectInput }
-                                        onChange={ this.editOnChange } />
+                    {
+                        this.props.recipe.ingredients
+                            .map((ingredient, i) => this.state.selectedInput === i
+                                ? (
+                                    <li
+                                        key={ i }
+                                        className={ `${ styles.ingredient } ${ styles.editing }` }>
+                                        <EditableText
+                                            tag="p"
+                                            value={ this.state.selectedInputValue }
+                                            placeholder=""
+                                            errors={ this.state.selectedInputErrors }
+                                            onKeyDownEnter={ this.deselectInput }
+                                            onChange={ this.editOnChange } />
                                         <div className={ editStyles.editButtons }>
                                             <DeleteSharpIcon
                                                 className={ editStyles.delete }
                                                 onClick={ (): void => this.delete(i) } />
                                         </div>
-                                </li>
-                            )
-                            : (
-                                <li
-                                    key={ i }
-                                    className={ `${ styles.ingredient } ${ styles.editable }` }
-                                    onClick={ (): void => this.selectInput(i) }>
-                                    <div className={ styles.item }>
-                                        <span className={ styles.dot } />
-                                        <p>{ingredient.name}</p>
-                                    </div>
-                                    <div className={ editStyles.editButtons }>
-                                        <EditSharpIcon className={ editStyles.edit } />
-                                    </div>
-                                </li>
-                            ))
-                }
+                                    </li>
+                                )
+                                : (
+                                    <li
+                                        key={ i }
+                                        className={ `${ styles.ingredient } ${ styles.editable }` }
+                                        onClick={ (): void => this.selectInput(i) }>
+                                        <div className={ styles.item }>
+                                            <span className={ styles.dot } />
+                                            <p>{ ingredient.name }</p>
+                                        </div>
+                                        <div className={ editStyles.editButtons }>
+                                            <EditSharpIcon className={ editStyles.edit } />
+                                        </div>
+                                    </li>
+                                ))
+                    }
 
                     <li className={ styles.ingredient }>
                         <EditableText
@@ -99,19 +99,19 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
                 ? <p>No ingredients added..</p>
 
                 : (
-                <ul className={ styles.ingredients }>
-                {
-                    this.props.recipe.ingredients
-                        .map((ingredient, i) => (
-                            <li key={ i } className={ styles.ingredient }>
-                                <div className={ styles.item }>
-                                    <span className={ styles.dot } />
-                                    <p>{ingredient.name}</p>
-                                </div>
-                            </li>
-                        ))
-                }
-                </ul>
+                    <ul className={ styles.ingredients }>
+                        {
+                            this.props.recipe.ingredients
+                                .map((ingredient, i) => (
+                                    <li key={ i } className={ styles.ingredient }>
+                                        <div className={ styles.item }>
+                                            <span className={ styles.dot } />
+                                            <p>{ ingredient.name }</p>
+                                        </div>
+                                    </li>
+                                ))
+                        }
+                    </ul>
                 )
         );
     }
@@ -144,7 +144,6 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
             this.setState({ selectedInput: null });
         });
     }
-
 
     @Bind
     private editOnChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
@@ -191,7 +190,6 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
         this.setState({ addIngredientInputValue: '' });
     }
 
-
     @Bind
     private trySaveInput(callback: () => void): void {
         const recipe = this.props.recipe;
@@ -219,7 +217,6 @@ export class IngredientList extends Component<IngredientListProps, IngredientLis
         this.props.updateRecipe(recipe);
         callback();
     }
-
 
     private validate(value: string): string[] {
         const errors: string[] = [];

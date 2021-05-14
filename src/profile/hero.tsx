@@ -1,7 +1,7 @@
 import React, { Component, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
-import { bind } from '@decorize/bind';
+import { Bind } from '@decorize/bind';
 import styles from '@/profile/hero.scss';
 import DefaultProfileImage from '@/images/DefaultProfileImage.png';
 import DefaultHeroImage from '@/images/DefaultHeroImage.jpg';
@@ -28,7 +28,7 @@ export class Hero extends Component<HeroProps, HeroState> {
     }
 
     public componentDidMount(): void {
-        this.refresh(Number(this.props.id));
+        this.refresh();
     }
 
     public render(): ReactNode {
@@ -42,17 +42,17 @@ export class Hero extends Component<HeroProps, HeroState> {
                             <ul className={ styles.stats }>
                                 <li>
                                     <span className={ styles.highlighted }>33</span>
-                                    {' '}
+                                    { ' ' }
                                     <span>recipes</span>
                                 </li>
                                 <li>
                                     <span className={ styles.highlighted }>5</span>
-                                    {' '}
+                                    { ' ' }
                                     <span>collections</span>
                                 </li>
                                 <li>
                                     <span className={ styles.highlighted }>4.3</span>
-                                    {' '}
+                                    { ' ' }
                                     <span>stars on average</span>
                                 </li>
                             </ul>
@@ -66,8 +66,8 @@ export class Hero extends Component<HeroProps, HeroState> {
         );
     }
 
-    @bind
-    private async refresh(id: number): Promise<void> {
+    @Bind
+    private async refresh(): Promise<void> {
         const currentUser = await this.yummeClient.getCurrentUser();
 
         this.setState({

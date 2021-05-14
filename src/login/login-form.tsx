@@ -37,9 +37,11 @@ export class LoginForm extends PureComponent<unknown, LoginFormState> {
         return (
             <>
                 {
-                    this.state.error !== null &&
-                        <span className={ styles.err }>{this.state.error}</span>
-
+                    this.state.error !== null && (
+                        <span className={ styles.err }>
+                            { this.state.error }
+                        </span>
+                    )
                 }
 
                 {

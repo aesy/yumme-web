@@ -29,17 +29,18 @@ export class ImageList extends Component<ImageListProps, ImageListState> {
         if (this.props.editing) {
             return (
                 <ul className={ `${ styles.images } ${ styles.editing }` }>
-                {
-                    this.props.recipe.images
-                        .map((image, i) => (
-                            <li key={ i }>
-                                <img className={ styles.image } src={ image } />
-                                <div className={ `${ editStyles.editButtons } ${ styles.deleteBtnWrapper }` }>
-                                    <DeleteSharpIcon className={ editStyles.delete } onClick={ (): void => this.delete(i) } />
-                                </div>
-                            </li>
-                        ))
-                }
+                    {
+                        this.props.recipe.images
+                            .map((image, i) => (
+                                <li key={ i }>
+                                    <img className={ styles.image } src={ image } />
+                                    <div className={ `${ editStyles.editButtons } ${ styles.deleteBtnWrapper }` }>
+                                        <DeleteSharpIcon className={ editStyles.delete }
+                                                         onClick={ (): void => this.delete(i) } />
+                                    </div>
+                                </li>
+                            ))
+                    }
 
                     <li>
                         <span className={ styles.image }>
@@ -55,14 +56,15 @@ export class ImageList extends Component<ImageListProps, ImageListState> {
 
         return (
             <ul className={ styles.images }>
-            {
-                this.props.recipe.images
-                    .map((image, i) => (
-                        <li key={ i }>
-                            <img className={ styles.image } src={ `/api/v1/recipe/${ this.props.recipe.id }/image/${ image }` } />
-                        </li>
-                    ))
-            }
+                {
+                    this.props.recipe.images
+                        .map((image, i) => (
+                            <li key={ i }>
+                                <img className={ styles.image }
+                                     src={ `/api/v1/recipe/${ this.props.recipe.id }/image/${ image }` } />
+                            </li>
+                        ))
+                }
             </ul>
         );
     }

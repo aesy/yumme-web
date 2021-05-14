@@ -15,19 +15,19 @@ export const StandardImageInput: FC<StandardImageInputProps> = ({ color, errors,
             <input ref={ input } type="file" name="img" accept=".bmp, .gif, .png, .tiff" { ...props } />
             <ImageSharpIcon className={ `${ styles.svg } ${ styles[color] }` } />
             {
-            errors.length !== 0 && (
-                <ul className={ styles.errors }>
-                {
-                    errors.map((error, i) => (
-                        <li
-                            className={ styles.error }
-                            key={ i }>
-                            { error }
-                        </li>
-                    ))
-                }
-                </ul>
-            )
+                errors.length !== 0 && (
+                    <ul className={ styles.errors }>
+                        {
+                            errors.map((error, i) => (
+                                <li
+                                    className={ styles.error }
+                                    key={ i }>
+                                    { error }
+                                </li>
+                            ))
+                        }
+                    </ul>
+                )
             }
         </div>
     );

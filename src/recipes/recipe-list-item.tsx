@@ -29,28 +29,28 @@ export const RecipeListItem: FC<RecipeListItemProps> = props => (
                         ? <img src={ `/api/v1/recipe/${ props.recipe.id }/image/${ props.recipe.images[0] }?size=thumbnail` } />
                         : <img src={ DefaultRecipeImage } />
                 }
-            <div className={ styles.info }>
-                <div className={ styles.top }>
+                <div className={ styles.info }>
+                    <div className={ styles.top }>
                     <span className={ styles.rating }>
                         <StarSharpIcon />
-                        {props.recipe.rating.average}
-                        {' '}
+                        { props.recipe.rating.average }
+                        { ' ' }
                         stars from
-                        {' '}
-                        {props.recipe.rating.count}
-                        {' '}
+                        { ' ' }
+                        { props.recipe.rating.count }
+                        { ' ' }
                         reviews
                     </span>
 
                         <span className={ styles.time }>
                             <TimerSharpIcon />
-                            {' '}
+                            { ' ' }
                             35 min
                         </span>
-                </div>
+                    </div>
 
                     <h3>
-                        {props.recipe.title}
+                        { props.recipe.title }
                     </h3>
 
                     <p>
@@ -71,12 +71,12 @@ export const RecipeListItem: FC<RecipeListItemProps> = props => (
                             props.recipe.categories
                                 .map(category => (
                                     <li key={ category }>
-                                        {category}
+                                        { category }
                                     </li>
                                 ))
                         }
                     </ul>
-            </div>
+                </div>
             </article>
         </ClickableCard>
     </Link>

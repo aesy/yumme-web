@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom';
-import React, { Component, FC, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
 import NotificationsSharpIcon from '@material-ui/icons/NotificationsSharp';
 import ExpandMoreSharpIcon from '@material-ui/icons/ExpandMoreSharp';
 import ChatBubbleSharpIcon from '@material-ui/icons/ChatBubbleSharp';
-import { bind } from '@decorize/bind';
+import { Bind } from '@decorize/bind';
 import DefaultProfileImage from '@/images/DefaultProfileImage.png';
+import { StandardLinkBtn } from '@/common/standard-link-btn';
 import styles from '@/common/header.scss';
 import { User, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
-import { StandardLinkBtn } from './standard-link-btn';
 
 interface HeaderState {
     currentUser?: User;
@@ -40,7 +40,7 @@ export class Header extends Component<unknown, HeaderState> {
                             <ul>
                                 <li>
                                     Browse
-                                    {' '}
+                                    { ' ' }
                                     <ExpandMoreSharpIcon />
                                 </li>
                             </ul>
@@ -65,7 +65,7 @@ export class Header extends Component<unknown, HeaderState> {
         );
     }
 
-    @bind
+    @Bind
     private async onRefresh(): Promise<void> {
         const currentUser = await this.yummeClient.getCurrentUser();
 

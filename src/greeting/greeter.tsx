@@ -1,7 +1,7 @@
 import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
-import { bind } from '@decorize/bind';
+import { Bind } from '@decorize/bind';
 import { NameState } from '@/greeting/name-state';
 import { GreetingProvider } from '@/greeting/greeting-provider';
 import styles from '@/greeting/greeter.scss';
@@ -28,7 +28,7 @@ export class Greeter extends PureComponent {
         );
     }
 
-    @bind
+    @Bind
     private onNameChange(event: ChangeEvent<HTMLInputElement>): void {
         const name = event.target.value;
 

@@ -39,9 +39,11 @@ export class RegistrationForm extends PureComponent<unknown, RegistrationFormSta
         return (
             <>
                 {
-                    this.state.error !== null &&
-                        <span className={ styles.err }>{this.state.error}</span>
-
+                    this.state.error !== null && (
+                        <span className={ styles.err }>
+                            { this.state.error }
+                        </span>
+                    )
                 }
 
                 {

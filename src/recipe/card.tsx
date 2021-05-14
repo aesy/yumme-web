@@ -43,83 +43,82 @@ export class Card extends Component<CardProps, CardState> {
         const rating = [];
         const half = 0.5;
 
-
         for (let i = 0; i < this.props.recipe.rating.average; i++) {
             rating.push(<StarSharpIcon />);
         }
 
-
         if (this.props.recipe.rating.average - Math.floor(this.props.recipe.rating.average) >= half) {
             rating.push(<StarHalfSharpIcon />);
         }
-
 
         if (this.props.editing) {
             return (
                 <div className={ `${ styles.card }` }>
                     <div
                         className={ styles.cardImage }
-                        style={{ backgroundImage: this.props.recipe.images[0]
-                        ? `url(${ this.props.recipe.images[0] })`
-                        : `url(${ DefaultRecipeImage })` }}>
+                        style={{
+                            backgroundImage: this.props.recipe.images[0]
+                                ? `url(${ this.props.recipe.images[0] })`
+                                : `url(${ DefaultRecipeImage })`,
+                        }}>
                         <StandardImageInput
                             color="white"
                             errors={ this.state.imageErrors }
                             onChange={ this.tryEditImage } />
                     </div>
                     <div className={ styles.cardContent }>
-                    {
-                        this.state.selectedInput === 'title'
-                        ? (
-                            <EditableText
-                                tag="h1"
-                                value={ this.state.titleInputValue }
-                                placeholder="Title"
-                                errors={ this.state.titleErrors }
-                                onKeyDownEnter={ this.deselectInput }
-                                onChange={ this.titleOnChange } />
-                        )
-                        : (
-                            <div className={ styles.editable } onClick={ (): void => this.selectInput('title') }>
-                                <h1>{this.props.recipe.title}</h1>
-                                <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
-                                    <EditSharpIcon className={ editStyles.edit } />
-                                </div>
-                            </div>
-                        )
-
-                    }
+                        {
+                            this.state.selectedInput === 'title'
+                                ? (
+                                    <EditableText
+                                        tag="h1"
+                                        value={ this.state.titleInputValue }
+                                        placeholder="Title"
+                                        errors={ this.state.titleErrors }
+                                        onKeyDownEnter={ this.deselectInput }
+                                        onChange={ this.titleOnChange } />
+                                )
+                                : (
+                                    <div className={ styles.editable } onClick={ (): void => this.selectInput('title') }>
+                                        <h1>{ this.props.recipe.title }</h1>
+                                        <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
+                                            <EditSharpIcon className={ editStyles.edit } />
+                                        </div>
+                                    </div>
+                                )
+                        }
 
                         <ul className={ styles.rating }>
                             {
                                 rating
                                     .map((star, i) => (
                                         <li key={ i }>
-                                            {star}
+                                            { star }
                                         </li>))
                             }
                         </ul>
 
-                    {
-                        this.state.selectedInput === 'description'
-                        ? (
-                            <EditableText
-                                tag="p"
-                                value={ this.state.descriptionInputValue }
-                                placeholder="Description"
-                                errors={ this.state.descriptionErrors }
-                                onKeyDownEnter={ this.deselectInput }
-                                onChange={ this.descriptionOnChange } />
-                        )
-                        : (
-                            <div className={ styles.editable } onClick={ (): void => this.selectInput('description') }>
-                                <p>{this.props.recipe.description}</p>
-                                <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
-                                    <EditSharpIcon className={ editStyles.edit } />
-                                </div>
-                            </div>
-                        )
-                    }
+                        {
+                            this.state.selectedInput === 'description'
+                                ? (
+                                    <EditableText
+                                        tag="p"
+                                        value={ this.state.descriptionInputValue }
+                                        placeholder="Description"
+                                        errors={ this.state.descriptionErrors }
+                                        onKeyDownEnter={ this.deselectInput }
+                                        onChange={ this.descriptionOnChange } />
+                                )
+                                : (
+                                    <div className={ styles.editable }
+                                         onClick={ (): void => this.selectInput('description') }>
+                                        <p>{ this.props.recipe.description }</p>
+                                        <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
+                                            <EditSharpIcon className={ editStyles.edit } />
+                                        </div>
+                                    </div>
+                                )
+                        }
                     </div>
                 </div>
             );
@@ -129,21 +128,22 @@ export class Card extends Component<CardProps, CardState> {
             <div className={ styles.card }>
                 <div
                     className={ styles.cardImage }
-                    style={{ backgroundImage: this.props.recipe.images[0]
-                        ? `url(${ this.props.recipe.images[0] })`
-                        : `url(${ DefaultRecipeImage })` }} />
-                    <div className={ styles.cardContent }>
-                    <h1>{this.props.recipe.title}</h1>
+                    style={{
+                        backgroundImage: this.props.recipe.images[0]
+                            ? `url(${ this.props.recipe.images[0] })`
+                            : `url(${ DefaultRecipeImage })`,
+                    }} />
+                <div className={ styles.cardContent }>
+                    <h1>{ this.props.recipe.title }</h1>
 
                     <ul className={ styles.rating }>
                         {
-                            rating
-                                .map((star, i) => <li key={ i }>{star}</li>)
+                            rating.map((star, i) => <li key={ i }>{ star }</li>)
                         }
                     </ul>
 
-                    <p>{this.props.recipe.description}</p>
-                    </div>
+                    <p>{ this.props.recipe.description }</p>
+                </div>
             </div>
         );
     }
@@ -170,8 +170,7 @@ export class Card extends Component<CardProps, CardState> {
         }
     }
 
-
-        @Bind
+    @Bind
     private selectInput(identifier: 'title' | 'description'): void {
         const previousSelectedInput = this.state.selectedInput;
 
@@ -197,9 +196,9 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     @Bind
-        private titleOnChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
-            this.setState({ titleInputValue: ev.target.value });
-        }
+    private titleOnChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
+        this.setState({ titleInputValue: ev.target.value });
+    }
 
     @Bind
     private tryEditImage(el: React.ChangeEvent<HTMLInputElement>): void {
@@ -257,7 +256,6 @@ export class Card extends Component<CardProps, CardState> {
         });
     }
 
-
     private validateDescription(value: string): string[] {
         const errors: string[] = [];
         const min = 1;
@@ -285,7 +283,7 @@ export class Card extends Component<CardProps, CardState> {
                 }
 
                 if (image.height < minHeight || image.width < minWidth) {
-                    imageErrors.push(`Image needs to be atleast ${ minWidth }x${ minHeight }`);
+                    imageErrors.push(`Image needs to be at least ${ minWidth }x${ minHeight }`);
                 }
 
                 this.setState({ imageErrors });

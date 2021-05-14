@@ -5,12 +5,12 @@ import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
 import { Bind } from '@decorize/bind';
 import styles from '@/recipe/recipe.scss';
+import { RecipeViewTablet } from '@/recipe/recipe-view-tablet';
+import { RecipeViewDesktop } from '@/recipe/recipe-view-desktop';
 import { SubtleBtn } from '@/common/subtle-btn';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
 import { Recipe as RecipeType, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
-import { RecipeViewTablet } from './recipe-view-tablet';
-import { RecipeViewDesktop } from './recipe-view-desktop';
 
 interface RecipeState {
     currentRecipe?: RecipeType;
@@ -63,66 +63,66 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
 
         return (
             <div className={ styles.recipe }>
-            {
-                !this.state.tabletView
-                ? (
-                    <div className={ styles.recipeWrapper }>
-                        <RecipeViewDesktop
-                            recipe={ recipe }
-                            editing={ this.state.editing }
-                            updateRecipe={ this.updateRecipe } />
-                    </div>
-                )
-                : (
-                    <div className={ styles.recipeWrapper }>
-                        <RecipeViewTablet
-                            recipe={ recipe }
-                            editing={ this.state.editing }
-                            updateRecipe={ this.updateRecipe } />
-                    </div>
-                )
-            }
+                {
+                    this.state.tabletView
+                        ? (
+                            <div className={ styles.recipeWrapper }>
+                                <RecipeViewTablet
+                                    recipe={ recipe }
+                                    editing={ this.state.editing }
+                                    updateRecipe={ this.updateRecipe } />
+                            </div>
+                        )
+                        : (
+                            <div className={ styles.recipeWrapper }>
+                                <RecipeViewDesktop
+                                    recipe={ recipe }
+                                    editing={ this.state.editing }
+                                    updateRecipe={ this.updateRecipe } />
+                            </div>
+                        )
+                }
 
                 <div className={ styles.buttons }>
-                {
-                    this.state.loading && (
-                        <div className={ styles.saveLoadingWrapper }>
-                            <LoadingSpinner color="orange" />
-                        </div>
-                    )
-                }
-                {
-                    this.state.editing && !this.state.loading && (
-                        <>
-                            <StandardBtn
-                                type="button"
-                                onClick={ this.saveRecipe }>
-                                SAVE RECIPE
-                            </StandardBtn>
-                            <StandardBtn
-                                type="button"
-                                onClick={ this.toggleEditing }>
+                    {
+                        this.state.loading && (
+                            <div className={ styles.saveLoadingWrapper }>
+                                <LoadingSpinner color="orange" />
+                            </div>
+                        )
+                    }
+                    {
+                        this.state.editing && !this.state.loading && (
+                            <>
+                                <StandardBtn
+                                    type="button"
+                                    onClick={ this.saveRecipe }>
+                                    SAVE RECIPE
+                                </StandardBtn>
+                                <StandardBtn
+                                    type="button"
+                                    onClick={ this.toggleEditing }>
                                     CANCEL EDITING
-                            </StandardBtn>
-                        </>
-                    )
-                }
-                {
-                    !this.state.editing && !this.state.loading && (
-                        <>
-                            <StandardBtn
-                                type="button"
-                                onClick={ this.toggleEditing }>
-                                EDIT RECIPE
-                            </StandardBtn>
-                            <SubtleBtn
-                                color="red"
-                                onClick={ this.deleteRecipe }>
-                                DELETE RECIPE
-                            </SubtleBtn>
-                        </>
-                    )
-                }
+                                </StandardBtn>
+                            </>
+                        )
+                    }
+                    {
+                        !this.state.editing && !this.state.loading && (
+                            <>
+                                <StandardBtn
+                                    type="button"
+                                    onClick={ this.toggleEditing }>
+                                    EDIT RECIPE
+                                </StandardBtn>
+                                <SubtleBtn
+                                    color="red"
+                                    onClick={ this.deleteRecipe }>
+                                    DELETE RECIPE
+                                </SubtleBtn>
+                            </>
+                        )
+                    }
                 </div>
             </div>
         );

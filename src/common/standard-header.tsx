@@ -8,6 +8,6 @@ interface StandardHeaderProps {
 
 export const StandardHeader: FC<StandardHeaderProps> = props => (
     <span className={ `${ styles.standardHeader } ${ styles[props.color] } ${ styles[props.borderOffset] }` }>
-        {props.children}
+        { props.children }
     </span>
 );

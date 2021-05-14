@@ -33,27 +33,28 @@ export class EditableText extends Component<EditableTextProps, unknown> {
 
     public render(): ReactNode {
         this.setHeight();
+        const { tag, errors, onKeyDownEnter, ...props } = this.props;
 
         return (
             <div className={ `${ styles.editableText }` }>
                 {
                     React.createElement(
-                        this.props.tag,
+                        tag,
                         {
                             className: styles.editWrapper,
                         },
                         <textarea
                             ref={ this.input }
-                            className={ `${ styles.textArea } ${ this.props.errors.length ? styles.invalid : '' }` }
+                            className={ `${ styles.textArea } ${ errors.length ? styles.invalid : '' }` }
                             onFocus={ this.onFocus }
-                            { ...this.props } />,
+                            { ...props } />,
                     )
                 }
                 {
-                    this.props.errors.length !== 0 && (
+                    errors.length !== 0 && (
                         <ul className={ styles.errors }>
                         {
-                            this.props.errors.map((error, j) => (
+                            errors.map((error, j) => (
                                 <li
                                     key={ j }
                                     className={ styles.error }>

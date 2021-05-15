@@ -32,7 +32,7 @@
 
     &::after {
         content: '';
-        background-color: $yum_beige;
+        background: linear-gradient(lighten($yum_beige, 10%), $yum_beige);
         position: absolute;
         top: 0;
         left: 0;

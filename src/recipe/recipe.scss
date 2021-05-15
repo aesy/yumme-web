@@ -31,7 +31,7 @@
         left: 0;
         height: 800px;
         width: 100%;
-        background-color: $yum_beige;
+        background: linear-gradient(lighten($yum_beige, 10%), $yum_beige);
         z-index: -999;
         transform: skewY(-2deg);
         transform-origin: top left;
@@ -49,7 +49,7 @@
         left: 0;
         height: 800px;
         width: 100%;
-        background-color: $yum_beige;
+	    background: linear-gradient(lighten($yum_beige, 10%), $yum_beige);
         z-index: -999;
         transform: skewY(-2deg);
         transform-origin: top left;

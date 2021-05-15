@@ -7,7 +7,7 @@
 .header {
     z-index: 999;
     padding: 10px $padding_page;
-    background-color: $yum_beige;
+    background-color: lighten($yum_beige, 10%);
     position: relative;
 
     @media screen and (max-width: $breakpoint_tablet) {

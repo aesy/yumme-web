@@ -35,7 +35,10 @@ export class Header extends Component<unknown, HeaderState> {
             <header className={ styles.header }>
                 <div className={ styles.content }>
                     <div className={ styles.left }>
-                        <span>Logo</span>
+                        <Link to="/">
+                            <span className={ styles.logo }>Yumme</span>
+                        </Link>
+
                         <nav>
                             <ul>
                                 <li>

@@ -6,7 +6,7 @@
 
 .header {
     z-index: 999;
-    padding: 80px $padding_page;
+    padding: 10px $padding_page;
     background-color: $yum_beige;
     position: relative;
 
@@ -20,6 +20,17 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+	    .logo {
+		    font-family: "Playfair Display", serif;
+		    letter-spacing: -1px;
+		    font-size: 30px;
+		    font-style: italic;
+		    font-weight: bold;
+		    bottom: 4px;
+		    position: relative;
+		    color: $yum_orange;
+	    }
 
         .left,
         .right {

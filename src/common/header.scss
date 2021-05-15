@@ -21,16 +21,16 @@
         align-items: center;
         justify-content: space-between;
 
-	    .logo {
-		    font-family: "Playfair Display", serif;
-		    letter-spacing: -1px;
-		    font-size: 30px;
-		    font-style: italic;
-		    font-weight: bold;
-		    bottom: 4px;
-		    position: relative;
-		    color: $yum_orange;
-	    }
+        .logo {
+            font-family: "Playfair Display", serif;
+            letter-spacing: -1px;
+            font-size: 30px;
+            font-style: italic;
+            font-weight: bold;
+            bottom: 4px;
+            position: relative;
+            color: $yum_orange;
+        }
 
         .left,
         .right {

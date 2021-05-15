@@ -114,15 +114,7 @@ export class FakeYummeClient implements YummeClient {
                 { name: '1 pound raw peeled and deveined shrimp' },
                 { name: '1 pound raw peeled and deveined shrimp' },
             ],
-            images: [
-                'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-                'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-                'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-                'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-                'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-                'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-                'https://img.koket.se/standard-mega/tommy-myllymakis-saftiga-cheeseburgare.jpg',
-            ],
+            images: [],
             rating: {
                 average: 3.6,
                 count: 33,

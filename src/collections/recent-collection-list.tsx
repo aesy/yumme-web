@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
+import DefaultRecipeImage from '@/images/DefaultRecipeImage.jpg';
 import styles from '@/collections/collection-list.scss';
 import { CollectionListItem } from '@/collections/collection-list.item';
 import { CollectionListItemPlaceholder } from '@/collections/collection-list-item-placeholder';
@@ -79,7 +80,7 @@ export class RecentCollectionList extends Component<RecentCollectionListProps, R
         for (const id of collection.recipes) {
             const recipe = await this.yummeClient.getRecipeById(id);
 
-            images.push(recipe.images[0]);
+            images.push(recipe.images[0] || DefaultRecipeImage);
         }
 
         return images;

@@ -42,6 +42,7 @@ export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeSt
     }
 
     public componentDidMount(): void {
+        window.scrollTo(0, 0);
         window.addEventListener('resize', this.onResize);
         this.refresh(Number(this.props.match.params.id));
     }

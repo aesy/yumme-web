@@ -28,6 +28,10 @@ export class Profile extends Component<RouteComponentProps<MatchParams>, Profile
         this.handler = this.handler.bind(this);
     }
 
+    public componentDidMount(): void {
+        window.scrollTo(0, 0);
+    }
+
     public handler(view: string): void {
         this.setState({
             view: view as View,

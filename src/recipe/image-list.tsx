@@ -33,7 +33,9 @@ export class ImageList extends Component<ImageListProps, ImageListState> {
                         this.props.recipe.images
                             .map((image, i) => (
                                 <li key={ i }>
-                                    <img className={ styles.image } src={ image } />
+                                    <img
+                                        className={ styles.image }
+                                        src={ `/api/v1/${ this.props.recipe.id }/image/${ image }` } />
                                     <div className={ `${ editStyles.editButtons } ${ styles.deleteBtnWrapper }` }>
                                         <DeleteSharpIcon className={ editStyles.delete }
                                                          onClick={ (): void => this.delete(i) } />

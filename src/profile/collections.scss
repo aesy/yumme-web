@@ -1,0 +1,12 @@
+@import 'common/colors';
+@import 'common/typography';
+@import 'common/content';
+@import 'common/css-functions';
+@import 'common/breakpoints';
+@import 'common/paddings';
+
+.view {
+    @include content-standard;
+
+    padding: 50px 0;
+}

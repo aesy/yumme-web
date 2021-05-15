@@ -9,6 +9,7 @@
     position: relative;
     z-index: 1;
     padding: 0 $padding_page;
+	flex-grow: 1;
 
     .view {
         padding: 50px 0 170px 0;
@@ -19,11 +20,15 @@
         position: absolute;
         top: 0;
         left: 0;
-        height: 625px;
+        height: 510px;
         width: 100%;
-        background-color: $yum_beige;
+        background: linear-gradient(lighten($yum_beige, 10%), $yum_beige);
         z-index: -999;
         transform: skewY(-2deg);
         transform-origin: top left;
+
+	    @media screen and (max-width: $breakpoint_tablet) {
+            height: 480px;
+	    }
     }
 }

@@ -1,6 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { inject, injectable, optional } from 'inversify';
 import { AxiosInstance } from 'axios';
+import { bind } from '@decorize/bind';
 import { LoginResponse, YUMME_CLIENT_TYPE, YummeClient } from '@/api/yumme-client';
 import { AXIOS_CLIENT_TYPE } from '@/api/axios-client';
 
@@ -39,6 +40,16 @@ export class AuthState {
     public logInWithEmailAndPassword(response: LoginResponse): void {
         this.setAccessToken(response.access_token);
         this.storeRefreshToken(response.refresh_token);
+    }
+
+    public logout(): void {
+        this.clearAccessToken();
+        localStorage.removeItem('yum_refreshToken');
+    }
+
+    @action
+    private clearAccessToken(): void {
+        this.accessToken = null;
     }
 
     private getRefreshToken(): string | null {

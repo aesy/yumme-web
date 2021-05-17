@@ -7,6 +7,7 @@
     position: relative;
     background-color: white;
     border: 1px solid $yum_orange;
+    animation: fadeSlideIn 0.5s forwards;
 
     &::after {
         content: '';
@@ -62,5 +63,17 @@
         &::after {
             border: 2px solid $yum_orange;
         }
+    }
+}
+
+@keyframes fadeSlideIn {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
     }
 }

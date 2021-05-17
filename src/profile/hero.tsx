@@ -56,7 +56,7 @@ export class Hero extends Component<HeroProps, HeroState> {
                                     <span>stars on average</span>
                                 </li>
                             </ul>
-                            <StandardBtn type="button">Follow Emil</StandardBtn>
+                            <StandardBtn type="button">Follow</StandardBtn>
                         </div>
                     </div>
                     <div className={ styles.bg }

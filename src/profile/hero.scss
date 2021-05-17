@@ -12,6 +12,7 @@
     .content {
         @include content-standard;
 
+        background-color: $yum_black;
         color: $font_primary;
         height: 400px;
         position: relative;
@@ -37,7 +38,6 @@
             display: flex;
             align-items: center;
             position: relative;
-            background-color: $yum_black;
             padding: 85px;
             max-width: 600px;
             height: 100%;

@@ -32,18 +32,10 @@
             color: $yum_orange;
         }
 
-        .left,
-        .right {
+        .left {
             display: flex;
             align-items: center;
 
-            ul {
-                list-style: none;
-                padding: 0;
-            }
-        }
-
-        .left {
             * + * {
                 margin-left: 35px;
             }
@@ -52,29 +44,15 @@
                 font-family: $font_body;
 
                 ul {
+                    list-style: none;
+                    padding: 0;
+
                     li {
                         display: flex;
                         align-items: center;
                         font-weight: bold;
                     }
                 }
-            }
-        }
-
-        .right {
-            * + * {
-                margin-left: 25px;
-            }
-
-            svg {
-                fill: white;
-            }
-
-            .profile {
-                height: 40px;
-                width: 40px;
-                border-radius: 50%;
-                object-fit: cover;
             }
         }
     }

@@ -51,10 +51,13 @@ export class Card extends Component<CardProps, CardState> {
             rating.push(<StarHalfSharpIcon />);
         }
 
-        let image = this.props.recipe.images[0];
+        const image = this.props.recipe.images[0];
+        let imageUrl;
 
-        if (!image) {
-            image = DefaultRecipeImage;
+        if (image) {
+            imageUrl = `/api/v1/recipe/${ this.props.recipe.id }/image/${ image }`;
+        } else {
+            imageUrl = DefaultRecipeImage;
         }
 
         if (this.props.editing) {
@@ -62,7 +65,7 @@ export class Card extends Component<CardProps, CardState> {
                 <div className={ `${ styles.card }` }>
                     <div
                         className={ styles.cardImage }
-                        style={{ backgroundImage: `url(${ image })` }}>
+                        style={{ backgroundImage: `url(${ imageUrl })` }}>
                         <StandardImageInput
                             color="white"
                             errors={ this.state.imageErrors }
@@ -130,7 +133,7 @@ export class Card extends Component<CardProps, CardState> {
             <div className={ styles.card }>
                 <div
                     className={ styles.cardImage }
-                    style={{ backgroundImage: `url(${ image })` }} />
+                    style={{ backgroundImage: `url(${ imageUrl })` }} />
                 <div className={ styles.cardContent }>
                     <h1>{ this.props.recipe.title }</h1>
 

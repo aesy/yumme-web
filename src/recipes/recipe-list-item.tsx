@@ -58,15 +58,6 @@ export const RecipeListItem: FC<RecipeListItemProps> = props => (
                     </p>
 
                     <ul>
-                        <li>
-                            test
-                        </li>
-                        <li>
-                            test2
-                        </li>
-                        <li>
-                            test3
-                        </li>
                         {
                             props.recipe.categories
                                 .map(category => (

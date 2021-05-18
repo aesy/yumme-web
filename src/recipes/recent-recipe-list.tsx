@@ -4,7 +4,7 @@ import { Bind } from '@decorize/bind';
 import styles from '@/recipes/recipe-list.scss';
 import { RecipeListItemPlaceholder } from '@/recipes/recipe-list-item-placeholder';
 import { RecipeListItem } from '@/recipes/recipe-list-item';
-import { Recipe, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
+import { Recipe, YummeClient, YUMME_CLIENT_TYPE, User } from '@/api/yumme-client';
 
 interface RecentRecipeListState {
     onSmallScreen: boolean;
@@ -13,6 +13,7 @@ interface RecentRecipeListState {
 
 interface RecentRecipeListProps {
     amount: number;
+    user: User;
 }
 
 export class RecentRecipeList extends PureComponent<RecentRecipeListProps, RecentRecipeListState> {
@@ -87,7 +88,7 @@ export class RecentRecipeList extends PureComponent<RecentRecipeListProps, Recen
 
     @Bind
     private async refresh(): Promise<void> {
-        const recipes = await this.yummeClient.getRecentRecipes(this.props.amount);
+        const recipes = await this.yummeClient.getRecentRecipesByUser(this.props.user.id, this.props.amount);
 
         this.setState({ recipes });
     }

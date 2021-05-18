@@ -48,6 +48,10 @@ export class FakeYummeClient implements YummeClient {
             });
     }
 
+    public getPopularRecipesByUser(): Promise<Recipe[]> {
+        return this.getPopularRecipes();
+    }
+
     public async getRecentCollections(): Promise<Collection[]> {
         return Array.from({ length: 4 })
             .map(() => {
@@ -62,8 +66,16 @@ export class FakeYummeClient implements YummeClient {
             });
     }
 
+    public getRecentRecipesByUser(): Promise<Recipe[]> {
+        return this.getRecentRecipes();
+    }
+
     public async getRecipeById(): Promise<Recipe> {
         return this.createFakeRecipe();
+    }
+
+    public async getUserById(): Promise<User> {
+        return this.createFakeUser();
     }
 
     public async register(): Promise<void> {

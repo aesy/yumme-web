@@ -6,8 +6,13 @@ import { StandardHeader } from '@/common/standard-header';
 import { StandardBtn } from '@/common/standard-btn';
 import { ClickableCard } from '@/common/clickable-card';
 import { RecentCollectionList } from '@/collections/recent-collection-list';
+import { User } from '@/api/yumme-client';
 
-export const Summary: FC = () => (
+export interface SummaryProps {
+    user: User;
+}
+
+export const Summary: FC<SummaryProps> = props => (
     <section className={ styles.view }>
         <div>
             <StandardHeader color="white" borderOffset="small">
@@ -15,7 +20,7 @@ export const Summary: FC = () => (
             </StandardHeader>
 
             <div className={ styles.popularRecipes }>
-                <PopularRecipeList amount={ 3 } />
+                <PopularRecipeList user={ props.user } amount={ 3 } />
             </div>
         </div>
 
@@ -25,7 +30,7 @@ export const Summary: FC = () => (
             </StandardHeader>
 
             <div className={ styles.recentRecipes }>
-                <RecentRecipeList amount={ 4 } />
+                <RecentRecipeList user={ props.user } amount={ 4 } />
                 <div className={ styles.button }>
                     <ClickableCard borderOffset="small">
                         <StandardBtn type="button">ALL RECIPES</StandardBtn>

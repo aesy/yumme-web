@@ -77,6 +77,17 @@ export class AxiosYummeClient implements YummeClient {
             .then(response => response.data);
     }
 
+    public getPopularRecipesByUser(user: number, limit?: number): Promise<Recipe[]> {
+        let url = `/recipe/popular?user=${ user }`;
+
+        if (limit !== undefined) {
+            url += `&limit=${ limit }`;
+        }
+
+        return this.axios.get<Recipe[]>(url)
+            .then(response => response.data);
+    }
+
     public getRecentCollections(limit?: number): Promise<Collection[]> {
         let url = '/collection';
 
@@ -99,10 +110,28 @@ export class AxiosYummeClient implements YummeClient {
             .then(response => response.data);
     }
 
+    public getRecentRecipesByUser(user: number, limit?: number): Promise<Recipe[]> {
+        let url = `/recipe/recent?user=${ user }`;
+
+        if (limit !== undefined) {
+            url += `&limit=${ limit }`;
+        }
+
+        return this.axios.get<Recipe[]>(url)
+            .then(response => response.data);
+    }
+
     public getRecipeById(id: number): Promise<Recipe> {
         const url = `/recipe/${ id }`;
 
         return this.axios.get<Recipe>(url)
+            .then(response => response.data);
+    }
+
+    public getUserById(id: number): Promise<User> {
+        const url = `/user/${ id }`;
+
+        return this.axios.get<User>(url)
             .then(response => response.data);
     }
 

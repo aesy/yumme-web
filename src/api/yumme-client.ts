@@ -81,9 +81,12 @@ export interface YummeClient {
     getAllRecipes(): Promise<Recipe[]>;
     getCurrentUser(): Promise<User>;
     getPopularRecipes(limit?: number): Promise<Recipe[]>;
+    getPopularRecipesByUser(user: number, limit?: number): Promise<Recipe[]>;
     getRecentRecipes(limit?: number): Promise<Recipe[]>;
+    getRecentRecipesByUser(user: number, limit?: number): Promise<Recipe[]>;
     getRecipeById(id: number): Promise<Recipe>;
     getRecentCollections(limit?: number): Promise<Collection[]>;
+    getUserById(id: number): Promise<User>;
     register(request: RegisterRequest): Promise<void>;
     replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe>;
     updateRecipe(id: number, request: Partial<UpdateRecipeRequest>): Promise<Recipe>;

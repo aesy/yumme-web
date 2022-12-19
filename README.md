@@ -3,7 +3,7 @@
 [![Build Status][github-actions-image]][github-actions-url]
 [![MIT license][license-image]][license-url]
 
-[github-actions-image]: https://img.shields.io/github/workflow/status/aesy/yumme-web/Continous%20Integration?style=flat-square
+[github-actions-image]: https://img.shields.io/github/actions/workflow/status/aesy/yumme-web/ci.yml?branch=master&style=flat-square
 [github-actions-url]: https://github.com/aesy/yumme-web/actions
 
 [license-image]: https://img.shields.io/github/license/aesy/yumme-web?style=flat-square

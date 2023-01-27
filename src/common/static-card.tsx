@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import styles from '@/common/static-card.scss';
 
 interface StaticCardProps {
@@ -6,7 +6,7 @@ interface StaticCardProps {
     readonly color: 'white' | 'orange' | 'black';
 }
 
-export const StaticCard: FC<StaticCardProps> = props => (
+export const StaticCard: FC<PropsWithChildren<StaticCardProps>> = props => (
     <div className={ `${ styles.staticCard } ${ styles[props.borderOffset] } ${ styles[props.color] }` }>
         { props.children }
     </div>

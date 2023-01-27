@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import styles from '@/common/standard-header.scss';
 
 interface StandardHeaderProps {
@@ -6,7 +6,7 @@ interface StandardHeaderProps {
     readonly color: 'white' | 'orange' | 'brown';
 }
 
-export const StandardHeader: FC<StandardHeaderProps> = props => (
+export const StandardHeader: FC<PropsWithChildren<StandardHeaderProps>> = props => (
     <span className={ `${ styles.standardHeader } ${ styles[props.color] } ${ styles[props.borderOffset] }` }>
         { props.children }
     </span>

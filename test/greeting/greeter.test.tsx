@@ -2,13 +2,13 @@ import { instance, mock, verify, when } from 'ts-mockito';
 import React from 'react';
 import { Provider } from 'inversify-react';
 import { Container } from 'inversify';
-import { render } from 'enzyme';
+import { render } from '@testing-library/react';
 import { NameState } from '@/greeting/name-state';
 import { GreetingProvider } from '@/greeting/greeting-provider';
 import { Greeter } from '@/greeting/greeter';
 
 describe(Greeter.name, () => {
-    test('It should display a greeting', () => {
+    test('It should display a greeting', async() => {
         const name = 'Alex';
         const nameState = mock(NameState);
         when(nameState.getName()).thenReturn(name);
@@ -26,9 +26,9 @@ describe(Greeter.name, () => {
                 <Greeter />
             </Provider>,
         );
-        const text = hello.find('h1').text();
+        const header = hello.getByRole('heading');
 
-        expect(text).toEqual(greeting);
+        expect(header.textContent).toEqual(greeting);
         verify(nameState.getName()).called();
         verify(greetingProvider.getGreeting(name)).called();
     });

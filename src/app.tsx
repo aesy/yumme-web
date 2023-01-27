@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import React, { FC } from 'react';
 import { Recipe } from '@/recipe/recipe';
 import { EmptyRecipe } from '@/recipe/empty-recipe';
@@ -11,12 +11,12 @@ export const App: FC = () => (
     <AuthController>
         <BrowserRouter>
             <Layout>
-                <Switch>
-                    <Route path="/profile/:id" component={ Profile } />
-                    <Route exact path="/recipe/new" component={ EmptyRecipe } />
-                    <Route path="/recipe/:id" component={ Recipe } />
-                    <Route component={ NotFound } />
-                </Switch>
+                <Routes>
+                    <Route path="/profile/:id" element={ <Profile /> } />
+                    <Route path="/recipe/new" element={ <EmptyRecipe /> } />
+                    <Route path="/recipe/:id" element={ <Recipe /> } />
+                    <Route element={ <NotFound /> } />
+                </Routes>
             </Layout>
         </BrowserRouter>
     </AuthController>

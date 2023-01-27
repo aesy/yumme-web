@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 import { inject, injectable, optional } from 'inversify';
-import { AxiosInstance } from 'axios';
+import { type AxiosInstance } from 'axios';
 import { type LoginResponse, YUMME_CLIENT_TYPE, type YummeClient } from '@/api/yumme-client';
 import { AXIOS_CLIENT_TYPE } from '@/api/axios-client';
 
@@ -61,10 +61,7 @@ export class AuthState {
         axios.interceptors.request.use(
             async config => {
                 if (this.accessToken !== null) {
-                    config.headers = {
-                        // eslint-disable-next-line @typescript-eslint/naming-convention
-                        Authorization: `Bearer ${ this.accessToken }`,
-                    };
+                    config.headers.Authorization = `Bearer ${ this.accessToken }`;
                 }
 
                 return config;

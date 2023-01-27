@@ -1,15 +1,15 @@
 import { inject, injectable } from 'inversify';
-import { AxiosInstance } from 'axios';
+import { type AxiosInstance } from 'axios';
 import {
-    Collection,
-    ImageUploadResult,
-    LoginRequest,
-    LoginResponse,
-    Recipe,
-    RegisterRequest,
-    UpdateRecipeRequest,
-    User,
-    YummeClient,
+    type Collection,
+    type ImageUploadResult,
+    type LoginRequest,
+    type LoginResponse,
+    type Recipe,
+    type RegisterRequest,
+    type UpdateRecipeRequest,
+    type User,
+    type YummeClient,
 } from '@/api/yumme-client';
 import { AXIOS_CLIENT_TYPE } from '@/api/axios-client';
 

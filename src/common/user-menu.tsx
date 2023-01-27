@@ -8,7 +8,7 @@ import { bind } from '@decorize/bind';
 import DefaultProfileImage from '@/images/DefaultProfileImage.png';
 import styles from '@/common/user-menu.scss';
 import { AuthState } from '@/authentication/auth-state';
-import { User, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
+import { type User, type YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 import { StandardLinkBtn } from './standard-link-btn';
 
 interface UserMenuState {

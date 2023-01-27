@@ -1,6 +1,6 @@
-@import 'common/colors';
-@import 'common/paddings';
-@import 'common/content';
+@import '@/common/colors.scss';
+@import '@/common/paddings.scss';
+@import '@/common/content.scss';
 
 .not-found {
     @include content-standard;

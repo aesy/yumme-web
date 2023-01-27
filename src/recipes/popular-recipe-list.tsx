@@ -4,7 +4,7 @@ import { Bind } from '@decorize/bind';
 import styles from '@/recipes/recipe-list.scss';
 import { RecipeListItemPlaceholder } from '@/recipes/recipe-list-item-placeholder';
 import { RecipeListItem } from '@/recipes/recipe-list-item';
-import { YUMME_CLIENT_TYPE, Recipe, YummeClient, User } from '@/api/yumme-client';
+import { YUMME_CLIENT_TYPE, type Recipe, type YummeClient, type User } from '@/api/yumme-client';
 
 interface PopularRecipeListState {
     recipes?: Recipe[];

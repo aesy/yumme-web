@@ -1,8 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import { inject, injectable, optional } from 'inversify';
 import { AxiosInstance } from 'axios';
-import { bind } from '@decorize/bind';
-import { LoginResponse, YUMME_CLIENT_TYPE, YummeClient } from '@/api/yumme-client';
+import { type LoginResponse, YUMME_CLIENT_TYPE, type YummeClient } from '@/api/yumme-client';
 import { AXIOS_CLIENT_TYPE } from '@/api/axios-client';
 
 @injectable()

@@ -4,7 +4,7 @@ import { Bind } from '@decorize/bind';
 import styles from '@/recipes/recipe-list.scss';
 import { RecipeListItemPlaceholder } from '@/recipes/recipe-list-item-placeholder';
 import { RecipeListItem } from '@/recipes/recipe-list-item';
-import { Recipe, YummeClient, YUMME_CLIENT_TYPE, User } from '@/api/yumme-client';
+import { type Recipe, type YummeClient, YUMME_CLIENT_TYPE, type User } from '@/api/yumme-client';
 
 interface RecentRecipeListState {
     onSmallScreen: boolean;

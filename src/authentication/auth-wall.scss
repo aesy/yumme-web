@@ -1,5 +1,5 @@
-@import 'common/colors';
-@import 'common/paddings';
+@import '@/common/colors.scss';
+@import '@/common/paddings.scss';
 
 .auth-wall {
     min-height: 100vh;

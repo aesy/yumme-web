@@ -1,4 +1,4 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { ReactNode, PureComponent } from 'react';
 import { resolve } from 'inversify-react';
 import { Bind } from '@decorize/bind';
 import styles from '@/registration/registration-form.scss';
@@ -6,7 +6,7 @@ import { StandardInput } from '@/common/standard-input';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
 import { AuthState } from '@/authentication/auth-state';
-import { YummeClient, YUMME_CLIENT_TYPE, AuthError } from '@/api/yumme-client';
+import { YUMME_CLIENT_TYPE, type YummeClient, type AuthError } from '@/api/yumme-client';
 
 interface RegistrationFormState {
     displayName: string;

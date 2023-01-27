@@ -1,8 +1,8 @@
-@import 'common/colors';
-@import 'common/typography';
-@import 'common/content';
-@import 'common/breakpoints';
-@import 'common/paddings';
+@import '@/common/colors.scss';
+@import '@/common/typography.scss';
+@import '@/common/content.scss';
+@import '@/common/breakpoints.scss';
+@import '@/common/paddings.scss';
 
 .hero {
     .highlighted {
@@ -128,6 +128,6 @@
     }
 
     @media screen and (max-width: $breakpoint_tablet) {
-        margin: 0 -$padding_page;
+        margin: 0 (-$padding_page);
     }
 }

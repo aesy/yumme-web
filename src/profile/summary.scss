@@ -1,9 +1,9 @@
-@import 'common/colors';
-@import 'common/typography';
-@import 'common/content';
-@import 'common/css-functions';
-@import 'common/breakpoints';
-@import 'common/paddings';
+@import '@/common/colors.scss';
+@import '@/common/typography.scss';
+@import '@/common/content.scss';
+@import '@/common/css-functions.scss';
+@import '@/common/breakpoints.scss';
+@import '@/common/paddings.scss';
 
 .recent-recipes,
 .recent-collections,

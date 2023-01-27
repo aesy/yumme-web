@@ -5,31 +5,31 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 const env = process.env.NODE_ENV || process.argv[3] || 'production';
 const isProduction = env === 'production';
-const isTest = env === 'test';
 const sourcePath = path.join(__dirname, 'src');
 const buildPath = path.join(__dirname, 'build');
-const modulePath = path.join(__dirname, 'node_modules');
 
 module.exports = {
     context: __dirname,
     entry: path.resolve(sourcePath, 'index.tsx'),
     output: {
-        publicPath: '/',
         path: buildPath,
-        filename: isProduction ? '[contenthash].js' : '[hash].js',
+        pathinfo: !isProduction,
+        filename: isProduction
+            ? 'static/js/[name].[contenthash:8].js'
+            : 'static/js/[name].bundle.js',
+        chunkFilename: isProduction
+            ? 'static/js/[name].[contenthash:8].js'
+            : 'static/js/[name].chunk.js',
+        assetModuleFilename: 'static/media/[name].[hash][ext]'
     },
-    target: isTest ? 'node' : 'web',
+    mode: isProduction ? 'production' : 'development',
     resolve: {
-        extensions: [ '.js', '.ts', '.tsx' ],
-        modules: [
-            sourcePath,
-            modulePath,
-        ],
+        extensions: [ '.mjs', '.js', '.jsx', '.ts', '.tsx' ],
         alias: {
             '@': sourcePath,
         },
@@ -37,7 +37,13 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.tsx?$/,
+                test: /\.(m?js)$/,
+                resolve: {
+                    fullySpecified: false,
+                },
+            },
+            {
+                test: /\.(tsx?)$/,
                 use: [
                     {
                         loader: 'babel-loader',
@@ -45,7 +51,7 @@ module.exports = {
                 ],
             },
             {
-                test: /\.s?css$/,
+                test: /\.(s?css)$/,
                 use: [
                     isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
                     {
@@ -67,50 +73,43 @@ module.exports = {
                 ],
             },
             {
-                test: /\.html$/,
-                use: 'html-loader',
-            },
-            {
-                test: /\.(a?png|svg)$/,
-                use: 'url-loader?limit=10000',
-            },
-            {
-                test: /\.(jpe?g|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
-                use: 'file-loader',
+                test: /\.(svg|a?png|jpe?g|gif|bmp|mp3|mp4|ogg|wav|eot|ttf|woff|woff2)$/,
+                type: 'asset/resource',
             },
         ],
     },
     plugins: [
         new ForkTsCheckerWebpackPlugin(),
         new webpack.EnvironmentPlugin({
-            MOCK_SERVER: process.env.MOCK_SERVER,
+            MOCK_SERVER: process.env.MOCK_SERVER ?? '',
             NODE_ENV: isProduction ? 'production' : 'development',
             DEBUG: false,
         }),
         new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
-            filename: isProduction ? '[contenthash].css' : '[hash].css',
-            disable: !isProduction,
+            filename: 'static/css/[name].[contenthash:8].css',
+            chunkFilename: 'static/css/[name].[chunkhash:8].chunk.css',
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(sourcePath, 'index.html'),
             inject: true,
+            publicPath: '/',
         }),
         new webpack.LoaderOptionsPlugin({
             minimize: isProduction,
         }),
     ],
     devServer: {
-        publicPath: '/',
-        compress: true,
         port: 3000,
-        contentBase: buildPath,
-        host: '0.0.0.0',
+        hot: true,
         historyApiFallback: true,
-        inline: false,
-        progress: true,
-        noInfo: false,
-        stats: 'minimal',
+        compress: true,
+        static: {
+            directory: path.resolve(sourcePath, 'assets'),
+        },
+        client: {
+            overlay: false,
+        },
         proxy: {
             '/api/v1': {
                 target: process.env.YUMME_SERVER,
@@ -120,11 +119,13 @@ module.exports = {
         }
     },
     devtool: isProduction ? false : 'eval-source-map',
-    optimization: {
-        minimize: isProduction,
-        minimizer: [
-            new OptimizeCSSAssetsPlugin({}),
-            new TerserPlugin(),
-        ],
-    },
+    // optimization: {
+    //     minimize: isProduction,
+    //     minimizer: [
+    //         new CssMinimizerPlugin(),
+    //         new TerserPlugin(),
+    //     ],
+    // },
+    stats: 'errors-warnings',
+    bail: isProduction,
 };

@@ -1,6 +1,6 @@
-@import 'common/colors';
-@import 'common/typography';
-@import 'common/content';
+@import '@/common/colors.scss';
+@import '@/common/typography.scss';
+@import '@/common/content.scss';
 
 .footer {
     min-height: 200px;

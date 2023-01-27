@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { LoginResponse, Recipe, User, YummeClient, Collection, ImageUploadResult } from '@/api/yumme-client';
+import { type LoginResponse, type Recipe, type User, type YummeClient, type Collection, type ImageUploadResult } from '@/api/yumme-client';
 
 function generateId(): number {
     const maxId = 1_000_000;

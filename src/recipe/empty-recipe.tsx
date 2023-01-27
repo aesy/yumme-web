@@ -1,4 +1,3 @@
-import { RouteComponentProps } from 'react-router-dom';
 import React, { Component, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
 import { Bind } from '@decorize/bind';
@@ -7,7 +6,7 @@ import { RecipeViewTablet } from '@/recipe/recipe-view-tablet';
 import { RecipeViewDesktop } from '@/recipe/recipe-view-desktop';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
-import { Recipe, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
+import { type Recipe, type YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 
 interface EmptyRecipeState {
     editing: boolean;
@@ -16,13 +15,13 @@ interface EmptyRecipeState {
     tabletView: boolean;
 }
 
-export class EmptyRecipe extends Component<RouteComponentProps, EmptyRecipeState> {
+export class EmptyRecipe extends Component<any, EmptyRecipeState> {
     @resolve(YUMME_CLIENT_TYPE)
     private readonly yummeClient: YummeClient;
 
     private readonly breakpoint: number = 980;
 
-    public constructor(props: RouteComponentProps) {
+    public constructor(props: any) {
         super(props);
 
         this.state = {

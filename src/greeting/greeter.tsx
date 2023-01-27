@@ -1,4 +1,4 @@
-import React, { ChangeEvent, PureComponent, ReactNode } from 'react';
+import React, { type ChangeEvent, PureComponent, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
 import { Bind } from '@decorize/bind';

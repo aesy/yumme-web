@@ -1,8 +1,8 @@
-@import 'common/colors';
-@import 'common/typography';
-@import 'common/content';
-@import 'common/breakpoints';
-@import 'common/css-functions';
+@import '@/common/colors.scss';
+@import '@/common/typography.scss';
+@import '@/common/content.scss';
+@import '@/common/breakpoints.scss';
+@import '@/common/css-functions.scss';
 
 .card {
     position: relative;

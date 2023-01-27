@@ -4,7 +4,7 @@ import DefaultRecipeImage from '@/images/DefaultRecipeImage.jpg';
 import styles from '@/collections/collection-list.scss';
 import { CollectionListItem } from '@/collections/collection-list.item';
 import { CollectionListItemPlaceholder } from '@/collections/collection-list-item-placeholder';
-import { Collection, YUMME_CLIENT_TYPE, YummeClient } from '@/api/yumme-client';
+import { type Collection, YUMME_CLIENT_TYPE, type YummeClient } from '@/api/yumme-client';
 
 interface CollectionWithImages {
     collection: Collection;

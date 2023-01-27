@@ -1,5 +1,4 @@
 /* eslint-disable max-lines-per-function */
-import { RouteComponentProps } from 'react-router-dom';
 import React, { Component, ReactNode } from 'react';
 import { observer } from 'mobx-react';
 import { resolve } from 'inversify-react';
@@ -10,7 +9,7 @@ import { RecipeViewDesktop } from '@/recipe/recipe-view-desktop';
 import { SubtleBtn } from '@/common/subtle-btn';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
-import { Recipe as RecipeType, YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
+import { type Recipe as RecipeType, type YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 
 interface RecipeState {
     currentRecipe?: RecipeType;
@@ -25,13 +24,13 @@ interface MatchParams {
 }
 
 @observer
-export class Recipe extends Component<RouteComponentProps<MatchParams>, RecipeState> {
+export class Recipe extends Component<any, RecipeState> {
     @resolve(YUMME_CLIENT_TYPE)
     private readonly yummeClient: YummeClient;
 
     private readonly breakpoint: number = 811;
 
-    public constructor(props: RouteComponentProps<MatchParams>) {
+    public constructor(props: any) {
         super(props);
 
         this.state = {

@@ -1,4 +1,3 @@
-import { RouteComponentProps } from 'react-router-dom';
 import React, { Component, ReactNode } from 'react';
 import { resolve } from 'inversify-react';
 import { Summary } from '@/profile/summary';
@@ -7,7 +6,7 @@ import styles from '@/profile/profile.scss';
 import { Hero } from '@/profile/hero';
 import { Collections } from '@/profile/collections';
 import { ViewNavigation } from '@/common/view-navigation';
-import { User, YUMME_CLIENT_TYPE, YummeClient } from '@/api/yumme-client';
+import { type User, YUMME_CLIENT_TYPE, type YummeClient } from '@/api/yumme-client';
 
 type View = 'Summary' | 'Recipes' | 'Collections';
 
@@ -20,11 +19,11 @@ interface MatchParams {
     id: string;
 }
 
-export class Profile extends Component<RouteComponentProps<MatchParams>, ProfileState> {
+export class Profile extends Component<any, ProfileState> {
     @resolve(YUMME_CLIENT_TYPE)
     private readonly yummeClient: YummeClient;
 
-    public constructor(props: RouteComponentProps<MatchParams>) {
+    public constructor(props: any) {
         super(props);
 
         this.state = {
@@ -40,7 +39,7 @@ export class Profile extends Component<RouteComponentProps<MatchParams>, Profile
         this.refresh();
     }
 
-    public componentDidUpdate(prevProps: RouteComponentProps<MatchParams>): void {
+    public componentDidUpdate(prevProps: any): void {
         if (prevProps.match.params.id !== this.props.match.params.id) {
             // eslint-disable-next-line react/no-did-update-set-state
             this.setState({

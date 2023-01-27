@@ -6,7 +6,7 @@ import { StandardInput } from '@/common/standard-input';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
 import { AuthState } from '@/authentication/auth-state';
-import { YummeClient, YUMME_CLIENT_TYPE, AuthError } from '@/api/yumme-client';
+import { type YummeClient, YUMME_CLIENT_TYPE, type AuthError } from '@/api/yumme-client';
 
 interface LoginFormState {
     error: string | null;

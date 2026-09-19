@@ -1,81 +1,19 @@
-/* eslint-disable */
+import { type components } from '@/api/schema';
 
-export interface AuthError {
-    error: string;
-    error_description: string;
-}
-
-export interface LoginRequest {
-    grant_type: 'password' | 'refresh_token';
-    password?: string;
-    refresh_token?: string;
-    username?: string;
-}
-
-export interface LoginResponse {
-    access_token: string;
-    expires_in: number;
-    refresh_token: string;
-    token_type: 'bearer';
-}
-
-export interface RegisterRequest {
-    user_name: string;
-    display_name: string;
-    password: string;
-}
-
-export interface User {
-    user_name: string;
-    display_name: string;
-    id: number;
-}
-
-export interface Recipe {
-    categories: string[];
-    cook_time: number;
-    description: string;
-    directions: string[];
-    id: number;
-    images: string[];
-    ingredients: {
-        name: string;
-    }[];
-    prep_time: number;
-    rating: {
-        average: number;
-        count: number;
-    };
-    tags: string[];
-    title: string;
-    yield: number;
-}
-
-export interface Collection {
-    id: number;
-    recipes: number[];
-    title: string;
-}
-
-export interface UpdateRecipeRequest {
-    categories: string[];
-    cook_time: number;
-    description: string;
-    directions: string[];
-    ingredients: string[];
-    prep_time: number;
-    public: boolean;
-    tags: string[];
-    title: string;
-    yield: number;
-}
-
-export interface ImageUploadResult {
-    name: string
-}
+export type AuthError = components['schemas']['AuthErrorDto'];
+export type LoginRequest = components['schemas']['TokenRequest'];
+export type LoginResponse = components['schemas']['TokenResponse'];
+export type RegisterRequest = components['schemas']['RegisterRequest'];
+export type User = components['schemas']['UserDto'];
+export type Recipe = components['schemas']['RecipeDto'];
+export type Ingredient = components['schemas']['IngredientDto'];
+export type Collection = components['schemas']['CollectionDto'];
+export type CreateRecipeRequest = components['schemas']['CreateRecipeRequest'];
+export type UpdateRecipeRequest = components['schemas']['UpdateRecipeRequest'];
+export type ImageUploadResult = components['schemas']['ImageUploadDto'];
 
 export interface YummeClient {
-    createRecipe(request: UpdateRecipeRequest): Promise<Recipe>;
+    createRecipe(request: CreateRecipeRequest): Promise<Recipe>;
     deleteRecipe(id: number): Promise<void>;
     getAccessToken(request: LoginRequest): Promise<LoginResponse>;
     getAllRecipes(): Promise<Recipe[]>;
@@ -88,8 +26,8 @@ export interface YummeClient {
     getRecentCollections(limit?: number): Promise<Collection[]>;
     getUserById(id: number): Promise<User>;
     register(request: RegisterRequest): Promise<void>;
-    replaceRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe>;
-    updateRecipe(id: number, request: Partial<UpdateRecipeRequest>): Promise<Recipe>;
+    replaceRecipe(id: number, request: CreateRecipeRequest): Promise<Recipe>;
+    updateRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe>;
     uploadImage(id: number, file: File): Promise<ImageUploadResult>;
 }
 

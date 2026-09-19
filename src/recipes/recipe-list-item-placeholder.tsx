@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from '@/recipes/recipe-list-item-placeholder.scss';
+import styles from '@/recipes/recipe-list-item-placeholder.module.scss';
 
 interface RecipeListItemPlaceholderProps {
     type: 'column' | 'row';
@@ -15,7 +15,7 @@ export const RecipeListItemPlaceholder: FC<RecipeListItemPlaceholderProps> = pro
             </div>
             <span className={ styles.titlePlaceholder } />
             <span className={ styles.descriptionPlaceholder } />
-            <span className={ styles.tagsPlaceholder } />
+            <span />
         </div>
     </div>
 );

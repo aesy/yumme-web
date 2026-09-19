@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from '@/collections/collection-list-item-placeholder.scss';
+import styles from '@/collections/collection-list-item-placeholder.module.scss';
 
 export const CollectionListItemPlaceholder: FC<unknown> = () => (
     <div className={ styles.collectionListItemPlaceholder }>

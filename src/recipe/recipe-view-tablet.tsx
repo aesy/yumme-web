@@ -1,8 +1,6 @@
-/* eslint-disable max-lines-per-function */
-import React, { Component, ReactNode } from 'react';
-import { Bind } from '@decorize/bind';
+import React, { ReactNode, useState } from 'react';
 import { StatList } from '@/recipe/stat-list';
-import styles from '@/recipe/recipe-view-tablet.scss';
+import styles from '@/recipe/recipe-view-tablet.module.scss';
 import { IngredientList } from '@/recipe/ingredient-list';
 import { ImageList } from '@/recipe/image-list';
 import { DirectionList } from '@/recipe/direction-list';
@@ -18,80 +16,65 @@ interface RecipeViewTabletProps {
     updateRecipe(recipe: Recipe): void;
 }
 
-interface RecipeVIewTabletState {
-    view: View;
-}
+export function RecipeViewTablet(props: RecipeViewTabletProps): ReactNode {
+    const [view, setView] = useState<View>('Ingredients');
 
-export class RecipeViewTablet extends Component<RecipeViewTabletProps, RecipeVIewTabletState> {
-    public constructor(props: RecipeViewTabletProps) {
-        super(props);
+    const viewHandler = (nextView: string): void => {
+        setView(nextView as View);
+    };
 
-        this.state = {
-            view: 'Ingredients',
-        };
-    }
+    return (
 
-    public render(): ReactNode {
-        return (
-
-            <div className={ styles.recipeViewTablet }>
-                <div className={ styles.card }>
-                    <Card
-                        recipe={ this.props.recipe }
-                        editing={ this.props.editing }
-                        updateRecipe={ this.props.updateRecipe } />
-                </div>
-
-                <div className={ styles.stats }>
-                    <StatList
-                        type="row"
-                        recipe={ this.props.recipe }
-                        editing={ this.props.editing }
-                        updateRecipe={ this.props.updateRecipe } />
-                </div>
-
-                <div className={ styles.navigation }>
-                    <ViewNavigation
-                        active={ this.state.view }
-                        navigations={ ['Ingredients', 'Directions', 'Images'] }
-                        handler={ this.viewHandler } />
-                </div>
-
-                {
-                    this.state.view === 'Ingredients' &&
-                    <div className={ styles.ingredients }>
-                        <IngredientList
-                            recipe={ this.props.recipe }
-                            editing={ this.props.editing }
-                            updateRecipe={ this.props.updateRecipe } />
-                    </div>
-                }
-                {
-                    this.state.view === 'Directions' &&
-                    <div className={ styles.directions }>
-                        <DirectionList
-                            recipe={ this.props.recipe }
-                            editing={ this.props.editing }
-                            updateRecipe={ this.props.updateRecipe } />
-                    </div>
-                }
-                {
-                    this.state.view === 'Images' &&
-                    <div className={ styles.images }>
-                        <ImageList
-                            recipe={ this.props.recipe }
-                            editing={ this.props.editing }
-                            updateRecipe={ this.props.updateRecipe } />
-                    </div>
-                }
+        <div className={ styles.recipeViewTablet }>
+            <div className={ styles.card }>
+                <Card
+                    recipe={ props.recipe }
+                    editing={ props.editing }
+                    updateRecipe={ props.updateRecipe } />
             </div>
-        );
-    }
 
-    @Bind
-    public viewHandler(view: string): void {
-        this.setState({
-            view: view as View,
-        });
-    }
+            <div className={ styles.stats }>
+                <StatList
+                    type="row"
+                    recipe={ props.recipe }
+                    editing={ props.editing }
+                    updateRecipe={ props.updateRecipe } />
+            </div>
+
+            <div className={ styles.navigation }>
+                <ViewNavigation
+                    active={ view }
+                    navigations={ ['Ingredients', 'Directions', 'Images'] }
+                    handler={ viewHandler } />
+            </div>
+
+            {
+                view === 'Ingredients' &&
+                <div className={ styles.ingredients }>
+                    <IngredientList
+                        recipe={ props.recipe }
+                        editing={ props.editing }
+                        updateRecipe={ props.updateRecipe } />
+                </div>
+            }
+            {
+                view === 'Directions' &&
+                <div className={ styles.directions }>
+                    <DirectionList
+                        recipe={ props.recipe }
+                        editing={ props.editing }
+                        updateRecipe={ props.updateRecipe } />
+                </div>
+            }
+            {
+                view === 'Images' &&
+                <div>
+                    <ImageList
+                        recipe={ props.recipe }
+                        editing={ props.editing }
+                        updateRecipe={ props.updateRecipe } />
+                </div>
+            }
+        </div>
+    );
 }

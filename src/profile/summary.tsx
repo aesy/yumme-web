@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { RecentRecipeList } from '@/recipes/recent-recipe-list';
 import { PopularRecipeList } from '@/recipes/popular-recipe-list';
-import styles from '@/profile/summary.scss';
+import styles from '@/profile/summary.module.scss';
 import { StandardHeader } from '@/common/standard-header';
 import { StandardBtn } from '@/common/standard-btn';
 import { ClickableCard } from '@/common/clickable-card';

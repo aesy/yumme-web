@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import React, { FC } from 'react';
-import TimerSharpIcon from '@material-ui/icons/TimerSharp';
-import StarSharpIcon from '@material-ui/icons/StarSharp';
-import styles from '@/recipes/recipe-list-item.scss';
+import { IconClock, IconStarFilled } from '@tabler/icons-react';
+import styles from '@/recipes/recipe-list-item.module.scss';
 import DefaultRecipeImage from '@/images/DefaultRecipeImage.jpg';
+import { recipeImageUrl } from '@/common/recipe-image';
 import { ClickableCard } from '@/common/clickable-card';
 import { Recipe } from '@/api/yumme-client';
 
@@ -25,27 +25,29 @@ export const RecipeListItem: FC<RecipeListItemProps> = props => (
         <ClickableCard borderOffset="medium">
             <article className={ `${ styles.recipeListItem } ${ styles[props.type] }` }>
                 {
-                    props.recipe.images[0]
-                        ? <img src={ `/api/v1/recipe/${ props.recipe.id }/image/${ props.recipe.images[0] }?size=thumbnail` } />
+                    props.recipe.image_cover
+                        ? <img src={ recipeImageUrl(props.recipe.id, props.recipe.image_cover, 'thumbnail') } />
                         : <img src={ DefaultRecipeImage } />
                 }
                 <div className={ styles.info }>
                     <div className={ styles.top }>
                     <span className={ styles.rating }>
-                        <StarSharpIcon />
-                        { props.recipe.rating.average }
+                        <IconStarFilled />
+                        { props.recipe.rating?.average ?? 0 }
                         { ' ' }
                         stars from
                         { ' ' }
-                        { props.recipe.rating.count }
+                        { props.recipe.rating?.count ?? 0 }
                         { ' ' }
                         reviews
                     </span>
 
                         <span className={ styles.time }>
-                            <TimerSharpIcon />
+                            <IconClock />
                             { ' ' }
-                            35 min
+                            { Math.round(((props.recipe.prep_time ?? 0) + (props.recipe.cook_time ?? 0)) / 60) }
+                            { ' ' }
+                            min
                         </span>
                     </div>
 
@@ -54,12 +56,12 @@ export const RecipeListItem: FC<RecipeListItemProps> = props => (
                     </h3>
 
                     <p>
-                        { truncateString(props.recipe.description, 180) }
+                        { truncateString(props.recipe.description ?? '', 180) }
                     </p>
 
                     <ul>
                         {
-                            props.recipe.categories
+                            (props.recipe.categories ?? [])
                                 .map(category => (
                                     <li key={ category }>
                                         { category }

@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from '@/common/view-navigation.scss';
+import styles from '@/common/view-navigation.module.scss';
 
 interface ViewNavigationProps {
     readonly active: string;

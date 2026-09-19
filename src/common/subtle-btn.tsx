@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes, FC } from 'react';
-import styles from '@/common/subtle-btn.scss';
+import styles from '@/common/subtle-btn.module.scss';
 
 interface SubtleBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     color: 'red' | 'orange' | 'beige';

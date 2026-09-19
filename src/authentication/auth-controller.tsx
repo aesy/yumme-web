@@ -1,30 +1,22 @@
-import React, { type PropsWithChildren, PureComponent, ReactNode } from 'react';
+import React, { type PropsWithChildren, type ReactNode } from 'react';
 import { observer } from 'mobx-react';
-import { resolve } from 'inversify-react';
+import { useInjection } from 'inversify-react';
 import { AuthWall } from '@/authentication/auth-wall';
 import { AuthState } from '@/authentication/auth-state';
-import styles from '@/app.scss';
+import styles from '@/app.module.scss';
 
-@observer
-export class AuthController extends PureComponent<PropsWithChildren<unknown>> {
-    @resolve(AuthState)
-    private readonly authState: AuthState;
+export const AuthController = observer(function AuthController(props: PropsWithChildren<unknown>): ReactNode {
+    const authState = useInjection<AuthState>(AuthState);
 
-    public constructor(props: PropsWithChildren<unknown>) {
-        super(props);
-    }
-
-    public render(): ReactNode {
-        if (!this.authState.isLoggedIn()) {
-            return (
-                <AuthWall />
-            );
-        }
-
+    if (!authState.isLoggedIn()) {
         return (
-            <div className={ styles.page }>
-                { this.props.children }
-            </div>
+            <AuthWall />
         );
     }
-}
+
+    return (
+        <div className={ styles.page }>
+            { props.children }
+        </div>
+    );
+});

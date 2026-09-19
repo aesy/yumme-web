@@ -1,0 +1,57 @@
+@import '@/common/colors';
+@import '@/common/typography';
+@import '@/common/content';
+@import '@/common/breakpoints';
+@import '@/common/css-functions';
+
+.stats {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+    text-align: center;
+    display: flex;
+    justify-content: space-evenly;
+
+    &.column {
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .unit {
+        flex-shrink: 0;
+    }
+
+    .input-wrapper {
+        width: auto;
+
+        input {
+            overflow: hidden;
+            width: 100%;
+            padding: 5px 10px;
+            outline: none;
+            border: 1px solid #ff6b00;
+            letter-spacing: inherit;
+            font-family: inherit;
+            font-size: inherit;
+            font-style: inherit;
+        }
+    }
+
+    span {
+        display: block;
+        width: auto;
+        font-size: 18px;
+    }
+
+    span:first-of-type {
+        margin-bottom: 20px;
+    }
+
+    @media screen and (max-width: $breakpoint_tablet) {
+        flex-direction: row;
+
+        span {
+            font-size: 16px;
+        }
+    }
+}

@@ -3,18 +3,19 @@ import { injectable } from 'inversify';
 
 @injectable()
 export class NameState {
-    @observable
     private name: string = 'Unknown';
 
     public constructor() {
-        makeObservable(this);
+        makeObservable<NameState, 'name'>(this, {
+            name: observable,
+            setName: action,
+        });
     }
 
     public getName(): string {
         return this.name;
     }
 
-    @action
     public setName(name: string): void {
         this.name = name;
     }

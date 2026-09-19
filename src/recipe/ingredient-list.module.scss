@@ -1,0 +1,46 @@
+@import '@/common/colors';
+@import '@/common/typography';
+@import '@/common/content';
+@import '@/common/breakpoints';
+@import '@/common/css-functions';
+
+.ingredients {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    .ingredient {
+        display: grid;
+        gap: 0 10px;
+        grid-template-columns: 1fr auto;
+
+        .item {
+            display: flex;
+
+            .dot {
+                width: 2px;
+                background-color: $yum_orange;
+                margin-right: 10px;
+            }
+        }
+
+        &.editable {
+            align-items: center;
+            transition: color 0.1s ease-out;
+            cursor: pointer;
+
+            &:hover {
+                color: $yum_orange;
+            }
+        }
+
+        p {
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        + .ingredient {
+            margin-top: 20px;
+        }
+    }
+}

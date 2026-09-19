@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from '@/profile/hero.scss';
+import styles from '@/profile/hero.module.scss';
 import DefaultProfileImage from '@/images/DefaultProfileImage.png';
 import DefaultHeroImage from '@/images/DefaultHeroImage.jpg';
 import { StandardBtn } from '@/common/standard-btn';

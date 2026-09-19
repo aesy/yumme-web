@@ -1,7 +1,5 @@
-FROM node:14-alpine AS build
+FROM node:22-alpine AS build
 
-# Git is required by npm to be able to clone github dependencies
-RUN apk add --no-cache git
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci

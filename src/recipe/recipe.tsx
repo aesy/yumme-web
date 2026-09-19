@@ -1,9 +1,8 @@
-/* eslint-disable max-lines-per-function */
-import React, { Component, ReactNode } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import React, { type ReactNode, useCallback, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
-import { resolve } from 'inversify-react';
-import { Bind } from '@decorize/bind';
-import styles from '@/recipe/recipe.scss';
+import { useInjection } from 'inversify-react';
+import styles from '@/recipe/recipe.module.scss';
 import { RecipeViewTablet } from '@/recipe/recipe-view-tablet';
 import { RecipeViewDesktop } from '@/recipe/recipe-view-desktop';
 import { SubtleBtn } from '@/common/subtle-btn';
@@ -11,196 +10,166 @@ import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
 import { type Recipe as RecipeType, type YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 
-interface RecipeState {
-    currentRecipe?: RecipeType;
-    editedRecipe?: RecipeType;
-    editing: boolean;
-    loading: boolean;
-    tabletView: boolean;
-}
+const BREAKPOINT = 811;
 
-interface MatchParams {
-    id: string;
-}
+export const Recipe = observer(function Recipe(): ReactNode {
+    const yummeClient = useInjection<YummeClient>(YUMME_CLIENT_TYPE);
+    const { id } = useParams();
+    const navigate = useNavigate();
 
-@observer
-export class Recipe extends Component<any, RecipeState> {
-    @resolve(YUMME_CLIENT_TYPE)
-    private readonly yummeClient: YummeClient;
+    const [currentRecipe, setCurrentRecipe] = useState<RecipeType | undefined>(undefined);
+    const [editedRecipe, setEditedRecipe] = useState<RecipeType | undefined>(undefined);
+    const [editing, setEditing] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [tabletView, setTabletView] = useState<boolean>(window.innerWidth < BREAKPOINT);
 
-    private readonly breakpoint: number = 811;
+    const refresh = useCallback(async (recipeId: number): Promise<void> => {
+        const recipe = await yummeClient.getRecipeById(recipeId);
 
-    public constructor(props: any) {
-        super(props);
+        setEditing(false);
+        setLoading(false);
+        setCurrentRecipe(JSON.parse(JSON.stringify(recipe)) as RecipeType);
+        setEditedRecipe(JSON.parse(JSON.stringify(recipe)) as RecipeType);
+    }, [yummeClient]);
 
-        this.state = {
-            editing: false,
-            loading: false,
-            tabletView: window.innerWidth < this.breakpoint,
-        };
-    }
-
-    public componentDidMount(): void {
+    useEffect(() => {
         window.scrollTo(0, 0);
-        window.addEventListener('resize', this.onResize);
-        this.refresh(Number(this.props.match.params.id));
-    }
+    }, []);
 
-    public componentWillUnmount(): void {
-        window.removeEventListener('resize', this.onResize);
-    }
+    useEffect(() => {
+        const onResize = (): void => {
+            setTabletView(window.innerWidth < BREAKPOINT);
+        };
 
-    public render(): ReactNode {
-        const recipe = this.state.editing ? this.state.editedRecipe : this.state.currentRecipe;
+        window.addEventListener('resize', onResize);
 
-        if (!recipe) {
-            return (
-                <div className={ styles.recipeLoadingWrapper }>
-                    <LoadingSpinner color="white" />
-                </div>
-            );
-        }
+        return (): void => {
+            window.removeEventListener('resize', onResize);
+        };
+    }, []);
 
-        return (
-            <div className={ styles.recipe }>
-                {
-                    this.state.tabletView
-                        ? (
-                            <div className={ styles.recipeWrapper }>
-                                <RecipeViewTablet
-                                    recipe={ recipe }
-                                    editing={ this.state.editing }
-                                    updateRecipe={ this.updateRecipe } />
-                            </div>
-                        )
-                        : (
-                            <div className={ styles.recipeWrapper }>
-                                <RecipeViewDesktop
-                                    recipe={ recipe }
-                                    editing={ this.state.editing }
-                                    updateRecipe={ this.updateRecipe } />
-                            </div>
-                        )
-                }
+    useEffect(() => {
+        void refresh(Number(id));
+    }, [id, refresh]);
 
-                <div className={ styles.buttons }>
-                    {
-                        this.state.loading && (
-                            <div className={ styles.saveLoadingWrapper }>
-                                <LoadingSpinner color="orange" />
-                            </div>
-                        )
-                    }
-                    {
-                        this.state.editing && !this.state.loading && (
-                            <>
-                                <StandardBtn
-                                    type="button"
-                                    onClick={ this.saveRecipe }>
-                                    SAVE RECIPE
-                                </StandardBtn>
-                                <StandardBtn
-                                    type="button"
-                                    onClick={ this.toggleEditing }>
-                                    CANCEL EDITING
-                                </StandardBtn>
-                            </>
-                        )
-                    }
-                    {
-                        !this.state.editing && !this.state.loading && (
-                            <>
-                                <StandardBtn
-                                    type="button"
-                                    onClick={ this.toggleEditing }>
-                                    EDIT RECIPE
-                                </StandardBtn>
-                                <SubtleBtn
-                                    color="red"
-                                    onClick={ this.deleteRecipe }>
-                                    DELETE RECIPE
-                                </SubtleBtn>
-                            </>
-                        )
-                    }
-                </div>
-            </div>
-        );
-    }
-
-    @Bind
-    private async deleteRecipe(): Promise<void> {
-        this.setState({ loading: true });
+    const deleteRecipe = async (): Promise<void> => {
+        setLoading(true);
 
         try {
-            await this.yummeClient.deleteRecipe(Number(this.props.match.params.id));
+            await yummeClient.deleteRecipe(Number(id));
         } catch {
-            this.setState({ loading: false });
+            setLoading(false);
         }
 
-        this.props.history.push('/');
-    }
+        navigate('/');
+    };
 
-    @Bind
-    private onResize(): void {
-        this.setState({ tabletView: window.innerWidth < this.breakpoint });
-    }
+    const saveRecipe = async (): Promise<void> => {
+        setLoading(true);
 
-    @Bind
-    private async refresh(id: number): Promise<void> {
-        const recipe = await this.yummeClient.getRecipeById(id);
-
-        this.setState({
-            editing: false,
-            loading: false,
-            currentRecipe: JSON.parse(JSON.stringify(recipe)) as RecipeType,
-            editedRecipe: JSON.parse(JSON.stringify(recipe)) as RecipeType,
-        });
-    }
-
-    @Bind
-    private async saveRecipe(): Promise<void> {
-        this.setState({ loading: true });
-
-        if (!this.state.editedRecipe) {
+        if (!editedRecipe) {
             return;
         }
 
         const request = {
-            categories: this.state.editedRecipe.categories,
-            // eslint-disable-next-line
-            cook_time: this.state.editedRecipe.cook_time,
-            description: this.state.editedRecipe.description,
+            categories: editedRecipe.categories ?? [],
+            cook_time: editedRecipe.cook_time ?? 0,
+            description: editedRecipe.description ?? '',
             public: true,
-            directions: this.state.editedRecipe.directions,
-            ingredients: this.state.editedRecipe.ingredients
-                .map(ingredient => ingredient.name),
-            // eslint-disable-next-line
-            prep_time: this.state.editedRecipe.prep_time,
-            tags: this.state.editedRecipe.tags,
-            title: this.state.editedRecipe.title,
-            yield: this.state.editedRecipe.yield,
+            directions: editedRecipe.directions ?? '',
+            ingredients: editedRecipe.ingredients ?? [],
+            prep_time: editedRecipe.prep_time ?? 0,
+            servings: editedRecipe.servings ?? 1,
+            tags: editedRecipe.tags ?? [],
+            title: editedRecipe.title ?? '',
         };
-        const recipe = await this.yummeClient.updateRecipe(Number(this.props.match.params.id), request);
+        const recipeId = Number(id);
+        await yummeClient.replaceRecipe(recipeId, request);
 
-        await this.refresh(recipe.id);
-    }
+        await refresh(recipeId);
+    };
 
-    @Bind
-    private toggleEditing(): void {
-        this.setState(state => {
-            return {
-                editing: !state.editing,
-            };
-        });
-    }
+    const toggleEditing = (): void => {
+        setEditing(prevEditing => !prevEditing);
+    };
 
-    @Bind
-    private updateRecipe(recipe: RecipeType): void {
-        this.setState(
-            {
-                editedRecipe: recipe,
-            },
+    const updateRecipe = (recipe: RecipeType): void => {
+        setEditedRecipe({ ...recipe });
+    };
+
+    const recipe = editing ? editedRecipe : currentRecipe;
+
+    if (!recipe) {
+        return (
+            <div className={ styles.recipeLoadingWrapper }>
+                <LoadingSpinner color="white" />
+            </div>
         );
     }
-}
+
+    return (
+        <div className={ styles.recipe }>
+            {
+                tabletView
+                    ? (
+                        <div className={ styles.recipeWrapper }>
+                            <RecipeViewTablet
+                                recipe={ recipe }
+                                editing={ editing }
+                                updateRecipe={ updateRecipe } />
+                        </div>
+                    )
+                    : (
+                        <div className={ styles.recipeWrapper }>
+                            <RecipeViewDesktop
+                                recipe={ recipe }
+                                editing={ editing }
+                                updateRecipe={ updateRecipe } />
+                        </div>
+                    )
+            }
+
+            <div className={ styles.buttons }>
+                {
+                    loading && (
+                        <div className={ styles.saveLoadingWrapper }>
+                            <LoadingSpinner color="orange" />
+                        </div>
+                    )
+                }
+                {
+                    editing && !loading && (
+                        <>
+                            <StandardBtn
+                                type="button"
+                                onClick={ saveRecipe }>
+                                SAVE RECIPE
+                            </StandardBtn>
+                            <StandardBtn
+                                type="button"
+                                onClick={ toggleEditing }>
+                                CANCEL EDITING
+                            </StandardBtn>
+                        </>
+                    )
+                }
+                {
+                    !editing && !loading && (
+                        <>
+                            <StandardBtn
+                                type="button"
+                                onClick={ toggleEditing }>
+                                EDIT RECIPE
+                            </StandardBtn>
+                            <SubtleBtn
+                                color="red"
+                                onClick={ deleteRecipe }>
+                                DELETE RECIPE
+                            </SubtleBtn>
+                        </>
+                    )
+                }
+            </div>
+        </div>
+    );
+});

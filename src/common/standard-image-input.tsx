@@ -1,6 +1,6 @@
 import React, { FC, InputHTMLAttributes } from 'react';
-import ImageSharpIcon from '@material-ui/icons/ImageSharp';
-import styles from '@/common/standard-image-input.scss';
+import { IconPhoto } from '@tabler/icons-react';
+import styles from '@/common/standard-image-input.module.scss';
 
 interface StandardImageInputProps extends InputHTMLAttributes<HTMLInputElement> {
     color: 'white' | 'gray';
@@ -13,7 +13,7 @@ export const StandardImageInput: FC<StandardImageInputProps> = ({ color, errors,
     return (
         <div className={ styles.standardImageInput } onClick={ (): void => input.current?.click() }>
             <input ref={ input } type="file" name="img" accept=".bmp, .gif, .png, .tiff" { ...props } />
-            <ImageSharpIcon className={ `${ styles.svg } ${ styles[color] }` } />
+            <IconPhoto className={ `${ styles.svg } ${ styles[color] }` } />
             {
                 errors.length !== 0 && (
                     <ul className={ styles.errors }>

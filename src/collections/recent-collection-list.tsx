@@ -1,7 +1,7 @@
-import React, { Component, ReactNode } from 'react';
-import { resolve } from 'inversify-react';
+import React, { type ReactNode, useEffect, useState } from 'react';
+import { useInjection } from 'inversify-react';
 import DefaultRecipeImage from '@/images/DefaultRecipeImage.jpg';
-import styles from '@/collections/collection-list.scss';
+import styles from '@/collections/collection-list.module.scss';
 import { CollectionListItem } from '@/collections/collection-list.item';
 import { CollectionListItemPlaceholder } from '@/collections/collection-list-item-placeholder';
 import { type Collection, YUMME_CLIENT_TYPE, type YummeClient } from '@/api/yumme-client';
@@ -11,94 +11,82 @@ interface CollectionWithImages {
     images: string[];
 }
 
-interface RecentCollectionListState {
-    collections?: CollectionWithImages[];
-}
-
 interface RecentCollectionListProps {
     amount: number;
 }
 
-export class RecentCollectionList extends Component<RecentCollectionListProps, RecentCollectionListState> {
-    @resolve(YUMME_CLIENT_TYPE)
-    private readonly yummeClient: YummeClient;
+export function RecentCollectionList(props: RecentCollectionListProps): ReactNode {
+    const yummeClient = useInjection<YummeClient>(YUMME_CLIENT_TYPE);
+    const [collections, setCollections] = useState<CollectionWithImages[] | undefined>(undefined);
 
-    public constructor(props: RecentCollectionListProps) {
-        super(props);
+    useEffect(() => {
+        const getImages = async (collection: Collection): Promise<string[]> => {
+            const images: string[] = [];
 
-        this.state = {};
+            for (const id of collection.recipes ?? []) {
+                const recipe = await yummeClient.getRecipeById(id);
+
+                images.push(recipe.image_cover || DefaultRecipeImage);
+            }
+
+            return images;
+        };
+
+        const refresh = async (): Promise<void> => {
+            const recentCollections = await yummeClient.getRecentCollections();
+            const collectionWithImages: CollectionWithImages[] = [];
+
+            for (const collection of recentCollections) {
+                const images = await getImages(collection);
+
+                collectionWithImages.push({
+                    collection,
+                    images,
+                });
+            }
+
+            setCollections(collectionWithImages);
+        };
+
+        void refresh();
+    }, [yummeClient]);
+
+    const placeholders = [];
+
+    for (let i = 0; i < props.amount; i++) {
+        placeholders.push(<CollectionListItemPlaceholder />);
     }
 
-    public componentDidMount(): void {
-        this.refresh();
-    }
-
-    public render(): ReactNode {
-        const placeholders = [];
-
-        for (let i = 0; i < this.props.amount; i++) {
-            placeholders.push(<CollectionListItemPlaceholder />);
-        }
-
-        if (!this.state.collections) {
-            return (
-                <ul>
-                    {
-                        placeholders.map((placeholder, i) => (
-                            <li key={ i }>
-                                { placeholder }
-                            </li>
-                        ))
-                    }
-                </ul>
-            );
-        }
-
-        if (!this.state.collections.length) {
-            return (
-                <p>Seems like there aren&apos;t any :(</p>
-            );
-        }
-
+    if (!collections) {
         return (
             <ul>
                 {
-                    this.state.collections
-                        .map(elem => (
-                            <li className={ styles.collectionListItem } key={ elem.collection.id }>
-                                <CollectionListItem collection={ elem.collection } images={ elem.images } />
-                            </li>
-                        ))
+                    placeholders.map((placeholder, i) => (
+                        <li key={ i }>
+                            { placeholder }
+                        </li>
+                    ))
                 }
             </ul>
         );
     }
 
-    private async getImages(collection: Collection): Promise<string[]> {
-        const images: string[] = [];
-
-        for (const id of collection.recipes) {
-            const recipe = await this.yummeClient.getRecipeById(id);
-
-            images.push(recipe.images[0] || DefaultRecipeImage);
-        }
-
-        return images;
+    if (!collections.length) {
+        return (
+            <p>Seems like there aren&apos;t any :(</p>
+        );
     }
 
-    private async refresh(): Promise<void> {
-        const collections = await this.yummeClient.getRecentCollections();
-        const collectionWithImages: CollectionWithImages[] = [];
-
-        for (const collection of collections) {
-            const images = await this.getImages(collection);
-
-            collectionWithImages.push({
-                collection,
-                images,
-            });
-        }
-
-        this.setState({ collections: collectionWithImages });
-    }
+    return (
+        <ul>
+            {
+                collections
+                    .map(elem => (
+                        <li className={ styles.collectionListItem } key={ elem.collection.id }>
+                            <CollectionListItem collection={ elem.collection } images={ elem.images } />
+                        </li>
+                    ))
+            }
+        </ul>
+    );
 }

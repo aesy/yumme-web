@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { ClickableCard } from '@/common/clickable-card';
-import styles from '@/collections/collection-list-item.scss';
+import styles from '@/collections/collection-list-item.module.scss';
 import { Collection } from '@/api/yumme-client';
 
 interface CollectionListProps {

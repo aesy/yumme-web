@@ -1,26 +1,30 @@
 import { action, makeObservable, observable } from 'mobx';
 import { inject, injectable, optional } from 'inversify';
-import { type AxiosInstance } from 'axios';
 import { type LoginResponse, YUMME_CLIENT_TYPE, type YummeClient } from '@/api/yumme-client';
-import { AXIOS_CLIENT_TYPE } from '@/api/axios-client';
+import { type ApiClient, API_CLIENT_TYPE } from '@/api/api-client';
 
 @injectable()
 export class AuthState {
-    @observable
     private accessToken: string | null = null;
+    private readonly retriedRequests = new WeakSet<Request>();
+    private readonly requestClones = new WeakMap<Request, Request>();
 
     public constructor(
         @inject(YUMME_CLIENT_TYPE)
         private readonly yummeClient: YummeClient,
-        @inject(AXIOS_CLIENT_TYPE) @optional()
-        axios: AxiosInstance | null,
+        @inject(API_CLIENT_TYPE) @optional()
+        client: ApiClient | null,
     ) {
-        makeObservable(this);
+        makeObservable<AuthState, 'accessToken' | 'clearAccessToken' | 'setAccessToken'>(this, {
+            accessToken: observable,
+            clearAccessToken: action,
+            setAccessToken: action,
+        });
 
         const token = this.getRefreshToken();
 
-        if (axios) {
-            this.intercept(axios);
+        if (client) {
+            this.intercept(client);
         }
 
         if (token !== null) {
@@ -37,8 +41,8 @@ export class AuthState {
     }
 
     public logInWithEmailAndPassword(response: LoginResponse): void {
-        this.setAccessToken(response.access_token);
-        this.storeRefreshToken(response.refresh_token);
+        this.setAccessToken(response.access_token ?? '');
+        this.storeRefreshToken(response.refresh_token ?? '');
     }
 
     public logout(): void {
@@ -46,7 +50,6 @@ export class AuthState {
         localStorage.removeItem('yum_refreshToken');
     }
 
-    @action
     private clearAccessToken(): void {
         this.accessToken = null;
     }
@@ -57,59 +60,62 @@ export class AuthState {
         return localStorage.getItem(key);
     }
 
-    private intercept(axios: AxiosInstance): void {
-        axios.interceptors.request.use(
-            async config => {
+    private intercept(client: ApiClient): void {
+        client.use({
+            onRequest: ({ request }) => {
                 if (this.accessToken !== null) {
-                    config.headers.Authorization = `Bearer ${ this.accessToken }`;
+                    request.headers.set('Authorization', `Bearer ${ this.accessToken }`);
                 }
 
-                return config;
-            },
-        );
+                // Clone before the body (if any) can be consumed by the outgoing fetch,
+                // so a 403 can be retried once with a fresh token further down the pipeline.
+                this.requestClones.set(request, request.clone());
 
-        axios.interceptors.response.use(
-            response => response,
-            async error => {
+                return request;
+            },
+            onResponse: async ({ request, response }) => {
                 const refreshToken = this.getRefreshToken();
-                const originalRequest = error.config;
 
-                if (error.response !== undefined && error.response.status === 403 && originalRequest.retry !== undefined && refreshToken !== null) {
-                    originalRequest.retry = true;
-
-                    let accessToken: string;
-
-                    try {
-                        accessToken = await this.refreshAccessToken(refreshToken);
-                    } catch {
-                        throw error;
-                    }
-
-                    axios.defaults.headers.common.Authorization = `Bearer ${ accessToken }`;
-
-                    return axios(originalRequest);
+                if (response.status !== 403 || refreshToken === null || this.retriedRequests.has(request)) {
+                    return response;
                 }
 
-                throw error;
+                this.retriedRequests.add(request);
+
+                let accessToken: string;
+
+                try {
+                    accessToken = await this.refreshAccessToken(refreshToken);
+                } catch {
+                    return response;
+                }
+
+                const retryRequest = this.requestClones.get(request);
+
+                if (retryRequest === undefined) {
+                    return response;
+                }
+
+                retryRequest.headers.set('Authorization', `Bearer ${ accessToken }`);
+
+                return fetch(retryRequest);
             },
-        );
+        });
     }
 
     private async refreshAccessToken(token: string): Promise<string> {
         const request = {
-            // eslint-disable-next-line
             grant_type: 'refresh_token' as const,
-            // eslint-disable-next-line
             refresh_token: token,
         };
         const response = await this.yummeClient.getAccessToken(request);
-        this.setAccessToken(response.access_token);
-        this.storeRefreshToken(response.refresh_token);
+        const accessToken = response.access_token ?? '';
+        this.setAccessToken(accessToken);
+        this.storeRefreshToken(response.refresh_token ?? '');
 
-        return response.access_token;
+        return accessToken;
     }
 
-    @action
     private setAccessToken(token: string): void {
         this.accessToken = token;
     }

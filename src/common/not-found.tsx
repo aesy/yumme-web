@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { FC } from 'react';
-import styles from '@/common/not-found.scss';
+import styles from '@/common/not-found.module.scss';
 
 export const NotFound: FC<unknown> = () => (
     <div className={ styles.notFound }>

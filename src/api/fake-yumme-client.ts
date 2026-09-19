@@ -19,13 +19,9 @@ export class FakeYummeClient implements YummeClient {
 
     public async getAccessToken(): Promise<LoginResponse> {
         return {
-            // eslint-disable-next-line
             access_token: 'secret',
-            // eslint-disable-next-line
             refresh_token: 'secret',
-            // eslint-disable-next-line
             expires_in: 3600000,
-            // eslint-disable-next-line
             token_type: 'bearer',
         };
     }
@@ -115,7 +111,7 @@ export class FakeYummeClient implements YummeClient {
                 'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
                 'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
                 'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-            ],
+            ].join('\n'),
             id: generateId(),
             ingredients: [
                 { name: '1 pound raw peeled and deveined shrimp' },
@@ -126,16 +122,14 @@ export class FakeYummeClient implements YummeClient {
                 { name: '1 pound raw peeled and deveined shrimp' },
                 { name: '1 pound raw peeled and deveined shrimp' },
             ],
-            images: [],
+            image_attachments: [],
             rating: {
                 average: 3.6,
                 count: 33,
             },
-            // eslint-disable-next-line
             prep_time: 1000,
-            // eslint-disable-next-line
             cook_time: 1500,
-            yield: 3,
+            servings: 3,
             tags: ['Swedish'],
             title: 'Cheese burger',
         };
@@ -143,9 +137,7 @@ export class FakeYummeClient implements YummeClient {
 
     private createFakeUser(): User {
         return {
-            // eslint-disable-next-line
             user_name: 'user',
-            // eslint-disable-next-line
             display_name: 'User',
             id: 1,
         };

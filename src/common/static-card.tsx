@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
-import styles from '@/common/static-card.scss';
+import styles from '@/common/static-card.module.scss';
 
 interface StaticCardProps {
     readonly borderOffset: 'small' | 'medium' | 'large';

@@ -1,0 +1,48 @@
+@import '@/common/colors';
+@import '@/common/typography';
+@import '@/common/content';
+@import '@/common/breakpoints';
+@import '@/common/css-functions';
+
+.directions {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    .direction {
+        position: relative;
+
+        .label {
+            display: inline-block;
+            font-family: $font_header, serif;
+            letter-spacing: 2px;
+            font-weight: bold;
+            border-bottom: 1px solid $yum_orange;
+            padding: 0 10px 10px 0;
+            margin-bottom: 10px;
+        }
+
+        .editable {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 0 20px;
+            align-items: center;
+            transition: color 0.1s ease-out;
+            cursor: pointer;
+
+            &:hover {
+                color: $yum_orange;
+            }
+        }
+
+        p {
+            margin: 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+
+        + .direction {
+            margin-top: 50px;
+        }
+    }
+}

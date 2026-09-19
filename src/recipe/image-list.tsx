@@ -1,9 +1,9 @@
-import React, { Component, ReactNode } from 'react';
-import DeleteSharpIcon from '@material-ui/icons/DeleteSharp';
-import { Bind } from '@decorize/bind';
-import styles from '@/recipe/image-list.scss';
+import React, { ReactNode, useState } from 'react';
+import { IconTrash } from '@tabler/icons-react';
+import styles from '@/recipe/image-list.module.scss';
 import { StandardImageInput } from '@/common/standard-image-input';
-import editStyles from '@/common/edit.scss';
+import { recipeImageUrl } from '@/common/recipe-image';
+import editStyles from '@/common/edit.module.scss';
 import { Recipe } from '@/api/yumme-client';
 
 interface ImageListProps {
@@ -12,75 +12,52 @@ interface ImageListProps {
     updateRecipe(recipe: Recipe): void;
 }
 
-interface ImageListState {
-    errors: string[];
-}
+export function ImageList(props: ImageListProps): ReactNode {
+    const [errors, setErrors] = useState<string[]>([]);
 
-export class ImageList extends Component<ImageListProps, ImageListState> {
-    public constructor(props: ImageListProps) {
-        super(props);
+    const getImages = (): string[] => props.recipe.image_attachments ?? [];
 
-        this.state = {
-            errors: [],
-        };
-    }
+    const deleteImage = (identifier: number): void => {
+        const recipe = props.recipe;
+        const images = getImages();
+        images.splice(identifier, 1);
+        recipe.image_attachments = images;
 
-    public render(): ReactNode {
-        if (this.props.editing) {
-            return (
-                <ul className={ `${ styles.images } ${ styles.editing }` }>
-                    {
-                        this.props.recipe.images
-                            .map((image, i) => (
-                                <li key={ i }>
-                                    <img
-                                        className={ styles.image }
-                                        src={ `/api/v1/${ this.props.recipe.id }/image/${ image }` } />
-                                    <div className={ `${ editStyles.editButtons } ${ styles.deleteBtnWrapper }` }>
-                                        <DeleteSharpIcon className={ editStyles.delete }
-                                                         onClick={ (): void => this.delete(i) } />
-                                    </div>
-                                </li>
-                            ))
-                    }
+        props.updateRecipe(recipe);
+    };
 
-                    <li>
-                        <span className={ styles.image }>
-                            <StandardImageInput
-                                errors={ this.state.errors }
-                                color="white"
-                                onChange={ this.tryAddImage } />
-                        </span>
-                    </li>
-                </ul>
-            );
-        }
+    const validate = (file: File, result: string): Promise<boolean> => new Promise(resolve => {
+        const nextErrors = [] as string[];
+        const maxMB = 4;
+        const minWidth = 1200;
+        const minHeight = 800;
+        const image = new Image();
+        image.src = result;
 
-        return (
-            <ul className={ styles.images }>
-                {
-                    this.props.recipe.images
-                        .map((image, i) => (
-                            <li key={ i }>
-                                <img className={ styles.image }
-                                     src={ `/api/v1/recipe/${ this.props.recipe.id }/image/${ image }` } />
-                            </li>
-                        ))
-                }
-            </ul>
-        );
-    }
+        image.addEventListener('load', () => {
+            if (file.size > maxMB * 1000000) {
+                nextErrors.push('Max filesize is 4MB');
+            }
 
-    @Bind
-    private delete(identifier: number): void {
-        const recipe = this.props.recipe;
-        recipe.images.splice(identifier, 1);
+            if (image.height < minHeight || image.width < minWidth) {
+                nextErrors.push(`Image needs to be atleast ${ minWidth }x${ minHeight }`);
+            }
 
-        this.props.updateRecipe(recipe);
-    }
+            setErrors(nextErrors);
 
-    @Bind
-    private tryAddImage(el: React.ChangeEvent<HTMLInputElement>): void {
+            if (nextErrors.length) {
+                resolve(false);
+            }
+
+            resolve(true);
+        });
+
+        image.addEventListener('error', () => {
+            resolve(false);
+        });
+    });
+
+    const tryAddImage = (el: React.ChangeEvent<HTMLInputElement>): void => {
         if (el.target.files !== null && el.target.files.length > 0) {
             const fr = new FileReader();
             const file = el.target.files[0];
@@ -88,49 +65,62 @@ export class ImageList extends Component<ImageListProps, ImageListState> {
 
             fr.onload = async(event: ProgressEvent<FileReader>): Promise<void> => {
                 if (typeof event.target?.result === 'string') {
-                    const success = await this.validate(file, event.target.result);
+                    const success = await validate(file, event.target.result);
 
                     if (success) {
-                        const recipe = this.props.recipe;
-                        recipe.images.push(event.target.result);
+                        const recipe = props.recipe;
+                        const images = getImages();
+                        images.push(event.target.result);
+                        recipe.image_attachments = images;
 
-                        this.props.updateRecipe(recipe);
+                        props.updateRecipe(recipe);
                     }
                 }
             };
         }
+    };
+
+    if (props.editing) {
+        return (
+            <ul className={ styles.images }>
+                {
+                    getImages()
+                        .map((image, i) => (
+                            <li key={ i }>
+                                <img
+                                    className={ styles.image }
+                                    src={ recipeImageUrl(props.recipe.id, image) } />
+                                <div className={ `${ editStyles.editButtons } ${ styles.deleteBtnWrapper }` }>
+                                    <IconTrash className={ editStyles.delete }
+                                               onClick={ (): void => deleteImage(i) } />
+                                </div>
+                            </li>
+                        ))
+                }
+
+                <li>
+                    <span className={ styles.image }>
+                        <StandardImageInput
+                            errors={ errors }
+                            color="white"
+                            onChange={ tryAddImage } />
+                    </span>
+                </li>
+            </ul>
+        );
     }
 
-    private validate(file: File, result: string): Promise<boolean> {
-        return new Promise(resolve => {
-            const errors = [] as string[];
-            const maxMB = 4;
-            const minWidth = 1200;
-            const minHeight = 800;
-            const image = new Image();
-            image.src = result;
-
-            image.addEventListener('load', () => {
-                if (file.size > maxMB * 1000000) {
-                    errors.push('Max filesize is 4MB');
-                }
-
-                if (image.height < minHeight || image.width < minWidth) {
-                    errors.push(`Image needs to be atleast ${ minWidth }x${ minHeight }`);
-                }
-
-                this.setState({ errors });
-
-                if (errors.length) {
-                    resolve(false);
-                }
-
-                resolve(true);
-            });
-
-            image.addEventListener('error', () => {
-                resolve(false);
-            });
-        });
-    }
+    return (
+        <ul className={ styles.images }>
+            {
+                getImages()
+                    .map((image, i) => (
+                        <li key={ i }>
+                            <img className={ styles.image }
+                                 src={ recipeImageUrl(props.recipe.id, image) } />
+                        </li>
+                    ))
+            }
+        </ul>
+    );
 }

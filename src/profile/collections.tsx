@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from '@/profile/collections.scss';
+import styles from '@/profile/collections.module.scss';
 
 export const Collections: FC = () => (
     <section className={ styles.view }>

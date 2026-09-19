@@ -1,7 +1,6 @@
-/* eslint-disable max-lines-per-function */
 import React, { FC } from 'react';
 import { StatList } from '@/recipe/stat-list';
-import styles from '@/recipe/recipe-view-desktop.scss';
+import styles from '@/recipe/recipe-view-desktop.module.scss';
 import { IngredientList } from '@/recipe/ingredient-list';
 import { ImageList } from '@/recipe/image-list';
 import { DirectionList } from '@/recipe/direction-list';

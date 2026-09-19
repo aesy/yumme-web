@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from '@/common/loading-spinner.scss';
+import styles from '@/common/loading-spinner.module.scss';
 
 interface LoadingSpinnerProps {
     color: 'white' | 'orange';

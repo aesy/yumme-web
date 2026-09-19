@@ -1,12 +1,8 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import React, { Component, ReactNode } from 'react';
-import EditSharpIcon from '@material-ui/icons/EditSharp';
-import DeleteSharpIcon from '@material-ui/icons/DeleteSharp';
-import AddCircleSharpIcon from '@material-ui/icons/AddCircleSharp';
-import { Bind } from '@decorize/bind';
-import styles from '@/recipe/direction-list.scss';
+import React, { ReactNode, useState } from 'react';
+import { IconEdit, IconTrash, IconCirclePlus } from '@tabler/icons-react';
+import styles from '@/recipe/direction-list.module.scss';
 import { EditableText } from '@/common/editable-text';
-import editStyles from '@/common/edit.scss';
+import editStyles from '@/common/edit.module.scss';
 import { Recipe } from '@/api/yumme-client';
 
 interface DirectionListProps {
@@ -15,224 +11,30 @@ interface DirectionListProps {
     updateRecipe(recipe: Recipe): void;
 }
 
-interface DirectionListState {
-    addDirectionInputErrors: string[];
-    addDirectionInputValue: string;
-    selectedInput: number | null;
-    selectedInputErrors: string[];
-    selectedInputValue: string;
-}
+// The API models `directions` as a single newline-delimited string, but the
+// numbered step-by-step editing UI here works with a list. These helpers
+// convert at the boundary so the rest of the component can keep treating
+// directions as a list of steps.
+export function DirectionList(props: DirectionListProps): ReactNode {
+    const [selectedInput, setSelectedInput] = useState<number | null>(null);
+    const [selectedInputValue, setSelectedInputValue] = useState('');
+    const [selectedInputErrors, setSelectedInputErrors] = useState<string[]>([]);
+    const [addDirectionInputValue, setAddDirectionInputValue] = useState('');
+    const [addDirectionInputErrors, setAddDirectionInputErrors] = useState<string[]>([]);
 
-export class DirectionList extends Component<DirectionListProps, DirectionListState> {
-    public constructor(props: DirectionListProps) {
-        super(props);
+    const getDirections = (): string[] => {
+        const directions = props.recipe.directions;
 
-        this.state = {
-            selectedInput: null,
-            selectedInputValue: '',
-            selectedInputErrors: [],
-            addDirectionInputValue: '',
-            addDirectionInputErrors: [],
-        };
-    }
+        return directions ? directions.split('\n').filter(direction => direction.length > 0) : [];
+    };
 
-    public render(): ReactNode {
-        if (this.props.editing) {
-            return (
-                <ul className={ styles.directions }>
-                    {
-                        this.props.recipe.directions
-                            .map((direction, i) => (
-                                <li key={ i } className={ styles.direction }>
-                                    <span className={ styles.label }>
-                                        STEP
-                                        { ' ' }
-                                        { i + 1 }
-                                    </span>
+    const setDirections = (directions: string[]): void => {
+        const recipe = props.recipe;
+        recipe.directions = directions.join('\n');
+        props.updateRecipe(recipe);
+    };
 
-                                    {
-                                        this.state.selectedInput === i
-                                            ? (
-                                                <div className={ styles.editable }>
-                                                    <EditableText
-                                                        tag="p"
-                                                        value={ this.state.selectedInputValue }
-                                                        placeholder=""
-                                                        errors={ this.state.selectedInputErrors }
-                                                        onKeyDownEnter={ this.deselectInput }
-                                                        onChange={ this.editOnChange } />
-                                                    <div className={ editStyles.editButtons }>
-                                                        <DeleteSharpIcon
-                                                            className={ editStyles.delete }
-                                                            onClick={ (): void => this.delete(i) } />
-                                                    </div>
-                                                </div>
-                                            )
-                                            : (
-                                                <div className={ styles.editable }
-                                                     onClick={ (): void => this.selectInput(i) }>
-                                                    <p>{ direction }</p>
-                                                    <div className={ editStyles.editButtons }>
-                                                        <EditSharpIcon className={ editStyles.edit } />
-                                                    </div>
-                                                </div>
-                                            )
-                                    }
-                                </li>
-                            ))
-                    }
-
-                    <li className={ styles.direction }>
-                        <span className={ styles.label }>
-                            STEP
-                            { ' ' }
-                            { this.props.recipe.directions.length + 1 }
-                        </span>
-                        <div className={ styles.editable }>
-                            <EditableText
-                                tag="p"
-                                value={ this.state.addDirectionInputValue }
-                                placeholder="Add direction"
-                                errors={ this.state.addDirectionInputErrors }
-                                onKeyDownEnter={ this.tryAdd }
-                                onChange={ this.addOnChange } />
-                            <div className={ editStyles.editButtons }>
-                                <AddCircleSharpIcon
-                                    className={ editStyles.add }
-                                    onClick={ this.tryAdd } />
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            );
-        }
-
-        return (
-            this.props.recipe.directions.length <= 0
-                ? <p>No directions added..</p>
-                : (
-                    <ul className={ styles.directions }>
-                        {
-                            this.props.recipe.directions
-                                .map((direction, i) => (
-                                    <li key={ i } className={ styles.direction }>
-                                    <span className={ styles.label }>
-                                        STEP
-                                        { ' ' }
-                                        { i + 1 }
-                                    </span>
-                                        <div className={ styles.content }>
-                                            <p>{ direction }</p>
-                                        </div>
-                                    </li>
-                                ))
-                        }
-                    </ul>
-                )
-        );
-    }
-
-    @Bind
-    private selectInput(identifier: number): void {
-        const recipe = this.props.recipe;
-        const previousSelectedInput = this.state.selectedInput;
-        const direction = recipe.directions[identifier];
-
-        if (previousSelectedInput === null) {
-            this.setState({
-                selectedInput: identifier,
-                selectedInputValue: direction,
-            });
-        }
-
-        this.trySaveInput(() => {
-            this.setState({
-                selectedInput: identifier,
-                selectedInputValue: direction,
-            });
-        });
-    }
-
-    @Bind
-    private deselectInput(): void {
-        const selectedInput = this.state.selectedInput;
-
-        if (selectedInput === null) {
-            return;
-        }
-
-        this.trySaveInput(() => {
-            this.setState({ selectedInput: null });
-        });
-    }
-
-    @Bind
-    private trySaveInput(callback: () => void): void {
-        const recipe = this.props.recipe;
-        const selectedInput = this.state.selectedInput;
-        const value = this.state.selectedInputValue;
-        const selectedInputErrors = this.validate(value);
-
-        if (selectedInput === null) {
-            return;
-        }
-
-        if (!value) {
-            this.delete(selectedInput);
-
-            return;
-        }
-
-        this.setState({ selectedInputErrors });
-
-        if (selectedInputErrors.length) {
-            return;
-        }
-
-        recipe.directions[selectedInput] = value;
-        this.props.updateRecipe(recipe);
-        callback();
-    }
-
-    @Bind
-    private tryAdd(): void {
-        const recipe = this.props.recipe;
-        const value = this.state.addDirectionInputValue;
-        const addDirectionInputErrors = this.validate(value);
-
-        this.setState({ addDirectionInputErrors });
-
-        if (addDirectionInputErrors.length) {
-            return;
-        }
-
-        recipe.directions.push(this.state.addDirectionInputValue);
-        this.props.updateRecipe(recipe);
-        this.setState({ addDirectionInputValue: '' });
-    }
-
-    @Bind
-    private addOnChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
-        this.setState({ addDirectionInputValue: ev.target.value });
-    }
-
-    @Bind
-    private delete(identifier: number): void {
-        const recipe = this.props.recipe;
-        recipe.directions.splice(identifier, 1);
-        this.props.updateRecipe(recipe);
-
-        this.setState({
-            selectedInput: null,
-        });
-    }
-
-    @Bind
-    private editOnChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
-        this.setState({ selectedInputValue: ev.target.value });
-    }
-
-    private validate(value: string): string[] {
+    const validate = (value: string): string[] => {
         const errors: string[] = [];
         const min = 1;
         const max = 500;
@@ -242,5 +44,183 @@ export class DirectionList extends Component<DirectionListProps, DirectionListSt
         }
 
         return errors;
+    };
+
+    const trySaveInput = (callback: () => void): void => {
+        const value = selectedInputValue;
+        const errors = validate(value);
+
+        if (selectedInput === null) {
+            return;
+        }
+
+        if (!value) {
+            deleteDirection(selectedInput);
+
+            return;
+        }
+
+        setSelectedInputErrors(errors);
+
+        if (errors.length) {
+            return;
+        }
+
+        const directions = getDirections();
+        directions[selectedInput] = value;
+        setDirections(directions);
+        callback();
+    };
+
+    const selectInput = (identifier: number): void => {
+        const direction = getDirections()[identifier];
+
+        if (selectedInput === null) {
+            setSelectedInput(identifier);
+            setSelectedInputValue(direction);
+        }
+
+        trySaveInput(() => {
+            setSelectedInput(identifier);
+            setSelectedInputValue(direction);
+        });
+    };
+
+    const deselectInput = (): void => {
+        if (selectedInput === null) {
+            return;
+        }
+
+        trySaveInput(() => {
+            setSelectedInput(null);
+        });
+    };
+
+    const tryAdd = (): void => {
+        const value = addDirectionInputValue;
+        const errors = validate(value);
+
+        setAddDirectionInputErrors(errors);
+
+        if (errors.length) {
+            return;
+        }
+
+        const directions = getDirections();
+        directions.push(addDirectionInputValue);
+        setDirections(directions);
+        setAddDirectionInputValue('');
+    };
+
+    const addOnChange = (ev: React.ChangeEvent<HTMLTextAreaElement>): void => {
+        setAddDirectionInputValue(ev.target.value);
+    };
+
+    function deleteDirection(identifier: number): void {
+        const directions = getDirections();
+        directions.splice(identifier, 1);
+        setDirections(directions);
+
+        setSelectedInput(null);
     }
+
+    const editOnChange = (ev: React.ChangeEvent<HTMLTextAreaElement>): void => {
+        setSelectedInputValue(ev.target.value);
+    };
+
+    const directions = getDirections();
+
+    if (props.editing) {
+        return (
+            <ul className={ styles.directions }>
+                {
+                    directions
+                        .map((direction, i) => (
+                            <li key={ i } className={ styles.direction }>
+                                <span className={ styles.label }>
+                                    STEP
+                                    { ' ' }
+                                    { i + 1 }
+                                </span>
+
+                                {
+                                    selectedInput === i
+                                        ? (
+                                            <div className={ styles.editable }>
+                                                <EditableText
+                                                    tag="p"
+                                                    value={ selectedInputValue }
+                                                    placeholder=""
+                                                    errors={ selectedInputErrors }
+                                                    onKeyDownEnter={ deselectInput }
+                                                    onChange={ editOnChange } />
+                                                <div className={ editStyles.editButtons }>
+                                                    <IconTrash
+                                                        className={ editStyles.delete }
+                                                        onClick={ (): void => deleteDirection(i) } />
+                                                </div>
+                                            </div>
+                                        )
+                                        : (
+                                            <div className={ styles.editable }
+                                                 onClick={ (): void => selectInput(i) }>
+                                                <p>{ direction }</p>
+                                                <div className={ editStyles.editButtons }>
+                                                    <IconEdit className={ editStyles.edit } />
+                                                </div>
+                                            </div>
+                                        )
+                                }
+                            </li>
+                        ))
+                }
+
+                <li className={ styles.direction }>
+                    <span className={ styles.label }>
+                        STEP
+                        { ' ' }
+                        { directions.length + 1 }
+                    </span>
+                    <div className={ styles.editable }>
+                        <EditableText
+                            tag="p"
+                            value={ addDirectionInputValue }
+                            placeholder="Add direction"
+                            errors={ addDirectionInputErrors }
+                            onKeyDownEnter={ tryAdd }
+                            onChange={ addOnChange } />
+                        <div className={ editStyles.editButtons }>
+                            <IconCirclePlus
+                                className={ editStyles.add }
+                                onClick={ tryAdd } />
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        );
+    }
+
+    return (
+        directions.length <= 0
+            ? <p>No directions added..</p>
+            : (
+                <ul className={ styles.directions }>
+                    {
+                        directions
+                            .map((direction, i) => (
+                                <li key={ i } className={ styles.direction }>
+                                <span className={ styles.label }>
+                                    STEP
+                                    { ' ' }
+                                    { i + 1 }
+                                </span>
+                                    <div>
+                                        <p>{ direction }</p>
+                                    </div>
+                                </li>
+                            ))
+                    }
+                </ul>
+            )
+    );
 }

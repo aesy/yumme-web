@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React, { FC, PropsWithChildren } from 'react';
-import styles from '@/common/standard-link-btn.scss';
+import styles from '@/common/standard-link-btn.module.scss';
 
 interface StandardLinkBtnProps {
     path: string;

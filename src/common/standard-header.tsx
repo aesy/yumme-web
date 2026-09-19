@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
-import styles from '@/common/standard-header.scss';
+import styles from '@/common/standard-header.module.scss';
 
 interface StandardHeaderProps {
     readonly borderOffset: 'small' | 'medium' | 'large';

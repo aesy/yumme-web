@@ -1,5 +1,5 @@
 import React, { FC, PropsWithChildren } from 'react';
-import styles from '@/common/clickable-card.scss';
+import styles from '@/common/clickable-card.module.scss';
 
 interface ClickableCardProps {
     readonly borderOffset: 'small' | 'medium' | 'large';

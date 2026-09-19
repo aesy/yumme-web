@@ -1,6 +1,5 @@
-import React, { Component, FocusEvent, ReactNode, RefObject, TextareaHTMLAttributes } from 'react';
-import { Bind } from '@decorize/bind';
-import styles from '@/common/editable-text.scss';
+import React, { FocusEvent, ReactNode, TextareaHTMLAttributes, useEffect, useRef } from 'react';
+import styles from '@/common/editable-text.module.scss';
 
 interface EditableTextProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     errors: string[];
@@ -8,92 +7,91 @@ interface EditableTextProps extends TextareaHTMLAttributes<HTMLTextAreaElement> 
     onKeyDownEnter?(): void;
 }
 
-export class EditableText extends Component<EditableTextProps, unknown> {
-    private readonly input: RefObject<HTMLTextAreaElement>;
+export function EditableText(props: EditableTextProps): ReactNode {
+    const input = useRef<HTMLTextAreaElement | null>(null);
+    const { tag, errors, onKeyDownEnter, ...rest } = props;
 
-    public constructor(props: EditableTextProps) {
-        super(props);
-        this.input = React.createRef();
-    }
+    // why: keeps the DOM listener reading the latest callback (matching the
+    // class's `this.props.onKeyDownEnter` lookup) without re-attaching it on
+    // every render.
+    const onKeyDownEnterRef = useRef(onKeyDownEnter);
+    onKeyDownEnterRef.current = onKeyDownEnter;
 
-    public componentDidMount(): void {
-        this.setHeight();
+    const setHeight = (): void => {
+        if (input.current) {
+            input.current.style.height = '0';
+            input.current.style.height = `${ input.current.scrollHeight }px`;
+        }
+    };
 
-        this.input.current?.focus();
-        this.input.current?.addEventListener('keydown', this.onKeyDownEnter);
-
-        window.addEventListener('resize', this.setHeight);
-    }
-
-    public componentWillUnmount(): void {
-        this.input.current?.removeEventListener('keydown', this.onKeyDownEnter);
-
-        window.removeEventListener('resize', this.setHeight);
-    }
-
-    public render(): ReactNode {
-        this.setHeight();
-        const { tag, errors, onKeyDownEnter, ...props } = this.props;
-
-        return (
-            <div className={ `${ styles.editableText }` }>
-                {
-                    React.createElement(
-                        tag,
-                        {
-                            className: styles.editWrapper,
-                        },
-                        <textarea
-                            ref={ this.input }
-                            className={ `${ styles.textArea } ${ errors.length ? styles.invalid : '' }` }
-                            onFocus={ this.onFocus }
-                            { ...props } />,
-                    )
-                }
-                {
-                    errors.length !== 0 && (
-                        <ul className={ styles.errors }>
-                            {
-                                errors.map((error, j) => (
-                                    <li
-                                        key={ j }
-                                        className={ styles.error }>
-                                        <p>
-                                            { error }
-                                        </p>
-                                    </li>
-                                ))
-                            }
-                        </ul>
-                    )
-                }
-            </div>
-        );
-    }
-
-    private onFocus(ev: FocusEvent<HTMLTextAreaElement>): void {
+    const onFocus = (ev: FocusEvent<HTMLTextAreaElement>): void => {
         const value = ev.target.value;
         ev.target.setSelectionRange(value.length, value.length);
-    }
+    };
 
-    @Bind
-    private onKeyDownEnter(ev: KeyboardEvent): void {
-        const key = ev.key;
+    useEffect(() => {
+        const node = input.current;
 
-        if (key === 'Enter') {
-            ev.preventDefault();
+        const onKeyDownEnterListener = (ev: KeyboardEvent): void => {
+            const key = ev.key;
 
-            if (this.props.onKeyDownEnter) {
-                this.props.onKeyDownEnter();
+            if (key === 'Enter') {
+                ev.preventDefault();
+
+                if (onKeyDownEnterRef.current) {
+                    onKeyDownEnterRef.current();
+                }
             }
-        }
-    }
+        };
 
-    @Bind
-    private setHeight(): void {
-        if (this.input.current) {
-            this.input.current.style.height = '0';
-            this.input.current.style.height = `${ this.input.current.scrollHeight }px`;
-        }
-    }
+        setHeight();
+
+        node?.focus();
+        node?.addEventListener('keydown', onKeyDownEnterListener);
+
+        window.addEventListener('resize', setHeight);
+
+        return () => {
+            node?.removeEventListener('keydown', onKeyDownEnterListener);
+
+            window.removeEventListener('resize', setHeight);
+        };
+    }, []);
+
+    setHeight();
+
+    return (
+        <div className={ `${ styles.editableText }` }>
+            {
+                React.createElement(
+                    tag,
+                    {
+                        className: styles.editWrapper,
+                    },
+                    <textarea
+                        ref={ input }
+                        className={ `${ styles.textArea } ${ errors.length ? styles.invalid : '' }` }
+                        onFocus={ onFocus }
+                        { ...rest } />,
+                )
+            }
+            {
+                errors.length !== 0 && (
+                    <ul className={ styles.errors }>
+                        {
+                            errors.map((error, j) => (
+                                <li
+                                    key={ j }
+                                    className={ styles.error }>
+                                    <p>
+                                        { error }
+                                    </p>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                )
+            }
+        </div>
+    );
 }

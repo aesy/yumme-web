@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import React, { FC } from 'react';
-import ExpandMoreSharpIcon from '@material-ui/icons/ExpandMoreSharp';
+import { IconChevronDown } from '@tabler/icons-react';
 import { UserMenu } from '@/common/user-menu';
-import styles from '@/common/header.scss';
+import styles from '@/common/header.module.scss';
 
 export const Header: FC<unknown> = () => (
     <header className={ styles.header }>
@@ -17,12 +17,12 @@ export const Header: FC<unknown> = () => (
                         <li>
                             Browse
                             { ' ' }
-                            <ExpandMoreSharpIcon />
+                            <IconChevronDown />
                         </li>
                     </ul>
                 </nav>
             </div>
-            <div className={ styles.right }>
+            <div>
                 <UserMenu />
             </div>
         </div>

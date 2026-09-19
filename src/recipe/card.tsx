@@ -1,13 +1,11 @@
-import React, { Component, ReactNode } from 'react';
-import StarSharpIcon from '@material-ui/icons/StarSharp';
-import StarHalfSharpIcon from '@material-ui/icons/StarHalfSharp';
-import EditSharpIcon from '@material-ui/icons/EditSharp';
-import { Bind } from '@decorize/bind';
-import styles from '@/recipe/card.scss';
+import React, { ReactNode, useState } from 'react';
+import { IconStarFilled, IconStarHalfFilled, IconEdit } from '@tabler/icons-react';
+import styles from '@/recipe/card.module.scss';
 import DefaultRecipeImage from '@/images/DefaultRecipeImage.jpg';
 import { StandardImageInput } from '@/common/standard-image-input';
+import { recipeImageUrl } from '@/common/recipe-image';
 import { EditableText } from '@/common/editable-text';
-import editStyles from '@/common/edit.scss';
+import editStyles from '@/common/edit.module.scss';
 import { Recipe } from '@/api/yumme-client';
 
 interface CardProps {
@@ -16,248 +14,15 @@ interface CardProps {
     updateRecipe(recipe: Recipe): void;
 }
 
-interface CardState {
-    descriptionErrors: string[];
-    descriptionInputValue: string;
-    imageErrors: string[];
-    selectedInput: 'title' | 'description' | null;
-    titleErrors: string[];
-    titleInputValue: string;
-}
+export function Card(props: CardProps): ReactNode {
+    const [selectedInput, setSelectedInput] = useState<'title' | 'description' | null>(null);
+    const [descriptionErrors, setDescriptionErrors] = useState<string[]>([]);
+    const [descriptionInputValue, setDescriptionInputValue] = useState(props.recipe.description ?? '');
+    const [titleInputValue, setTitleInputValue] = useState(props.recipe.title ?? '');
+    const [titleErrors, setTitleErrors] = useState<string[]>([]);
+    const [imageErrors, setImageErrors] = useState<string[]>([]);
 
-export class Card extends Component<CardProps, CardState> {
-    public constructor(props: CardProps) {
-        super(props);
-
-        this.state = {
-            selectedInput: null,
-            descriptionErrors: [],
-            descriptionInputValue: this.props.recipe.description,
-            titleInputValue: this.props.recipe.title,
-            titleErrors: [],
-            imageErrors: [],
-        };
-    }
-
-    public render(): ReactNode {
-        const rating = [];
-        const half = 0.5;
-
-        for (let i = 0; i < this.props.recipe.rating.average; i++) {
-            rating.push(<StarSharpIcon />);
-        }
-
-        if (this.props.recipe.rating.average - Math.floor(this.props.recipe.rating.average) >= half) {
-            rating.push(<StarHalfSharpIcon />);
-        }
-
-        const image = this.props.recipe.images[0];
-        let imageUrl;
-
-        if (image) {
-            imageUrl = `/api/v1/recipe/${ this.props.recipe.id }/image/${ image }`;
-        } else {
-            imageUrl = DefaultRecipeImage;
-        }
-
-        if (this.props.editing) {
-            return (
-                <div className={ `${ styles.card }` }>
-                    <div
-                        className={ styles.cardImage }
-                        style={{ backgroundImage: `url(${ imageUrl })` }}>
-                        <StandardImageInput
-                            color="white"
-                            errors={ this.state.imageErrors }
-                            onChange={ this.tryEditImage } />
-                    </div>
-                    <div className={ styles.cardContent }>
-                        {
-                            this.state.selectedInput === 'title'
-                                ? (
-                                    <EditableText
-                                        tag="h1"
-                                        value={ this.state.titleInputValue }
-                                        placeholder="Title"
-                                        errors={ this.state.titleErrors }
-                                        onKeyDownEnter={ this.deselectInput }
-                                        onChange={ this.titleOnChange } />
-                                )
-                                : (
-                                    <div className={ styles.editable } onClick={ (): void => this.selectInput('title') }>
-                                        <h1>{ this.props.recipe.title }</h1>
-                                        <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
-                                            <EditSharpIcon className={ editStyles.edit } />
-                                        </div>
-                                    </div>
-                                )
-                        }
-
-                        <ul className={ styles.rating }>
-                            {
-                                rating
-                                    .map((star, i) => (
-                                        <li key={ i }>
-                                            { star }
-                                        </li>))
-                            }
-                        </ul>
-
-                        {
-                            this.state.selectedInput === 'description'
-                                ? (
-                                    <EditableText
-                                        tag="p"
-                                        value={ this.state.descriptionInputValue }
-                                        placeholder="Description"
-                                        errors={ this.state.descriptionErrors }
-                                        onKeyDownEnter={ this.deselectInput }
-                                        onChange={ this.descriptionOnChange } />
-                                )
-                                : (
-                                    <div className={ styles.editable }
-                                         onClick={ (): void => this.selectInput('description') }>
-                                        <p>{ this.props.recipe.description }</p>
-                                        <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
-                                            <EditSharpIcon className={ editStyles.edit } />
-                                        </div>
-                                    </div>
-                                )
-                        }
-                    </div>
-                </div>
-            );
-        }
-
-        return (
-            <div className={ styles.card }>
-                <div
-                    className={ styles.cardImage }
-                    style={{ backgroundImage: `url(${ imageUrl })` }} />
-                <div className={ styles.cardContent }>
-                    <h1>{ this.props.recipe.title }</h1>
-
-                    <ul className={ styles.rating }>
-                        {
-                            rating.map((star, i) => <li key={ i }>{ star }</li>)
-                        }
-                    </ul>
-
-                    <p>{ this.props.recipe.description }</p>
-                </div>
-            </div>
-        );
-    }
-
-    @Bind
-    private descriptionOnChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
-        this.setState({ descriptionInputValue: ev.target.value });
-    }
-
-    @Bind
-    private deselectInput(): void {
-        const selectedInput = this.state.selectedInput;
-
-        if (selectedInput === 'title') {
-            this.trySaveTitle(() => {
-                this.setState({ selectedInput: null });
-            });
-        }
-
-        if (selectedInput === 'description') {
-            this.trySaveDescription(() => {
-                this.setState({ selectedInput: null });
-            });
-        }
-    }
-
-    @Bind
-    private selectInput(identifier: 'title' | 'description'): void {
-        const previousSelectedInput = this.state.selectedInput;
-
-        if (previousSelectedInput === null) {
-            this.setState({
-                selectedInput: identifier,
-            });
-
-            return;
-        }
-
-        if (previousSelectedInput === 'title') {
-            this.trySaveTitle(() => {
-                this.setState({ selectedInput: identifier });
-            });
-        }
-
-        if (previousSelectedInput === 'description') {
-            this.trySaveDescription(() => {
-                this.setState({ selectedInput: identifier });
-            });
-        }
-    }
-
-    @Bind
-    private titleOnChange(ev: React.ChangeEvent<HTMLTextAreaElement>): void {
-        this.setState({ titleInputValue: ev.target.value });
-    }
-
-    @Bind
-    private tryEditImage(el: React.ChangeEvent<HTMLInputElement>): void {
-        if (el.target.files !== null && el.target.files.length > 0) {
-            const fr = new FileReader();
-            const file = el.target.files[0];
-            fr.readAsDataURL(file);
-
-            fr.onload = async(event: ProgressEvent<FileReader>): Promise<void> => {
-                if (typeof event.target?.result === 'string') {
-                    const success = await this.validateImage(file, event.target.result);
-
-                    if (success) {
-                        const recipe = this.props.recipe;
-                        recipe.images[0] = event.target.result;
-
-                        this.props.updateRecipe(recipe);
-                    }
-                }
-            };
-        }
-    }
-
-    @Bind
-    private trySaveDescription(callback: () => void): void {
-        const recipe = this.props.recipe;
-        const value = this.state.descriptionInputValue;
-        const descriptionErrors = this.validateDescription(value);
-
-        this.setState({ descriptionErrors }, () => {
-            if (descriptionErrors.length) {
-                return;
-            }
-
-            recipe.description = value;
-            this.props.updateRecipe(recipe);
-            callback();
-        });
-    }
-
-    @Bind
-    private trySaveTitle(callback: () => void): void {
-        const recipe = this.props.recipe;
-        const value = this.state.titleInputValue;
-        const titleErrors = this.validateTitle(value);
-
-        this.setState({ titleErrors }, () => {
-            if (titleErrors.length) {
-                return;
-            }
-
-            recipe.title = value;
-            this.props.updateRecipe(recipe);
-            callback();
-        });
-    }
-
-    private validateDescription(value: string): string[] {
+    const validateDescription = (value: string): string[] => {
         const errors: string[] = [];
         const min = 1;
         const max = 512;
@@ -267,42 +32,9 @@ export class Card extends Component<CardProps, CardState> {
         }
 
         return errors;
-    }
+    };
 
-    private validateImage(file: File, result: string): Promise<boolean> {
-        return new Promise(resolve => {
-            const imageErrors = [] as string[];
-            const maxMB = 4;
-            const minWidth = 1200;
-            const minHeight = 800;
-            const image = new Image();
-            image.src = result;
-
-            image.addEventListener('load', () => {
-                if (file.size > maxMB * 1000000) {
-                    imageErrors.push('Max filesize is 4MB');
-                }
-
-                if (image.height < minHeight || image.width < minWidth) {
-                    imageErrors.push(`Image needs to be at least ${ minWidth }x${ minHeight }`);
-                }
-
-                this.setState({ imageErrors });
-
-                if (imageErrors.length) {
-                    resolve(false);
-                }
-
-                resolve(true);
-            });
-
-            image.addEventListener('error', () => {
-                resolve(false);
-            });
-        });
-    }
-
-    private validateTitle(value: string): string[] {
+    const validateTitle = (value: string): string[] => {
         const errors: string[] = [];
         const min = 1;
         const max = 128;
@@ -312,5 +44,236 @@ export class Card extends Component<CardProps, CardState> {
         }
 
         return errors;
+    };
+
+    const validateImage = (file: File, result: string): Promise<boolean> => new Promise(resolve => {
+        const nextImageErrors = [] as string[];
+        const maxMB = 4;
+        const minWidth = 1200;
+        const minHeight = 800;
+        const image = new Image();
+        image.src = result;
+
+        image.addEventListener('load', () => {
+            if (file.size > maxMB * 1000000) {
+                nextImageErrors.push('Max filesize is 4MB');
+            }
+
+            if (image.height < minHeight || image.width < minWidth) {
+                nextImageErrors.push(`Image needs to be at least ${ minWidth }x${ minHeight }`);
+            }
+
+            setImageErrors(nextImageErrors);
+
+            if (nextImageErrors.length) {
+                resolve(false);
+            }
+
+            resolve(true);
+        });
+
+        image.addEventListener('error', () => {
+            resolve(false);
+        });
+    });
+
+    const trySaveDescription = (callback: () => void): void => {
+        const recipe = props.recipe;
+        const value = descriptionInputValue;
+        const errors = validateDescription(value);
+
+        setDescriptionErrors(errors);
+
+        if (errors.length) {
+            return;
+        }
+
+        recipe.description = value;
+        props.updateRecipe(recipe);
+        callback();
+    };
+
+    const trySaveTitle = (callback: () => void): void => {
+        const recipe = props.recipe;
+        const value = titleInputValue;
+        const errors = validateTitle(value);
+
+        setTitleErrors(errors);
+
+        if (errors.length) {
+            return;
+        }
+
+        recipe.title = value;
+        props.updateRecipe(recipe);
+        callback();
+    };
+
+    const deselectInput = (): void => {
+        if (selectedInput === 'title') {
+            trySaveTitle(() => {
+                setSelectedInput(null);
+            });
+        }
+
+        if (selectedInput === 'description') {
+            trySaveDescription(() => {
+                setSelectedInput(null);
+            });
+        }
+    };
+
+    const selectInput = (identifier: 'title' | 'description'): void => {
+        if (selectedInput === null) {
+            setSelectedInput(identifier);
+
+            return;
+        }
+
+        if (selectedInput === 'title') {
+            trySaveTitle(() => {
+                setSelectedInput(identifier);
+            });
+        }
+
+        if (selectedInput === 'description') {
+            trySaveDescription(() => {
+                setSelectedInput(identifier);
+            });
+        }
+    };
+
+    const titleOnChange = (ev: React.ChangeEvent<HTMLTextAreaElement>): void => {
+        setTitleInputValue(ev.target.value);
+    };
+
+    const descriptionOnChange = (ev: React.ChangeEvent<HTMLTextAreaElement>): void => {
+        setDescriptionInputValue(ev.target.value);
+    };
+
+    const tryEditImage = (el: React.ChangeEvent<HTMLInputElement>): void => {
+        if (el.target.files !== null && el.target.files.length > 0) {
+            const fr = new FileReader();
+            const file = el.target.files[0];
+            fr.readAsDataURL(file);
+
+            fr.onload = async(event: ProgressEvent<FileReader>): Promise<void> => {
+                if (typeof event.target?.result === 'string') {
+                    const success = await validateImage(file, event.target.result);
+
+                    if (success) {
+                        const recipe = props.recipe;
+                        recipe.image_cover = event.target.result;
+
+                        props.updateRecipe(recipe);
+                    }
+                }
+            };
+        }
+    };
+
+    const rating = [];
+    const half = 0.5;
+    const average = props.recipe.rating?.average ?? 0;
+
+    for (let i = 0; i < average; i++) {
+        rating.push(<IconStarFilled />);
     }
+
+    if (average - Math.floor(average) >= half) {
+        rating.push(<IconStarHalfFilled />);
+    }
+
+    const image = props.recipe.image_cover;
+    const imageUrl = image
+        ? recipeImageUrl(props.recipe.id, image)
+        : DefaultRecipeImage;
+
+    if (props.editing) {
+        return (
+            <div className={ `${ styles.card }` }>
+                <div
+                    className={ styles.cardImage }
+                    style={{ backgroundImage: `url(${ imageUrl })` }}>
+                    <StandardImageInput
+                        color="white"
+                        errors={ imageErrors }
+                        onChange={ tryEditImage } />
+                </div>
+                <div className={ styles.cardContent }>
+                    {
+                        selectedInput === 'title'
+                            ? (
+                                <EditableText
+                                    tag="h1"
+                                    value={ titleInputValue }
+                                    placeholder="Title"
+                                    errors={ titleErrors }
+                                    onKeyDownEnter={ deselectInput }
+                                    onChange={ titleOnChange } />
+                            )
+                            : (
+                                <div className={ styles.editable } onClick={ (): void => selectInput('title') }>
+                                    <h1>{ props.recipe.title }</h1>
+                                    <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
+                                        <IconEdit className={ editStyles.edit } />
+                                    </div>
+                                </div>
+                            )
+                    }
+
+                    <ul className={ styles.rating }>
+                        {
+                            rating
+                                .map((star, i) => (
+                                    <li key={ i }>
+                                        { star }
+                                    </li>))
+                        }
+                    </ul>
+
+                    {
+                        selectedInput === 'description'
+                            ? (
+                                <EditableText
+                                    tag="p"
+                                    value={ descriptionInputValue }
+                                    placeholder="Description"
+                                    errors={ descriptionErrors }
+                                    onKeyDownEnter={ deselectInput }
+                                    onChange={ descriptionOnChange } />
+                            )
+                            : (
+                                <div className={ styles.editable }
+                                     onClick={ (): void => selectInput('description') }>
+                                    <p>{ props.recipe.description }</p>
+                                    <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
+                                        <IconEdit className={ editStyles.edit } />
+                                    </div>
+                                </div>
+                            )
+                    }
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className={ styles.card }>
+            <div
+                className={ styles.cardImage }
+                style={{ backgroundImage: `url(${ imageUrl })` }} />
+            <div className={ styles.cardContent }>
+                <h1>{ props.recipe.title }</h1>
+
+                <ul className={ styles.rating }>
+                    {
+                        rating.map((star, i) => <li key={ i }>{ star }</li>)
+                    }
+                </ul>
+
+                <p>{ props.recipe.description }</p>
+            </div>
+        </div>
+    );
 }

@@ -1,6 +1,5 @@
-import React, { Component, ReactNode } from 'react';
-import { Bind } from '@decorize/bind';
-import styles from '@/recipe/stat-list.scss';
+import React, { ReactNode } from 'react';
+import styles from '@/recipe/stat-list.module.scss';
 import { StandardHeader } from '@/common/standard-header';
 import { Recipe } from '@/api/yumme-client';
 
@@ -11,97 +10,75 @@ interface StatListProps {
     updateRecipe(recipe: Recipe): void;
 }
 
-export class StatList extends Component<StatListProps, unknown> {
-    public constructor(props: StatListProps) {
-        super(props);
-    }
+export function StatList(props: StatListProps): ReactNode {
+    const editCookTime = (ev: React.ChangeEvent<HTMLInputElement>): void => {
+        const recipe = props.recipe;
+        const value = ev.target.value;
+        recipe.cook_time = Number(value) * 60;
 
-    public render(): ReactNode {
-        if (this.props.editing) {
-            return (
-                <ul className={ `${ styles.stats } ${ styles[this.props.type] }` }>
-                    <li className={ styles.stat }>
-                        <StandardHeader borderOffset="small" color="white">
-                            <h4>Prep time</h4>
-                        </StandardHeader>
-                        <div className={ styles.inputWrapper }>
-                            <input type="number"
-                                   min={ 1 }
-                                   max={ 240 }
-                                   value={ Math.round(this.props.recipe.prep_time / 60) }
-                                   onChange={ this.editPrepTime } />
-                        </div>
-                        <span className={ styles.unit }>
-                            min
-                        </span>
-                    </li>
-                    <li className={ styles.stat }>
-                        <StandardHeader borderOffset="small" color="white">
-                            <h4>Cook time</h4>
-                        </StandardHeader>
-                        <div className={ styles.inputWrapper }>
-                            <input type="number"
-                                   min={ 1 }
-                                   max={ 240 }
-                                   value={ Math.round(this.props.recipe.cook_time / 60) }
-                                   onChange={ this.editCookTime } />
-                        </div>
-                        <span className={ styles.unit }>
-                            min
-                        </span>
-                    </li>
-                    <li className={ styles.stat }>
-                        <StandardHeader borderOffset="small" color="white">
-                            <h4>Yield</h4>
-                        </StandardHeader>
-                        <div className={ styles.inputWrapper }>
-                            <input type="number"
-                                   min={ 1 }
-                                   max={ 12 }
-                                   value={ this.props.recipe.yield }
-                                   onChange={ this.editYield } />
-                        </div>
-                        <span className={ styles.unit }>
-                            servings
-                        </span>
-                    </li>
-                </ul>
-            );
-        }
+        props.updateRecipe(recipe);
+    };
 
+    const editPrepTime = (ev: React.ChangeEvent<HTMLInputElement>): void => {
+        const recipe = props.recipe;
+        const value = ev.target.value;
+        recipe.prep_time = Number(value) * 60;
+
+        props.updateRecipe(recipe);
+    };
+
+    const editServings = (ev: React.ChangeEvent<HTMLInputElement>): void => {
+        const recipe = props.recipe;
+        const value = ev.target.value;
+        recipe.servings = Number(value);
+
+        props.updateRecipe(recipe);
+    };
+
+    if (props.editing) {
         return (
-            <ul className={ `${ styles.stats } ${ styles[this.props.type] }` }>
-                <li className={ styles.stat }>
+            <ul className={ props.type === 'column' ? `${ styles.stats } ${ styles.column }` : styles.stats }>
+                <li>
                     <StandardHeader borderOffset="small" color="white">
                         <h4>Prep time</h4>
                     </StandardHeader>
-                    <span className={ styles.value }>
-                        { Math.round(this.props.recipe.prep_time / 60) }
-                    </span>
+                    <div className={ styles.inputWrapper }>
+                        <input type="number"
+                               min={ 1 }
+                               max={ 240 }
+                               value={ Math.round((props.recipe.prep_time ?? 0) / 60) }
+                               onChange={ editPrepTime } />
+                    </div>
                     <span className={ styles.unit }>
                         min
                     </span>
                 </li>
-
-                <li className={ styles.stat }>
+                <li>
                     <StandardHeader borderOffset="small" color="white">
                         <h4>Cook time</h4>
                     </StandardHeader>
-                    <span className={ styles.value }>
-                        { Math.round(this.props.recipe.cook_time / 60) }
-                    </span>
+                    <div className={ styles.inputWrapper }>
+                        <input type="number"
+                               min={ 1 }
+                               max={ 240 }
+                               value={ Math.round((props.recipe.cook_time ?? 0) / 60) }
+                               onChange={ editCookTime } />
+                    </div>
                     <span className={ styles.unit }>
                         min
                     </span>
                 </li>
-
-                <li className={ styles.stat }>
+                <li>
                     <StandardHeader borderOffset="small" color="white">
                         <h4>Yield</h4>
                     </StandardHeader>
-                    <span className={ styles.value }>
-                        { this.props.recipe.yield }
-                    </span>
+                    <div className={ styles.inputWrapper }>
+                        <input type="number"
+                               min={ 1 }
+                               max={ 12 }
+                               value={ props.recipe.servings ?? 0 }
+                               onChange={ editServings } />
+                    </div>
                     <span className={ styles.unit }>
                         servings
                     </span>
@@ -110,32 +87,43 @@ export class StatList extends Component<StatListProps, unknown> {
         );
     }
 
-    @Bind
-    private editCookTime(ev: React.ChangeEvent<HTMLInputElement>): void {
-        const recipe = this.props.recipe;
-        const value = ev.target.value;
-        // eslint-disable-next-line
-        recipe.cook_time = Number(value) * 60;
+    return (
+        <ul className={ props.type === 'column' ? `${ styles.stats } ${ styles.column }` : styles.stats }>
+            <li>
+                <StandardHeader borderOffset="small" color="white">
+                    <h4>Prep time</h4>
+                </StandardHeader>
+                <span>
+                    { Math.round((props.recipe.prep_time ?? 0) / 60) }
+                </span>
+                <span className={ styles.unit }>
+                    min
+                </span>
+            </li>
 
-        this.props.updateRecipe(recipe);
-    }
+            <li>
+                <StandardHeader borderOffset="small" color="white">
+                    <h4>Cook time</h4>
+                </StandardHeader>
+                <span>
+                    { Math.round((props.recipe.cook_time ?? 0) / 60) }
+                </span>
+                <span className={ styles.unit }>
+                    min
+                </span>
+            </li>
 
-    @Bind
-    private editPrepTime(ev: React.ChangeEvent<HTMLInputElement>): void {
-        const recipe = this.props.recipe;
-        const value = ev.target.value;
-        // eslint-disable-next-line
-        recipe.prep_time = Number(value) * 60;
-
-        this.props.updateRecipe(recipe);
-    }
-
-    @Bind
-    private editYield(ev: React.ChangeEvent<HTMLInputElement>): void {
-        const recipe = this.props.recipe;
-        const value = ev.target.value;
-        recipe.yield = Number(value);
-
-        this.props.updateRecipe(recipe);
-    }
+            <li>
+                <StandardHeader borderOffset="small" color="white">
+                    <h4>Yield</h4>
+                </StandardHeader>
+                <span>
+                    { props.recipe.servings ?? 0 }
+                </span>
+                <span className={ styles.unit }>
+                    servings
+                </span>
+            </li>
+        </ul>
+    );
 }

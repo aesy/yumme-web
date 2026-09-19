@@ -1,132 +1,105 @@
-import React, { Component, ReactNode } from 'react';
-import { resolve } from 'inversify-react';
-import { Bind } from '@decorize/bind';
-import styles from '@/recipe/recipe.scss';
+import { useNavigate } from 'react-router-dom';
+import React, { type ReactNode, useEffect, useState } from 'react';
+import { useInjection } from 'inversify-react';
+import styles from '@/recipe/recipe.module.scss';
 import { RecipeViewTablet } from '@/recipe/recipe-view-tablet';
 import { RecipeViewDesktop } from '@/recipe/recipe-view-desktop';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
 import { type Recipe, type YummeClient, YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 
-interface EmptyRecipeState {
-    editing: boolean;
-    loading: boolean;
-    recipe: Recipe;
-    tabletView: boolean;
-}
+const BREAKPOINT = 980;
 
-export class EmptyRecipe extends Component<any, EmptyRecipeState> {
-    @resolve(YUMME_CLIENT_TYPE)
-    private readonly yummeClient: YummeClient;
+const INITIAL_RECIPE: Recipe = {
+    categories: [],
+    cook_time: 600,
+    prep_time: 600,
+    servings: 2,
+    description: 'The PERFECT recipe for..',
+    directions: '',
+    ingredients: [],
+    id: 0,
+    image_attachments: [],
+    rating: {
+        average: 0,
+        count: 0,
+    },
+    tags: [],
+    title: 'A recipe',
+};
 
-    private readonly breakpoint: number = 980;
+export function EmptyRecipe(): ReactNode {
+    const yummeClient = useInjection<YummeClient>(YUMME_CLIENT_TYPE);
+    const navigate = useNavigate();
 
-    public constructor(props: any) {
-        super(props);
+    const [editing] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [recipe, setRecipe] = useState<Recipe>(() => structuredClone(INITIAL_RECIPE));
+    const [tabletView, setTabletView] = useState<boolean>(window.innerWidth < BREAKPOINT);
 
-        this.state = {
-            recipe: {
-                categories: [],
-                // eslint-disable-next-line
-                cook_time: 600,
-                // eslint-disable-next-line
-                prep_time: 600,
-                yield: 2,
-                description: 'The PERFECT recipe for..',
-                directions: [],
-                ingredients: [],
-                id: 0,
-                images: [],
-                rating: {
-                    average: 0,
-                    count: 0,
-                },
-                tags: [],
-                title: 'A recipe',
-
-            },
-            editing: true,
-            loading: false,
-            tabletView: window.innerWidth < this.breakpoint,
+    useEffect(() => {
+        const onResize = (): void => {
+            setTabletView(window.innerWidth < BREAKPOINT);
         };
-    }
 
-    public componentDidMount(): void {
-        window.addEventListener('resize', this.onResize);
-    }
+        window.addEventListener('resize', onResize);
 
-    public componentWillUnmount(): void {
-        window.removeEventListener('resize', this.onResize);
-    }
+        return (): void => {
+            window.removeEventListener('resize', onResize);
+        };
+    }, []);
 
-    public render(): ReactNode {
-        return (
-            <div className={ styles.recipe }>
-                {
-                    this.state.tabletView
-                        ? <RecipeViewTablet
-                            recipe={ this.state.recipe }
-                            editing={ this.state.editing }
-                            updateRecipe={ this.updateRecipe } />
-                        : <RecipeViewDesktop
-                            recipe={ this.state.recipe }
-                            editing={ this.state.editing }
-                            updateRecipe={ this.updateRecipe } />
-                }
+    const updateRecipe = (updatedRecipe: Recipe): void => {
+        setRecipe({ ...updatedRecipe });
+    };
 
-                <div className={ styles.buttons }>
-                    {
-                        this.state.loading
-                            ? <div className={ styles.loadingWrapper }>
-                                <LoadingSpinner color="orange" />
-                              </div>
-                            : <StandardBtn
-                                type="button"
-                                onClick={ this.uploadRecipe }>
-                                SAVE RECIPE
-                              </StandardBtn>
-                    }
-                </div>
-            </div>
-        );
-    }
-
-    @Bind
-    private onResize(): void {
-        this.setState({ tabletView: window.innerWidth < this.breakpoint });
-    }
-
-    @Bind
-    private updateRecipe(recipe: Recipe): void {
-        this.setState(
-            {
-                recipe,
-            },
-        );
-    }
-
-    @Bind
-    private async uploadRecipe(): Promise<void> {
-        this.setState({ loading: true });
+    const uploadRecipe = async (): Promise<void> => {
+        setLoading(true);
 
         const request = {
-            categories: this.state.recipe.categories,
-            // eslint-disable-next-line
-            cook_time: this.state.recipe.cook_time,
-            description: this.state.recipe.description,
+            categories: recipe.categories ?? [],
+            cook_time: recipe.cook_time ?? 0,
+            description: recipe.description ?? '',
             public: true,
-            directions: this.state.recipe.directions,
-            images: this.state.recipe.images,
-            ingredients: this.state.recipe.ingredients
-                .map(ingredient => ingredient.name),
-            // eslint-disable-next-line
-            prep_time: this.state.recipe.prep_time,
-            tags: this.state.recipe.tags,
-            title: this.state.recipe.title,
-            yield: this.state.recipe.yield,
+            directions: recipe.directions ?? '',
+            ingredients: recipe.ingredients ?? [],
+            prep_time: recipe.prep_time ?? 0,
+            servings: recipe.servings ?? 1,
+            tags: recipe.tags ?? [],
+            title: recipe.title ?? '',
         };
-        const recipe = await this.yummeClient.createRecipe(request);
+        const createdRecipe = await yummeClient.createRecipe(request);
 
-        this.props.history.push(`/recipe/${ recipe.id }`);
-    }
+        navigate(`/recipe/${ createdRecipe.id }`);
+    };
+
+    return (
+        <div className={ styles.recipe }>
+            {
+                tabletView
+                    ? <RecipeViewTablet
+                        recipe={ recipe }
+                        editing={ editing }
+                        updateRecipe={ updateRecipe } />
+                    : <RecipeViewDesktop
+                        recipe={ recipe }
+                        editing={ editing }
+                        updateRecipe={ updateRecipe } />
+            }
+
+            <div className={ styles.buttons }>
+                {
+                    loading
+                        ? <div className={ styles.saveLoadingWrapper }>
+                            <LoadingSpinner color="orange" />
+                          </div>
+                        : <StandardBtn
+                            type="button"
+                            onClick={ uploadRecipe }>
+                            SAVE RECIPE
+                          </StandardBtn>
+                }
+            </div>
+        </div>
+    );
 }

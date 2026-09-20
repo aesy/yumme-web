@@ -8,7 +8,7 @@ import { type Ingredient, Recipe } from '@/api/yumme-client';
 interface IngredientListProps {
     editing: boolean;
     recipe: Recipe;
-    updateRecipe(recipe: Recipe): void;
+    updateRecipe: (recipe: Recipe) => void;
 }
 
 export function IngredientList(props: IngredientListProps): ReactNode {
@@ -26,7 +26,7 @@ export function IngredientList(props: IngredientListProps): ReactNode {
         const max = 200;
 
         if (value.length < min || value.length > max) {
-            errors.push(`Ingredient must be between ${ min } and ${ max } letters.`);
+            errors.push(`Ingredient must be between ${min} and ${max} letters.`);
         }
 
         return errors;
@@ -124,80 +124,70 @@ export function IngredientList(props: IngredientListProps): ReactNode {
 
     if (props.editing) {
         return (
-            <ul className={ styles.ingredients }>
-                {
-                    getIngredients()
-                        .map((ingredient, i) => selectedInput === i
-                            ? (
-                                <li
-                                    key={ i }
-                                    className={ styles.ingredient }>
-                                    <EditableText
-                                        tag="p"
-                                        value={ selectedInputValue }
-                                        placeholder=""
-                                        errors={ selectedInputErrors }
-                                        onKeyDownEnter={ deselectInput }
-                                        onChange={ editOnChange } />
-                                    <div className={ editStyles.editButtons }>
-                                        <IconTrash
-                                            className={ editStyles.delete }
-                                            onClick={ (): void => deleteIngredient(i) } />
-                                    </div>
-                                </li>
-                            )
-                            : (
-                                <li
-                                    key={ i }
-                                    className={ `${ styles.ingredient } ${ styles.editable }` }
-                                    onClick={ (): void => selectInput(i) }>
-                                    <div className={ styles.item }>
-                                        <span className={ styles.dot } />
-                                        <p>{ ingredient.name }</p>
-                                    </div>
-                                    <div className={ editStyles.editButtons }>
-                                        <IconEdit className={ editStyles.edit } />
-                                    </div>
-                                </li>
-                            ))
-                }
+            <ul className={styles.ingredients}>
+                {getIngredients().map((ingredient, i) =>
+                    selectedInput === i ? (
+                        <li key={i} className={styles.ingredient}>
+                            <EditableText
+                                tag="p"
+                                value={selectedInputValue}
+                                placeholder=""
+                                errors={selectedInputErrors}
+                                onKeyDownEnter={deselectInput}
+                                onChange={editOnChange}
+                            />
+                            <div className={editStyles.editButtons}>
+                                <IconTrash className={editStyles.delete} onClick={(): void => deleteIngredient(i)} />
+                            </div>
+                        </li>
+                    ) : (
+                        <li key={i}>
+                            <button
+                                type="button"
+                                className={`${styles.ingredient} ${styles.editable}`}
+                                onClick={(): void => selectInput(i)}
+                            >
+                                <div className={styles.item}>
+                                    <span className={styles.dot} />
+                                    <p>{ingredient.name}</p>
+                                </div>
+                                <div className={editStyles.editButtons}>
+                                    <IconEdit className={editStyles.edit} />
+                                </div>
+                            </button>
+                        </li>
+                    ),
+                )}
 
-                <li className={ styles.ingredient }>
+                <li className={styles.ingredient}>
                     <EditableText
                         tag="p"
-                        value={ addIngredientInputValue }
+                        value={addIngredientInputValue}
                         placeholder="Add ingredient"
-                        errors={ addIngredientInputErrors }
-                        onKeyDownEnter={ tryAdd }
-                        onChange={ addOnChange } />
-                    <div className={ editStyles.editButtons }>
-                        <IconCirclePlus
-                            className={ editStyles.add }
-                            onClick={ tryAdd } />
+                        errors={addIngredientInputErrors}
+                        onKeyDownEnter={tryAdd}
+                        onChange={addOnChange}
+                    />
+                    <div className={editStyles.editButtons}>
+                        <IconCirclePlus className={editStyles.add} onClick={tryAdd} />
                     </div>
                 </li>
             </ul>
         );
     }
 
-    return (
-        getIngredients().length <= 0
-            ? <p>No ingredients added..</p>
-
-            : (
-                <ul className={ styles.ingredients }>
-                    {
-                        getIngredients()
-                            .map((ingredient, i) => (
-                                <li key={ i } className={ styles.ingredient }>
-                                    <div className={ styles.item }>
-                                        <span className={ styles.dot } />
-                                        <p>{ ingredient.name }</p>
-                                    </div>
-                                </li>
-                            ))
-                    }
-                </ul>
-            )
+    return getIngredients().length <= 0 ? (
+        <p>No ingredients added..</p>
+    ) : (
+        <ul className={styles.ingredients}>
+            {getIngredients().map((ingredient, i) => (
+                <li key={i} className={styles.ingredient}>
+                    <div className={styles.item}>
+                        <span className={styles.dot} />
+                        <p>{ingredient.name}</p>
+                    </div>
+                </li>
+            ))}
+        </ul>
     );
 }

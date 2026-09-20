@@ -9,7 +9,7 @@ import { Recipe } from '@/api/yumme-client';
 interface ImageListProps {
     editing: boolean;
     recipe: Recipe;
-    updateRecipe(recipe: Recipe): void;
+    updateRecipe: (recipe: Recipe) => void;
 }
 
 export function ImageList(props: ImageListProps): ReactNode {
@@ -26,36 +26,37 @@ export function ImageList(props: ImageListProps): ReactNode {
         props.updateRecipe(recipe);
     };
 
-    const validate = (file: File, result: string): Promise<boolean> => new Promise(resolve => {
-        const nextErrors = [] as string[];
-        const maxMB = 4;
-        const minWidth = 1200;
-        const minHeight = 800;
-        const image = new Image();
-        image.src = result;
+    const validate = (file: File, result: string): Promise<boolean> =>
+        new Promise((resolve) => {
+            const nextErrors = [] as string[];
+            const maxMB = 4;
+            const minWidth = 1200;
+            const minHeight = 800;
+            const image = new Image();
+            image.src = result;
 
-        image.addEventListener('load', () => {
-            if (file.size > maxMB * 1000000) {
-                nextErrors.push('Max filesize is 4MB');
-            }
+            image.addEventListener('load', () => {
+                if (file.size > maxMB * 1000000) {
+                    nextErrors.push('Max filesize is 4MB');
+                }
 
-            if (image.height < minHeight || image.width < minWidth) {
-                nextErrors.push(`Image needs to be atleast ${ minWidth }x${ minHeight }`);
-            }
+                if (image.height < minHeight || image.width < minWidth) {
+                    nextErrors.push(`Image needs to be atleast ${minWidth}x${minHeight}`);
+                }
 
-            setErrors(nextErrors);
+                setErrors(nextErrors);
 
-            if (nextErrors.length) {
+                if (nextErrors.length) {
+                    resolve(false);
+                }
+
+                resolve(true);
+            });
+
+            image.addEventListener('error', () => {
                 resolve(false);
-            }
-
-            resolve(true);
+            });
         });
-
-        image.addEventListener('error', () => {
-            resolve(false);
-        });
-    });
 
     const tryAddImage = (el: React.ChangeEvent<HTMLInputElement>): void => {
         if (el.target.files !== null && el.target.files.length > 0) {
@@ -63,7 +64,7 @@ export function ImageList(props: ImageListProps): ReactNode {
             const file = el.target.files[0];
             fr.readAsDataURL(file);
 
-            fr.onload = async(event: ProgressEvent<FileReader>): Promise<void> => {
+            fr.onload = async (event: ProgressEvent<FileReader>): Promise<void> => {
                 if (typeof event.target?.result === 'string') {
                     const success = await validate(file, event.target.result);
 
@@ -82,28 +83,23 @@ export function ImageList(props: ImageListProps): ReactNode {
 
     if (props.editing) {
         return (
-            <ul className={ styles.images }>
-                {
-                    getImages()
-                        .map((image, i) => (
-                            <li key={ i }>
-                                <img
-                                    className={ styles.image }
-                                    src={ recipeImageUrl(props.recipe.id, image) } />
-                                <div className={ `${ editStyles.editButtons } ${ styles.deleteBtnWrapper }` }>
-                                    <IconTrash className={ editStyles.delete }
-                                               onClick={ (): void => deleteImage(i) } />
-                                </div>
-                            </li>
-                        ))
-                }
+            <ul className={styles.images}>
+                {getImages().map((image, i) => (
+                    <li key={i}>
+                        <img
+                            className={styles.image}
+                            src={recipeImageUrl(props.recipe.id, image)}
+                            alt={props.recipe.title ?? 'Recipe'}
+                        />
+                        <div className={`${editStyles.editButtons} ${styles.deleteBtnWrapper}`}>
+                            <IconTrash className={editStyles.delete} onClick={(): void => deleteImage(i)} />
+                        </div>
+                    </li>
+                ))}
 
                 <li>
-                    <span className={ styles.image }>
-                        <StandardImageInput
-                            errors={ errors }
-                            color="white"
-                            onChange={ tryAddImage } />
+                    <span className={styles.image}>
+                        <StandardImageInput errors={errors} color="white" onChange={tryAddImage} />
                     </span>
                 </li>
             </ul>
@@ -111,16 +107,16 @@ export function ImageList(props: ImageListProps): ReactNode {
     }
 
     return (
-        <ul className={ styles.images }>
-            {
-                getImages()
-                    .map((image, i) => (
-                        <li key={ i }>
-                            <img className={ styles.image }
-                                 src={ recipeImageUrl(props.recipe.id, image) } />
-                        </li>
-                    ))
-            }
+        <ul className={styles.images}>
+            {getImages().map((image, i) => (
+                <li key={i}>
+                    <img
+                        className={styles.image}
+                        src={recipeImageUrl(props.recipe.id, image)}
+                        alt={props.recipe.title ?? 'Recipe'}
+                    />
+                </li>
+            ))}
         </ul>
     );
 }

@@ -60,33 +60,24 @@ export function RecentCollectionList(props: RecentCollectionListProps): ReactNod
     if (!collections) {
         return (
             <ul>
-                {
-                    placeholders.map((placeholder, i) => (
-                        <li key={ i }>
-                            { placeholder }
-                        </li>
-                    ))
-                }
+                {placeholders.map((placeholder, i) => (
+                    <li key={i}>{placeholder}</li>
+                ))}
             </ul>
         );
     }
 
     if (!collections.length) {
-        return (
-            <p>Seems like there aren&apos;t any :(</p>
-        );
+        return <p>Seems like there aren&apos;t any :(</p>;
     }
 
     return (
         <ul>
-            {
-                collections
-                    .map(elem => (
-                        <li className={ styles.collectionListItem } key={ elem.collection.id }>
-                            <CollectionListItem collection={ elem.collection } images={ elem.images } />
-                        </li>
-                    ))
-            }
+            {collections.map((elem) => (
+                <li className={styles.collectionListItem} key={elem.collection.id}>
+                    <CollectionListItem collection={elem.collection} images={elem.images} />
+                </li>
+            ))}
         </ul>
     );
 }

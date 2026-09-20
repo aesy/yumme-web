@@ -5,7 +5,6 @@
 
 [github-actions-image]: https://img.shields.io/github/actions/workflow/status/aesy/yumme-web/ci.yml?branch=master&style=flat-square
 [github-actions-url]: https://github.com/aesy/yumme-web/actions
-
 [license-image]: https://img.shields.io/github/license/aesy/yumme-web?style=flat-square
 [license-url]: https://github.com/aesy/yumme-web/blob/master/LICENSE
 
@@ -19,8 +18,8 @@ Backend service counterpart can be found [here](https://github.com/aesy/yumme-se
 
 #### Prerequisites
 
-* [Node & NPM](https://nodejs.org/)
-* [Docker](https://docs.docker.com/get-docker/) 
+- [Node & NPM](https://nodejs.org/)
+- [Docker](https://docs.docker.com/get-docker/)
 
 #### Build
 
@@ -39,8 +38,8 @@ To serve the application using a local development server, the following command
 
 The web server is accessible at `localhost:3000`.
 
-A fake API client implementation can be used by providing a `MOCK_SERVER` environment variable 
-during build. 
+A fake API client implementation can be used by providing a `MOCK_SERVER` environment variable
+during build.
 
     $ MOCK_SERVER=true npm run start
 
@@ -48,19 +47,19 @@ To use a real backend locally, instead provide a `YUMME_SERVER` environment vari
 
     $ YUMME_SERVER=<domain> npm run start
 
-This will proxy all API requests in order to avoid CORS issues. In producation this environment 
-variable is not provided, which causes API requests to target the same domain as the frontend. 
+This will proxy all API requests in order to avoid CORS issues. In producation this environment
+variable is not provided, which causes API requests to target the same domain as the frontend.
 
-#### Test 
+#### Test
 
 To run lint checks for all scripts and styles:
 
-    $ npm run lint 
+    $ npm run lint
 
 Or specify what to lint:
 
-    $ npm run lint:scripts 
-    $ npm run lint:styles 
+    $ npm run lint:scripts
+    $ npm run lint:styles
 
 To run unit tests, use:
 
@@ -77,9 +76,11 @@ To create an image, run the following command in the root directory:
 An image is created and published automatically to github packages on git tag pushes.
 
 ## Contribute
-Use the [issue tracker](https://github.com/aesy/yumme-web/issues) to report bugs or make feature 
-requests. Pull requests are welcome, but it may be a good idea to create an issue to discuss any 
+
+Use the [issue tracker](https://github.com/aesy/yumme-web/issues) to report bugs or make feature
+requests. Pull requests are welcome, but it may be a good idea to create an issue to discuss any
 changes beforehand.
 
 ## License
+
 MIT, see [LICENSE](/LICENSE) file.

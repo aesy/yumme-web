@@ -11,7 +11,7 @@ import { Recipe } from '@/api/yumme-client';
 interface CardProps {
     editing: boolean;
     recipe: Recipe;
-    updateRecipe(recipe: Recipe): void;
+    updateRecipe: (recipe: Recipe) => void;
 }
 
 export function Card(props: CardProps): ReactNode {
@@ -28,7 +28,7 @@ export function Card(props: CardProps): ReactNode {
         const max = 512;
 
         if (value.length < min || value.length > max) {
-            errors.push(`Description must be between ${ min } and ${ max } letters.`);
+            errors.push(`Description must be between ${min} and ${max} letters.`);
         }
 
         return errors;
@@ -40,42 +40,43 @@ export function Card(props: CardProps): ReactNode {
         const max = 128;
 
         if (value.length < min || value.length > max) {
-            errors.push(`Title must be between ${ min } and ${ max } letters.`);
+            errors.push(`Title must be between ${min} and ${max} letters.`);
         }
 
         return errors;
     };
 
-    const validateImage = (file: File, result: string): Promise<boolean> => new Promise(resolve => {
-        const nextImageErrors = [] as string[];
-        const maxMB = 4;
-        const minWidth = 1200;
-        const minHeight = 800;
-        const image = new Image();
-        image.src = result;
+    const validateImage = (file: File, result: string): Promise<boolean> =>
+        new Promise((resolve) => {
+            const nextImageErrors = [] as string[];
+            const maxMB = 4;
+            const minWidth = 1200;
+            const minHeight = 800;
+            const image = new Image();
+            image.src = result;
 
-        image.addEventListener('load', () => {
-            if (file.size > maxMB * 1000000) {
-                nextImageErrors.push('Max filesize is 4MB');
-            }
+            image.addEventListener('load', () => {
+                if (file.size > maxMB * 1000000) {
+                    nextImageErrors.push('Max filesize is 4MB');
+                }
 
-            if (image.height < minHeight || image.width < minWidth) {
-                nextImageErrors.push(`Image needs to be at least ${ minWidth }x${ minHeight }`);
-            }
+                if (image.height < minHeight || image.width < minWidth) {
+                    nextImageErrors.push(`Image needs to be at least ${minWidth}x${minHeight}`);
+                }
 
-            setImageErrors(nextImageErrors);
+                setImageErrors(nextImageErrors);
 
-            if (nextImageErrors.length) {
+                if (nextImageErrors.length) {
+                    resolve(false);
+                }
+
+                resolve(true);
+            });
+
+            image.addEventListener('error', () => {
                 resolve(false);
-            }
-
-            resolve(true);
+            });
         });
-
-        image.addEventListener('error', () => {
-            resolve(false);
-        });
-    });
 
     const trySaveDescription = (callback: () => void): void => {
         const recipe = props.recipe;
@@ -157,7 +158,7 @@ export function Card(props: CardProps): ReactNode {
             const file = el.target.files[0];
             fr.readAsDataURL(file);
 
-            fr.onload = async(event: ProgressEvent<FileReader>): Promise<void> => {
+            fr.onload = async (event: ProgressEvent<FileReader>): Promise<void> => {
                 if (typeof event.target?.result === 'string') {
                     const success = await validateImage(file, event.target.result);
 
@@ -185,94 +186,96 @@ export function Card(props: CardProps): ReactNode {
     }
 
     const image = props.recipe.image_cover;
-    const imageUrl = image
-        ? recipeImageUrl(props.recipe.id, image)
-        : DefaultRecipeImage;
+    const imageUrl = image ? recipeImageUrl(props.recipe.id, image) : DefaultRecipeImage;
 
     if (props.editing) {
         return (
-            <div className={ `${ styles.card }` }>
-                <div
-                    className={ styles.cardImage }
-                    style={{ backgroundImage: `url(${ imageUrl })` }}>
-                    <StandardImageInput
-                        color="white"
-                        errors={ imageErrors }
-                        onChange={ tryEditImage } />
+            <div className={styles.card}>
+                <div className={styles.cardImage} style={{ backgroundImage: `url(${imageUrl})` }}>
+                    <StandardImageInput color="white" errors={imageErrors} onChange={tryEditImage} />
                 </div>
-                <div className={ styles.cardContent }>
-                    {
-                        selectedInput === 'title'
-                            ? (
-                                <EditableText
-                                    tag="h1"
-                                    value={ titleInputValue }
-                                    placeholder="Title"
-                                    errors={ titleErrors }
-                                    onKeyDownEnter={ deselectInput }
-                                    onChange={ titleOnChange } />
-                            )
-                            : (
-                                <div className={ styles.editable } onClick={ (): void => selectInput('title') }>
-                                    <h1>{ props.recipe.title }</h1>
-                                    <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
-                                        <IconEdit className={ editStyles.edit } />
-                                    </div>
-                                </div>
-                            )
-                    }
+                <div className={styles.cardContent}>
+                    {selectedInput === 'title' ? (
+                        <EditableText
+                            tag="h1"
+                            value={titleInputValue}
+                            placeholder="Title"
+                            errors={titleErrors}
+                            onKeyDownEnter={deselectInput}
+                            onChange={titleOnChange}
+                        />
+                    ) : (
+                        <div
+                            className={styles.editable}
+                            role="button"
+                            tabIndex={0}
+                            onClick={(): void => selectInput('title')}
+                            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>): void => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    selectInput('title');
+                                }
+                            }}
+                        >
+                            <h1>{props.recipe.title}</h1>
+                            <div className={`${editStyles.editButtons} ${styles.edit}`}>
+                                <IconEdit className={editStyles.edit} />
+                            </div>
+                        </div>
+                    )}
 
-                    <ul className={ styles.rating }>
-                        {
-                            rating
-                                .map((star, i) => (
-                                    <li key={ i }>
-                                        { star }
-                                    </li>))
-                        }
+                    <ul className={styles.rating}>
+                        {rating.map((star, i) => (
+                            <li key={i}>{star}</li>
+                        ))}
                     </ul>
 
-                    {
-                        selectedInput === 'description'
-                            ? (
-                                <EditableText
-                                    tag="p"
-                                    value={ descriptionInputValue }
-                                    placeholder="Description"
-                                    errors={ descriptionErrors }
-                                    onKeyDownEnter={ deselectInput }
-                                    onChange={ descriptionOnChange } />
-                            )
-                            : (
-                                <div className={ styles.editable }
-                                     onClick={ (): void => selectInput('description') }>
-                                    <p>{ props.recipe.description }</p>
-                                    <div className={ `${ editStyles.editButtons } ${ styles.edit }` }>
-                                        <IconEdit className={ editStyles.edit } />
-                                    </div>
-                                </div>
-                            )
-                    }
+                    {selectedInput === 'description' ? (
+                        <EditableText
+                            tag="p"
+                            value={descriptionInputValue}
+                            placeholder="Description"
+                            errors={descriptionErrors}
+                            onKeyDownEnter={deselectInput}
+                            onChange={descriptionOnChange}
+                        />
+                    ) : (
+                        <div
+                            className={styles.editable}
+                            role="button"
+                            tabIndex={0}
+                            onClick={(): void => selectInput('description')}
+                            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>): void => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    selectInput('description');
+                                }
+                            }}
+                        >
+                            <p>{props.recipe.description}</p>
+                            <div className={`${editStyles.editButtons} ${styles.edit}`}>
+                                <IconEdit className={editStyles.edit} />
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         );
     }
 
     return (
-        <div className={ styles.card }>
-            <div
-                className={ styles.cardImage }
-                style={{ backgroundImage: `url(${ imageUrl })` }} />
-            <div className={ styles.cardContent }>
-                <h1>{ props.recipe.title }</h1>
+        <div className={styles.card}>
+            <div className={styles.cardImage} style={{ backgroundImage: `url(${imageUrl})` }} />
+            <div className={styles.cardContent}>
+                <h1>{props.recipe.title}</h1>
 
-                <ul className={ styles.rating }>
-                    {
-                        rating.map((star, i) => <li key={ i }>{ star }</li>)
-                    }
+                <ul className={styles.rating}>
+                    {rating.map((star, i) => (
+                        <li key={i}>{star}</li>
+                    ))}
                 </ul>
 
-                <p>{ props.recipe.description }</p>
+                <p>{props.recipe.description}</p>
             </div>
         </div>
     );

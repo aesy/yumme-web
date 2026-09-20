@@ -4,7 +4,7 @@ import styles from '@/common/editable-text.module.scss';
 interface EditableTextProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     errors: string[];
     tag: string;
-    onKeyDownEnter?(): void;
+    onKeyDownEnter?: () => void;
 }
 
 export function EditableText(props: EditableTextProps): ReactNode {
@@ -20,7 +20,7 @@ export function EditableText(props: EditableTextProps): ReactNode {
     const setHeight = (): void => {
         if (input.current) {
             input.current.style.height = '0';
-            input.current.style.height = `${ input.current.scrollHeight }px`;
+            input.current.style.height = `${input.current.scrollHeight}px`;
         }
     };
 
@@ -61,37 +61,28 @@ export function EditableText(props: EditableTextProps): ReactNode {
     setHeight();
 
     return (
-        <div className={ `${ styles.editableText }` }>
-            {
-                React.createElement(
-                    tag,
-                    {
-                        className: styles.editWrapper,
-                    },
-                    <textarea
-                        ref={ input }
-                        className={ `${ styles.textArea } ${ errors.length ? styles.invalid : '' }` }
-                        onFocus={ onFocus }
-                        { ...rest } />,
-                )
-            }
-            {
-                errors.length !== 0 && (
-                    <ul className={ styles.errors }>
-                        {
-                            errors.map((error, j) => (
-                                <li
-                                    key={ j }
-                                    className={ styles.error }>
-                                    <p>
-                                        { error }
-                                    </p>
-                                </li>
-                            ))
-                        }
-                    </ul>
-                )
-            }
+        <div className={styles.editableText}>
+            {React.createElement(
+                tag,
+                {
+                    className: styles.editWrapper,
+                },
+                <textarea
+                    ref={input}
+                    className={`${styles.textArea} ${errors.length ? styles.invalid : ''}`}
+                    onFocus={onFocus}
+                    {...rest}
+                />,
+            )}
+            {errors.length !== 0 && (
+                <ul className={styles.errors}>
+                    {errors.map((error, j) => (
+                        <li key={j} className={styles.error}>
+                            <p>{error}</p>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

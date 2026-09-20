@@ -8,7 +8,7 @@ import { Recipe } from '@/api/yumme-client';
 interface DirectionListProps {
     editing: boolean;
     recipe: Recipe;
-    updateRecipe(recipe: Recipe): void;
+    updateRecipe: (recipe: Recipe) => void;
 }
 
 // The API models `directions` as a single newline-delimited string, but the
@@ -25,7 +25,7 @@ export function DirectionList(props: DirectionListProps): ReactNode {
     const getDirections = (): string[] => {
         const directions = props.recipe.directions;
 
-        return directions ? directions.split('\n').filter(direction => direction.length > 0) : [];
+        return directions ? directions.split('\n').filter((direction) => direction.length > 0) : [];
     };
 
     const setDirections = (directions: string[]): void => {
@@ -40,7 +40,7 @@ export function DirectionList(props: DirectionListProps): ReactNode {
         const max = 500;
 
         if (value.length < min || value.length > max) {
-            errors.push(`Direction must be between ${ min } and ${ max } letters.`);
+            errors.push(`Direction must be between ${min} and ${max} letters.`);
         }
 
         return errors;
@@ -132,67 +132,60 @@ export function DirectionList(props: DirectionListProps): ReactNode {
 
     if (props.editing) {
         return (
-            <ul className={ styles.directions }>
-                {
-                    directions
-                        .map((direction, i) => (
-                            <li key={ i } className={ styles.direction }>
-                                <span className={ styles.label }>
-                                    STEP
-                                    { ' ' }
-                                    { i + 1 }
-                                </span>
+            <ul className={styles.directions}>
+                {directions.map((direction, i) => (
+                    <li key={i} className={styles.direction}>
+                        <span className={styles.label}>STEP {i + 1}</span>
 
-                                {
-                                    selectedInput === i
-                                        ? (
-                                            <div className={ styles.editable }>
-                                                <EditableText
-                                                    tag="p"
-                                                    value={ selectedInputValue }
-                                                    placeholder=""
-                                                    errors={ selectedInputErrors }
-                                                    onKeyDownEnter={ deselectInput }
-                                                    onChange={ editOnChange } />
-                                                <div className={ editStyles.editButtons }>
-                                                    <IconTrash
-                                                        className={ editStyles.delete }
-                                                        onClick={ (): void => deleteDirection(i) } />
-                                                </div>
-                                            </div>
-                                        )
-                                        : (
-                                            <div className={ styles.editable }
-                                                 onClick={ (): void => selectInput(i) }>
-                                                <p>{ direction }</p>
-                                                <div className={ editStyles.editButtons }>
-                                                    <IconEdit className={ editStyles.edit } />
-                                                </div>
-                                            </div>
-                                        )
-                                }
-                            </li>
-                        ))
-                }
+                        {selectedInput === i ? (
+                            <div className={styles.editable}>
+                                <EditableText
+                                    tag="p"
+                                    value={selectedInputValue}
+                                    placeholder=""
+                                    errors={selectedInputErrors}
+                                    onKeyDownEnter={deselectInput}
+                                    onChange={editOnChange}
+                                />
+                                <div className={editStyles.editButtons}>
+                                    <IconTrash className={editStyles.delete} onClick={(): void => deleteDirection(i)} />
+                                </div>
+                            </div>
+                        ) : (
+                            <div
+                                className={styles.editable}
+                                role="button"
+                                tabIndex={0}
+                                onClick={(): void => selectInput(i)}
+                                onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>): void => {
+                                    if (e.key === 'Enter' || e.key === ' ') {
+                                        e.preventDefault();
+                                        selectInput(i);
+                                    }
+                                }}
+                            >
+                                <p>{direction}</p>
+                                <div className={editStyles.editButtons}>
+                                    <IconEdit className={editStyles.edit} />
+                                </div>
+                            </div>
+                        )}
+                    </li>
+                ))}
 
-                <li className={ styles.direction }>
-                    <span className={ styles.label }>
-                        STEP
-                        { ' ' }
-                        { directions.length + 1 }
-                    </span>
-                    <div className={ styles.editable }>
+                <li className={styles.direction}>
+                    <span className={styles.label}>STEP {directions.length + 1}</span>
+                    <div className={styles.editable}>
                         <EditableText
                             tag="p"
-                            value={ addDirectionInputValue }
+                            value={addDirectionInputValue}
                             placeholder="Add direction"
-                            errors={ addDirectionInputErrors }
-                            onKeyDownEnter={ tryAdd }
-                            onChange={ addOnChange } />
-                        <div className={ editStyles.editButtons }>
-                            <IconCirclePlus
-                                className={ editStyles.add }
-                                onClick={ tryAdd } />
+                            errors={addDirectionInputErrors}
+                            onKeyDownEnter={tryAdd}
+                            onChange={addOnChange}
+                        />
+                        <div className={editStyles.editButtons}>
+                            <IconCirclePlus className={editStyles.add} onClick={tryAdd} />
                         </div>
                     </div>
                 </li>
@@ -200,27 +193,18 @@ export function DirectionList(props: DirectionListProps): ReactNode {
         );
     }
 
-    return (
-        directions.length <= 0
-            ? <p>No directions added..</p>
-            : (
-                <ul className={ styles.directions }>
-                    {
-                        directions
-                            .map((direction, i) => (
-                                <li key={ i } className={ styles.direction }>
-                                <span className={ styles.label }>
-                                    STEP
-                                    { ' ' }
-                                    { i + 1 }
-                                </span>
-                                    <div>
-                                        <p>{ direction }</p>
-                                    </div>
-                                </li>
-                            ))
-                    }
-                </ul>
-            )
+    return directions.length <= 0 ? (
+        <p>No directions added..</p>
+    ) : (
+        <ul className={styles.directions}>
+            {directions.map((direction, i) => (
+                <li key={i} className={styles.direction}>
+                    <span className={styles.label}>STEP {i + 1}</span>
+                    <div>
+                        <p>{direction}</p>
+                    </div>
+                </li>
+            ))}
+        </ul>
     );
 }

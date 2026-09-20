@@ -12,15 +12,15 @@ export interface SummaryProps {
     user: User;
 }
 
-export const Summary: FC<SummaryProps> = props => (
-    <section className={ styles.view }>
+export const Summary: FC<SummaryProps> = (props) => (
+    <section className={styles.view}>
         <div>
             <StandardHeader color="white" borderOffset="small">
                 <h2>Most popular</h2>
             </StandardHeader>
 
-            <div className={ styles.popularRecipes }>
-                <PopularRecipeList user={ props.user } amount={ 3 } />
+            <div className={styles.popularRecipes}>
+                <PopularRecipeList user={props.user} amount={3} />
             </div>
         </div>
 
@@ -29,9 +29,9 @@ export const Summary: FC<SummaryProps> = props => (
                 <h2>Recent recipes</h2>
             </StandardHeader>
 
-            <div className={ styles.recentRecipes }>
-                <RecentRecipeList user={ props.user } amount={ 4 } />
-                <div className={ styles.button }>
+            <div className={styles.recentRecipes}>
+                <RecentRecipeList user={props.user} amount={4} />
+                <div className={styles.button}>
                     <ClickableCard borderOffset="small">
                         <StandardBtn type="button">ALL RECIPES</StandardBtn>
                     </ClickableCard>
@@ -44,9 +44,9 @@ export const Summary: FC<SummaryProps> = props => (
                 <h2>Recent collections</h2>
             </StandardHeader>
 
-            <div className={ styles.recentCollections }>
-                <RecentCollectionList amount={ 4 } />
-                <div className={ styles.button }>
+            <div className={styles.recentCollections}>
+                <RecentCollectionList amount={4} />
+                <div className={styles.button}>
                     <ClickableCard borderOffset="small">
                         <StandardBtn type="button">ALL COLLECTIONS</StandardBtn>
                     </ClickableCard>

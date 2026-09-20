@@ -1,26 +1,22 @@
-import { action, makeObservable, observable } from 'mobx';
+import { getDefaultStore } from 'jotai';
 import { inject, injectable, optional } from 'inversify';
+import { accessTokenAtom } from '@/authentication/access-token-atom';
 import { type LoginResponse, YUMME_CLIENT_TYPE, type YummeClient } from '@/api/yumme-client';
 import { type ApiClient, API_CLIENT_TYPE } from '@/api/api-client';
 
 @injectable()
 export class AuthState {
-    private accessToken: string | null = null;
+    private readonly store = getDefaultStore();
     private readonly retriedRequests = new WeakSet<Request>();
     private readonly requestClones = new WeakMap<Request, Request>();
 
     public constructor(
         @inject(YUMME_CLIENT_TYPE)
         private readonly yummeClient: YummeClient,
-        @inject(API_CLIENT_TYPE) @optional()
+        @inject(API_CLIENT_TYPE)
+        @optional()
         client: ApiClient | null,
     ) {
-        makeObservable<AuthState, 'accessToken' | 'clearAccessToken' | 'setAccessToken'>(this, {
-            accessToken: observable,
-            clearAccessToken: action,
-            setAccessToken: action,
-        });
-
         const token = this.getRefreshToken();
 
         if (client) {
@@ -28,16 +24,14 @@ export class AuthState {
         }
 
         if (token !== null) {
-            try {
-                this.refreshAccessToken(token);
-            } catch {
-                // Do nothing
-            }
+            this.refreshAccessToken(token).catch(() => {
+                /* auto-login is best-effort */
+            });
         }
     }
 
     public isLoggedIn(): boolean {
-        return Boolean(this.accessToken);
+        return Boolean(this.store.get(accessTokenAtom));
     }
 
     public logInWithEmailAndPassword(response: LoginResponse): void {
@@ -51,7 +45,7 @@ export class AuthState {
     }
 
     private clearAccessToken(): void {
-        this.accessToken = null;
+        this.store.set(accessTokenAtom, null);
     }
 
     private getRefreshToken(): string | null {
@@ -63,8 +57,10 @@ export class AuthState {
     private intercept(client: ApiClient): void {
         client.use({
             onRequest: ({ request }) => {
-                if (this.accessToken !== null) {
-                    request.headers.set('Authorization', `Bearer ${ this.accessToken }`);
+                const accessToken = this.store.get(accessTokenAtom);
+
+                if (accessToken !== null) {
+                    request.headers.set('Authorization', `Bearer ${accessToken}`);
                 }
 
                 // Clone before the body (if any) can be consumed by the outgoing fetch,
@@ -96,7 +92,7 @@ export class AuthState {
                     return response;
                 }
 
-                retryRequest.headers.set('Authorization', `Bearer ${ accessToken }`);
+                retryRequest.headers.set('Authorization', `Bearer ${accessToken}`);
 
                 return fetch(retryRequest);
             },
@@ -117,7 +113,7 @@ export class AuthState {
     }
 
     private setAccessToken(token: string): void {
-        this.accessToken = token;
+        this.store.set(accessTokenAtom, token);
     }
 
     private storeRefreshToken(token: string): void {

@@ -17,7 +17,7 @@ async function unwrap<T>(response: Promise<{ data?: T; error?: unknown }>): Prom
     const { data, error } = await response;
 
     if (error) {
-        throw error;
+        throw error instanceof Error ? error : new Error('Request failed', { cause: error });
     }
 
     return data as T;
@@ -42,20 +42,22 @@ export class HttpYummeClient implements YummeClient {
         // The spec models this as one object query param (`request`), which OpenAPI serializes
         // flat (`username=...&password=...`) — the shape Spring binds. openapi-fetch's default
         // serializer would emit deepObject `request[...]`, so flatten it into top-level params.
-        return unwrap(this.client.POST('/auth/token', {
-            params: { query: { request } },
-            querySerializer: query => {
-                const params = new URLSearchParams();
+        return unwrap(
+            this.client.POST('/auth/token', {
+                params: { query: { request } },
+                querySerializer: (query) => {
+                    const params = new URLSearchParams();
 
-                for (const [key, value] of Object.entries(query.request ?? {})) {
-                    if (value !== undefined && value !== null) {
-                        params.append(key, String(value));
+                    for (const [key, value] of Object.entries(query.request ?? {})) {
+                        if (value !== null) {
+                            params.append(key, value);
+                        }
                     }
-                }
 
-                return params.toString();
-            },
-        }));
+                    return params.toString();
+                },
+            }),
+        );
     }
 
     public getAllRecipes(): Promise<Recipe[]> {
@@ -111,12 +113,14 @@ export class HttpYummeClient implements YummeClient {
 
         formData.append('file', file);
 
-        return unwrap(this.client.POST('/recipe/{id}/image', {
-            params: { path: { id } },
-            // openapi-fetch types multipart bodies from the `format: binary` schema as `string`;
-            // a real upload must submit a FormData instance, so the shape is asserted here.
-            // openapi-fetch's default bodySerializer passes FormData through untouched.
-            body: formData as unknown as { file: string },
-        }));
+        return unwrap(
+            this.client.POST('/recipe/{id}/image', {
+                params: { path: { id } },
+                // openapi-fetch types multipart bodies from the `format: binary` schema as `string`;
+                // a real upload must submit a FormData instance, so the shape is asserted here.
+                // openapi-fetch's default bodySerializer passes FormData through untouched.
+                body: formData as unknown as { file: string },
+            }),
+        );
     }
 }

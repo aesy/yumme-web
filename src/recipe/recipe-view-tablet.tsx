@@ -13,7 +13,7 @@ type View = 'Ingredients' | 'Directions' | 'Images';
 interface RecipeViewTabletProps {
     editing: boolean;
     recipe: Recipe;
-    updateRecipe(recipe: Recipe): void;
+    updateRecipe: (recipe: Recipe) => void;
 }
 
 export function RecipeViewTablet(props: RecipeViewTabletProps): ReactNode {
@@ -24,57 +24,38 @@ export function RecipeViewTablet(props: RecipeViewTabletProps): ReactNode {
     };
 
     return (
-
-        <div className={ styles.recipeViewTablet }>
-            <div className={ styles.card }>
-                <Card
-                    recipe={ props.recipe }
-                    editing={ props.editing }
-                    updateRecipe={ props.updateRecipe } />
+        <div className={styles.recipeViewTablet}>
+            <div className={styles.card}>
+                <Card recipe={props.recipe} editing={props.editing} updateRecipe={props.updateRecipe} />
             </div>
 
-            <div className={ styles.stats }>
-                <StatList
-                    type="row"
-                    recipe={ props.recipe }
-                    editing={ props.editing }
-                    updateRecipe={ props.updateRecipe } />
+            <div className={styles.stats}>
+                <StatList type="row" recipe={props.recipe} editing={props.editing} updateRecipe={props.updateRecipe} />
             </div>
 
-            <div className={ styles.navigation }>
+            <div className={styles.navigation}>
                 <ViewNavigation
-                    active={ view }
-                    navigations={ ['Ingredients', 'Directions', 'Images'] }
-                    handler={ viewHandler } />
+                    active={view}
+                    navigations={['Ingredients', 'Directions', 'Images']}
+                    handler={viewHandler}
+                />
             </div>
 
-            {
-                view === 'Ingredients' &&
-                <div className={ styles.ingredients }>
-                    <IngredientList
-                        recipe={ props.recipe }
-                        editing={ props.editing }
-                        updateRecipe={ props.updateRecipe } />
+            {view === 'Ingredients' && (
+                <div className={styles.ingredients}>
+                    <IngredientList recipe={props.recipe} editing={props.editing} updateRecipe={props.updateRecipe} />
                 </div>
-            }
-            {
-                view === 'Directions' &&
-                <div className={ styles.directions }>
-                    <DirectionList
-                        recipe={ props.recipe }
-                        editing={ props.editing }
-                        updateRecipe={ props.updateRecipe } />
+            )}
+            {view === 'Directions' && (
+                <div className={styles.directions}>
+                    <DirectionList recipe={props.recipe} editing={props.editing} updateRecipe={props.updateRecipe} />
                 </div>
-            }
-            {
-                view === 'Images' &&
+            )}
+            {view === 'Images' && (
                 <div>
-                    <ImageList
-                        recipe={ props.recipe }
-                        editing={ props.editing }
-                        updateRecipe={ props.updateRecipe } />
+                    <ImageList recipe={props.recipe} editing={props.editing} updateRecipe={props.updateRecipe} />
                 </div>
-            }
+            )}
         </div>
     );
 }

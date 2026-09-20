@@ -7,7 +7,7 @@ interface StandardInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const StandardInput: FC<StandardInputProps> = ({ label, ...props }) => (
     <>
-        <label className={ styles.label }>{ label }</label>
-        <input className={ styles.standardInput } { ...props } />
+        <label className={styles.label}>{label}</label>
+        <input className={styles.standardInput} {...props} />
     </>
 );

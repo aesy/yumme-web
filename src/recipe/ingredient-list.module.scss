@@ -28,6 +28,13 @@
             align-items: center;
             transition: color 0.1s ease-out;
             cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+            width: 100%;
+            font: inherit;
+            color: inherit;
+            text-align: inherit;
 
             &:hover {
                 color: $yum_orange;

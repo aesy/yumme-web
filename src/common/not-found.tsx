@@ -3,7 +3,7 @@ import React, { FC } from 'react';
 import styles from '@/common/not-found.module.scss';
 
 export const NotFound: FC<unknown> = () => (
-    <div className={ styles.notFound }>
+    <div className={styles.notFound}>
         <h1>404 - Page does not exist.</h1>
         <Link to="/">Go to home</Link>
     </div>

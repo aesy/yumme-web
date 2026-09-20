@@ -6,8 +6,8 @@ interface StandardLinkBtnProps {
     path: string;
 }
 
-export const StandardLinkBtn: FC<PropsWithChildren<StandardLinkBtnProps>> = props => (
-    <Link to={ props.path } className={ styles.standardLinkBtn }>
-        { props.children }
+export const StandardLinkBtn: FC<PropsWithChildren<StandardLinkBtnProps>> = (props) => (
+    <Link to={props.path} className={styles.standardLinkBtn}>
+        {props.children}
     </Link>
 );

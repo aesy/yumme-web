@@ -2,13 +2,13 @@ import React, { FC } from 'react';
 import styles from '@/collections/collection-list-item-placeholder.module.scss';
 
 export const CollectionListItemPlaceholder: FC<unknown> = () => (
-    <div className={ styles.collectionListItemPlaceholder }>
-        <div className={ styles.imagesPlaceholder }>
-            <span className={ styles.imagePlaceholder } />
-            <span className={ styles.imagePlaceholder } />
-            <span className={ styles.imagePlaceholder } />
-            <span className={ styles.imagePlaceholder } />
+    <div className={styles.collectionListItemPlaceholder}>
+        <div className={styles.imagesPlaceholder}>
+            <span className={styles.imagePlaceholder} />
+            <span className={styles.imagePlaceholder} />
+            <span className={styles.imagePlaceholder} />
+            <span className={styles.imagePlaceholder} />
         </div>
-        <div className={ styles.textPlaceholder } />
+        <div className={styles.textPlaceholder} />
     </div>
 );

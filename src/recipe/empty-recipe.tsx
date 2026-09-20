@@ -70,35 +70,32 @@ export function EmptyRecipe(): ReactNode {
         };
         const createdRecipe = await yummeClient.createRecipe(request);
 
-        navigate(`/recipe/${ createdRecipe.id }`);
+        void navigate(`/recipe/${createdRecipe.id}`);
     };
 
     return (
-        <div className={ styles.recipe }>
-            {
-                tabletView
-                    ? <RecipeViewTablet
-                        recipe={ recipe }
-                        editing={ editing }
-                        updateRecipe={ updateRecipe } />
-                    : <RecipeViewDesktop
-                        recipe={ recipe }
-                        editing={ editing }
-                        updateRecipe={ updateRecipe } />
-            }
+        <div className={styles.recipe}>
+            {tabletView ? (
+                <RecipeViewTablet recipe={recipe} editing={editing} updateRecipe={updateRecipe} />
+            ) : (
+                <RecipeViewDesktop recipe={recipe} editing={editing} updateRecipe={updateRecipe} />
+            )}
 
-            <div className={ styles.buttons }>
-                {
-                    loading
-                        ? <div className={ styles.saveLoadingWrapper }>
-                            <LoadingSpinner color="orange" />
-                          </div>
-                        : <StandardBtn
-                            type="button"
-                            onClick={ uploadRecipe }>
-                            SAVE RECIPE
-                          </StandardBtn>
-                }
+            <div className={styles.buttons}>
+                {loading ? (
+                    <div className={styles.saveLoadingWrapper}>
+                        <LoadingSpinner color="orange" />
+                    </div>
+                ) : (
+                    <StandardBtn
+                        type="button"
+                        onClick={() => {
+                            void uploadRecipe();
+                        }}
+                    >
+                        SAVE RECIPE
+                    </StandardBtn>
+                )}
             </div>
         </div>
     );

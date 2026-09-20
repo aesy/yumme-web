@@ -33,33 +33,24 @@ export function PopularRecipeList(props: RecentRecipeListProps): ReactNode {
     if (!recipes) {
         return (
             <ul>
-                {
-                    placeholders.map((placeholder, i) => (
-                        <li key={ i }>
-                            { placeholder }
-                        </li>
-                    ))
-                }
+                {placeholders.map((placeholder, i) => (
+                    <li key={i}>{placeholder}</li>
+                ))}
             </ul>
         );
     }
 
     if (!recipes.length) {
-        return (
-            <p>Seems like there aren&apos;t any :(</p>
-        );
+        return <p>Seems like there aren&apos;t any :(</p>;
     }
 
     return (
         <ul>
-            {
-                recipes
-                    .map(recipe => (
-                        <li className={ styles.recipeListItem } key={ recipe.id }>
-                            <RecipeListItem recipe={ recipe } type="column" />
-                        </li>
-                    ))
-            }
+            {recipes.map((recipe) => (
+                <li className={styles.recipeListItem} key={recipe.id}>
+                    <RecipeListItem recipe={recipe} type="column" />
+                </li>
+            ))}
         </ul>
     );
 }

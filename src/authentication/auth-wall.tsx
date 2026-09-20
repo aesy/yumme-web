@@ -15,17 +15,14 @@ export function AuthWall(): ReactNode {
     };
 
     return (
-        <div className={ styles.authWall }>
+        <div className={styles.authWall}>
             <StaticCard color="white" borderOffset="large">
-                <div className={ styles.wrapper }>
-                    <div className={ styles.nav }>
-                        <ViewNavigation
-                            active={ view }
-                            navigations={ ['Sign up', 'Log in'] }
-                            handler={ handler } />
+                <div className={styles.wrapper}>
+                    <div className={styles.nav}>
+                        <ViewNavigation active={view} navigations={['Sign up', 'Log in']} handler={handler} />
                     </div>
-                    { view === 'Sign up' && <RegistrationForm /> }
-                    { view === 'Log in' && <LoginForm /> }
+                    {view === 'Sign up' && <RegistrationForm />}
+                    {view === 'Log in' && <LoginForm />}
                 </div>
             </StaticCard>
         </div>

@@ -6,8 +6,6 @@ interface StaticCardProps {
     readonly color: 'white' | 'orange' | 'black';
 }
 
-export const StaticCard: FC<PropsWithChildren<StaticCardProps>> = props => (
-    <div className={ `${ styles.staticCard } ${ styles[props.borderOffset] } ${ styles[props.color] }` }>
-        { props.children }
-    </div>
+export const StaticCard: FC<PropsWithChildren<StaticCardProps>> = (props) => (
+    <div className={`${styles.staticCard} ${styles[props.borderOffset]} ${styles[props.color]}`}>{props.children}</div>
 );

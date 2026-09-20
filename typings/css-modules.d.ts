@@ -1,5 +1,5 @@
 declare module '*.css' {
-    const content: { [ className: string ]: string };
+    const content: { [className: string]: string };
     export default content;
 }
 
@@ -10,6 +10,6 @@ declare module '*.css' {
 // side effects only) and for any `.module.scss` file whose types have not
 // yet been generated.
 declare module '*.scss' {
-    const content: { [ className: string ]: string };
+    const content: { [className: string]: string };
     export default content;
 }

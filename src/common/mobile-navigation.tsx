@@ -9,24 +9,26 @@ export function MobileNavigation(): ReactNode {
     const [currentUser] = useState<User | undefined>(undefined);
 
     return (
-        <div className={ styles.mobileNavigation }>
-            <div className={ styles.left }>
+        <div className={styles.mobileNavigation}>
+            <div className={styles.left}>
                 <IconSearch />
                 <IconMessageCircle />
             </div>
 
-            <div className={ styles.center }>
-                <Link to="/recipe/new" className={ styles.add } type="button">
+            <div className={styles.center}>
+                <Link to="/recipe/new" className={styles.add} type="button">
                     <IconPlus />
                 </Link>
             </div>
 
-            <div className={ styles.right }>
+            <div className={styles.right}>
                 <IconBell />
-                <Link to={ `/profile/${ currentUser?.id ?? 1 }` }>
+                <Link to={`/profile/${currentUser?.id ?? 1}`}>
                     <img
-                        className={ styles.profile }
-                        src={ DefaultProfileImage } />
+                        className={styles.profile}
+                        src={DefaultProfileImage}
+                        alt={currentUser?.display_name ?? 'User avatar'}
+                    />
                 </Link>
             </div>
         </div>

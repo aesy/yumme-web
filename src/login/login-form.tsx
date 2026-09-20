@@ -26,7 +26,7 @@ export function LoginForm(): ReactNode {
         }
     };
 
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    const onSubmit = async (e: React.SubmitEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         setLoading(true);
@@ -47,39 +47,38 @@ export function LoginForm(): ReactNode {
 
     return (
         <>
-            {
-                error !== null && (
-                    <span className={ styles.err }>
-                        { error }
-                    </span>
-                )
-            }
+            {error !== null && <span className={styles.err}>{error}</span>}
 
-            {
-                loading && (
-                    <div className={ styles.loadingWrapper }>
-                        <LoadingSpinner color="orange" />
-                    </div>
-                )
-            }
+            {loading && (
+                <div className={styles.loadingWrapper}>
+                    <LoadingSpinner color="orange" />
+                </div>
+            )}
 
-            <form className={ styles.registrationForm } onSubmit={ onSubmit }>
+            <form
+                className={styles.registrationForm}
+                onSubmit={(e) => {
+                    void onSubmit(e);
+                }}
+            >
                 <StandardInput
-                    value={ username }
+                    value={username}
                     label="Username"
                     type="text"
                     placeholder="username"
                     name="username"
                     required
-                    onChange={ onChange } />
+                    onChange={onChange}
+                />
                 <StandardInput
-                    value={ password }
+                    value={password}
                     label="Password"
                     type="password"
                     placeholder="********"
                     name="password"
                     required
-                    onChange={ onChange } />
+                    onChange={onChange}
+                />
                 <StandardBtn type="submit">LOG IN</StandardBtn>
             </form>
         </>

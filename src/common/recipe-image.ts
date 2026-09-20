@@ -5,7 +5,7 @@ export function recipeImageUrl(recipeId: number | null | undefined, name: string
         return name;
     }
 
-    const query = size ? `?size=${ size }` : '';
+    const query = size ? `?size=${size}` : '';
 
-    return `/api/v1/recipe/${ recipeId }/image/${ name }${ query }`;
+    return `/api/v1/recipe/${recipeId}/image/${name}${query}`;
 }

@@ -1,5 +1,12 @@
 import { injectable } from 'inversify';
-import { type LoginResponse, type Recipe, type User, type YummeClient, type Collection, type ImageUploadResult } from '@/api/yumme-client';
+import {
+    type Collection,
+    type ImageUploadResult,
+    type LoginResponse,
+    type Recipe,
+    type User,
+    type YummeClient,
+} from '@/api/yumme-client';
 
 function generateId(): number {
     const maxId = 1_000_000;
@@ -27,10 +34,9 @@ export class FakeYummeClient implements YummeClient {
     }
 
     public async getAllRecipes(): Promise<Recipe[]> {
-        return Array.from({ length: 3 })
-            .map(() => {
-                return { ...this.createFakeRecipe(), id: generateId() };
-            });
+        return Array.from({ length: 3 }).map(() => {
+            return { ...this.createFakeRecipe(), id: generateId() };
+        });
     }
 
     public async getCurrentUser(): Promise<User> {
@@ -38,10 +44,9 @@ export class FakeYummeClient implements YummeClient {
     }
 
     public async getPopularRecipes(): Promise<Recipe[]> {
-        return Array.from({ length: 3 })
-            .map(() => {
-                return { ...this.createFakeRecipe(), id: generateId() };
-            });
+        return Array.from({ length: 3 }).map(() => {
+            return { ...this.createFakeRecipe(), id: generateId() };
+        });
     }
 
     public getPopularRecipesByUser(): Promise<Recipe[]> {
@@ -49,17 +54,15 @@ export class FakeYummeClient implements YummeClient {
     }
 
     public async getRecentCollections(): Promise<Collection[]> {
-        return Array.from({ length: 4 })
-            .map(() => {
-                return { ...this.createFakeCollection(), id: generateId() };
-            });
+        return Array.from({ length: 4 }).map(() => {
+            return { ...this.createFakeCollection(), id: generateId() };
+        });
     }
 
     public async getRecentRecipes(): Promise<Recipe[]> {
-        return Array.from({ length: 4 })
-            .map(() => {
-                return { ...this.createFakeRecipe(), id: generateId() };
-            });
+        return Array.from({ length: 4 }).map(() => {
+            return { ...this.createFakeRecipe(), id: generateId() };
+        });
     }
 
     public getRecentRecipesByUser(): Promise<Recipe[]> {
@@ -103,7 +106,8 @@ export class FakeYummeClient implements YummeClient {
     private createFakeRecipe(): Recipe {
         return {
             categories: ['Beef', 'Vegan', 'BBQ'],
-            description: 'This easy pizza dough recipe is great for beginners and produces a soft homemade pizza crust.',
+            description:
+                'This easy pizza dough recipe is great for beginners and produces a soft homemade pizza crust.',
             directions: [
                 'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
                 'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',

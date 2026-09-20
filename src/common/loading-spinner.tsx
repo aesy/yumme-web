@@ -5,8 +5,8 @@ interface LoadingSpinnerProps {
     color: 'white' | 'orange';
 }
 
-export const LoadingSpinner: FC<LoadingSpinnerProps> = props => (
-    <div className={ `${ styles.ellipsis } ${ styles[props.color] }` }>
+export const LoadingSpinner: FC<LoadingSpinnerProps> = (props) => (
+    <div className={`${styles.ellipsis} ${styles[props.color]}`}>
         <div />
         <div />
         <div />

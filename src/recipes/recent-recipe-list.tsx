@@ -42,40 +42,30 @@ export function RecentRecipeList(props: RecentRecipeListProps): ReactNode {
     const placeholders = [];
 
     for (let i = 0; i < props.amount; i++) {
-        placeholders.push(<RecipeListItemPlaceholder type={ onSmallScreen ? 'column' : 'row' } />);
+        placeholders.push(<RecipeListItemPlaceholder type={onSmallScreen ? 'column' : 'row'} />);
     }
 
     if (!recipes) {
         return (
             <ul>
-                {
-                    placeholders.map((placeholder, i) => (
-                        <li key={ i }>
-                            { placeholder }
-                        </li>
-                    ))
-                }
+                {placeholders.map((placeholder, i) => (
+                    <li key={i}>{placeholder}</li>
+                ))}
             </ul>
         );
     }
 
     if (!recipes.length) {
-        return (
-            <p>Seems like there aren&apos;t any :(</p>
-        );
+        return <p>Seems like there aren&apos;t any :(</p>;
     }
 
     return (
         <ul>
-            {
-                recipes
-                    .map(recipe => (
-                        <li className={ styles.recipeListItem } key={ recipe.id }>
-                            <RecipeListItem recipe={ recipe }
-                                            type={ onSmallScreen ? 'column' : 'row' } />
-                        </li>
-                    ))
-            }
+            {recipes.map((recipe) => (
+                <li className={styles.recipeListItem} key={recipe.id}>
+                    <RecipeListItem recipe={recipe} type={onSmallScreen ? 'column' : 'row'} />
+                </li>
+            ))}
         </ul>
     );
 }

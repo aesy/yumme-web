@@ -24,31 +24,44 @@ export function UserMenu(): ReactNode {
     }, [yummeClient]);
 
     return (
-        <ul className={ styles.userMenu }>
-            <li className={ styles.navigationItem }>
+        <ul className={styles.userMenu}>
+            <li className={styles.navigationItem}>
                 <StandardLinkBtn path="/recipe/new">+ ADD RECIPE</StandardLinkBtn>
             </li>
-            <li className={ styles.navigationItem }>
-                <IconMessageCircle className={ styles.icon } />
+            <li className={styles.navigationItem}>
+                <IconMessageCircle className={styles.icon} />
             </li>
-            <li className={ styles.navigationItem }>
-                <IconBell className={ styles.icon } />
+            <li className={styles.navigationItem}>
+                <IconBell className={styles.icon} />
             </li>
-            <li className={ styles.navigationItem }>
-                <Link to={ `/profile/${ currentUser?.id ?? 1 }` }>
+            <li className={styles.navigationItem}>
+                <Link to={`/profile/${currentUser?.id ?? 1}`}>
                     <img
-                    className={ styles.profileImage }
-                    src={ DefaultProfileImage } />
+                        className={styles.profileImage}
+                        src={DefaultProfileImage}
+                        alt={currentUser?.display_name ?? 'User avatar'}
+                    />
                 </Link>
 
-                <ul className={ styles.dropdown }>
-                    <li className={ styles.menuItem }>
-                        <Link to={ `/profile/${ currentUser?.id ?? 1 }` }>
+                <ul className={styles.dropdown}>
+                    <li className={styles.menuItem}>
+                        <Link to={`/profile/${currentUser?.id ?? 1}`}>
                             <span>Go to my profile</span>
                         </Link>
                     </li>
 
-                    <li className={ styles.menuItem } onClick={ (): void => authState.logout() }>
+                    <li
+                        className={styles.menuItem}
+                        role="menuitem"
+                        tabIndex={0}
+                        onClick={(): void => authState.logout()}
+                        onKeyDown={(e: React.KeyboardEvent<HTMLLIElement>): void => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                authState.logout();
+                            }
+                        }}
+                    >
                         <Link to="">
                             <span>Log out</span>
                             <IconLogout />

@@ -6,7 +6,7 @@ interface SubtleBtnProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const SubtleBtn: FC<SubtleBtnProps> = ({ color, ...props }) => (
-    <button type="button" className={ `${ styles.subtleBtn } ${ styles[color] }` } { ...props } >
-        { props.children }
+    <button type="button" className={`${styles.subtleBtn} ${styles[color]}`} {...props}>
+        {props.children}
     </button>
 );

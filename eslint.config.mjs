@@ -2,54 +2,75 @@ import js from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
-import importPlugin from 'eslint-plugin-import';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import importX from 'eslint-plugin-import-x';
 import promise from 'eslint-plugin-promise';
+import vitest from '@vitest/eslint-plugin';
+import prettierConfig from 'eslint-config-prettier';
 import globals from 'globals';
 
 export default tseslint.config(
-    { ignores: ['build/**', 'coverage/**', 'node_modules/**', '**/*.module.scss.d.ts'] },
+    {
+        ignores: ['build/**', 'coverage/**', 'node_modules/**', '**/*.module.scss.d.ts', 'src/api/schema.d.ts'],
+    },
     js.configs.recommended,
-    ...tseslint.configs.recommended,
+    ...tseslint.configs.strictTypeChecked,
     {
         files: ['{src,test}/**/*.{ts,tsx}'],
         languageOptions: {
-            parserOptions: { ecmaFeatures: { jsx: true } },
+            parserOptions: {
+                projectService: true,
+                tsconfigRootDir: import.meta.dirname,
+                ecmaFeatures: { jsx: true },
+            },
             globals: { ...globals.browser, ...globals.es2021 },
         },
-        plugins: { react, 'react-hooks': reactHooks, import: importPlugin, promise },
+        plugins: {
+            react,
+            'react-hooks': reactHooks,
+            'react-refresh': reactRefresh,
+            'jsx-a11y': jsxA11y,
+            'import-x': importX,
+            promise,
+        },
         settings: {
             react: { version: 'detect' },
-            'import/resolver': { typescript: true },
         },
         rules: {
             ...react.configs.recommended.rules,
+            ...jsxA11y.flatConfigs.recommended.rules,
             'react-hooks/rules-of-hooks': 'error',
             'react-hooks/exhaustive-deps': 'warn',
-            'max-len': ['warn', 120],
-            'import/order': ['error', {
-                pathGroups: [{ pattern: '@/**', group: 'external', position: 'after' }],
-                pathGroupsExcludedImportTypes: ['builtin'],
-                alphabetize: { order: 'desc' },
-            }],
-            'import/no-unresolved': 'off',
-            'import/no-default-export': 'error',
+            'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+            'import-x/order': [
+                'error',
+                {
+                    pathGroups: [{ pattern: '@/**', group: 'external', position: 'after' }],
+                    pathGroupsExcludedImportTypes: ['builtin'],
+                    alphabetize: { order: 'desc' },
+                },
+            ],
+            'import-x/no-unresolved': 'off',
+            'import-x/no-default-export': 'error',
             'react/jsx-props-no-spreading': 'off',
             'react/react-in-jsx-scope': 'off',
-            // Legacy react-router v5-style class components type `Component<any, State>`
-            // and declare unused `MatchParams` interfaces from an incomplete migration to
-            // typed route params. Fixing this properly means re-typing component props
-            // (RouteComponentProps<MatchParams>), which is a component rewrite, not a lint
-            // fix. Downgraded to warn to keep visibility without blocking `npm run lint`.
-            '@typescript-eslint/no-explicit-any': 'warn',
-            // Same legacy-typing debt produces unused `MatchParams` interfaces, and
-            // editable-text.tsx destructures a prop solely to exclude it from a `...props`
-            // spread (a common false-positive pattern for this rule). Downgraded to warn
-            // rather than editing component internals.
-            '@typescript-eslint/no-unused-vars': ['warn', { ignoreRestSiblings: true }],
+            '@typescript-eslint/no-explicit-any': 'error',
+            '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
+            // Numbers/booleans in template literals are safe and idiomatic here.
+            '@typescript-eslint/restrict-template-expressions': ['error', { allowNumber: true, allowBoolean: true }],
+            // Methods that are async only to satisfy a Promise-returning interface
+            // (e.g. FakeYummeClient) legitimately have no `await`.
+            '@typescript-eslint/require-await': 'off',
+            '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
         },
     },
     {
         files: ['test/**/*.{ts,tsx}'],
-        languageOptions: { globals: { ...globals.node } },
+        ...vitest.configs.recommended,
+        languageOptions: {
+            globals: { ...globals.node },
+        },
     },
+    prettierConfig,
 );

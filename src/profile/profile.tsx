@@ -39,19 +39,16 @@ export function Profile(): ReactNode {
     };
 
     return (
-        <div className={ styles.profile }>
-            { user && <Hero user={ user } /> }
+        <div className={styles.profile}>
+            {user && <Hero user={user} />}
 
-            <ViewNavigation
-                active={ view }
-                navigations={ ['Summary', 'Recipes', 'Collections'] }
-                handler={ handler } />
+            <ViewNavigation active={view} navigations={['Summary', 'Recipes', 'Collections']} handler={handler} />
 
-            { view === 'Summary' && user && <Summary user={ user } /> }
+            {view === 'Summary' && user && <Summary user={user} />}
 
-            { view === 'Recipes' && <Recipes /> }
+            {view === 'Recipes' && <Recipes />}
 
-            { view === 'Collections' && <Collections /> }
+            {view === 'Collections' && <Collections />}
         </div>
     );
 }

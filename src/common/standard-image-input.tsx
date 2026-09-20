@@ -11,24 +11,29 @@ export const StandardImageInput: FC<StandardImageInputProps> = ({ color, errors,
     const input = React.createRef<HTMLInputElement>();
 
     return (
-        <div className={ styles.standardImageInput } onClick={ (): void => input.current?.click() }>
-            <input ref={ input } type="file" name="img" accept=".bmp, .gif, .png, .tiff" { ...props } />
-            <IconPhoto className={ `${ styles.svg } ${ styles[color] }` } />
-            {
-                errors.length !== 0 && (
-                    <ul className={ styles.errors }>
-                        {
-                            errors.map((error, i) => (
-                                <li
-                                    className={ styles.error }
-                                    key={ i }>
-                                    { error }
-                                </li>
-                            ))
-                        }
-                    </ul>
-                )
-            }
+        <div
+            className={styles.standardImageInput}
+            role="button"
+            tabIndex={0}
+            onClick={(): void => input.current?.click()}
+            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>): void => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    input.current?.click();
+                }
+            }}
+        >
+            <input ref={input} type="file" name="img" accept=".bmp, .gif, .png, .tiff" {...props} />
+            <IconPhoto className={`${styles.svg} ${styles[color]}`} />
+            {errors.length !== 0 && (
+                <ul className={styles.errors}>
+                    {errors.map((error, i) => (
+                        <li className={styles.error} key={i}>
+                            {error}
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };

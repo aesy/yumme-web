@@ -6,8 +6,8 @@ interface StandardHeaderProps {
     readonly color: 'white' | 'orange' | 'brown';
 }
 
-export const StandardHeader: FC<PropsWithChildren<StandardHeaderProps>> = props => (
-    <span className={ `${ styles.standardHeader } ${ styles[props.color] } ${ styles[props.borderOffset] }` }>
-        { props.children }
+export const StandardHeader: FC<PropsWithChildren<StandardHeaderProps>> = (props) => (
+    <span className={`${styles.standardHeader} ${styles[props.color]} ${styles[props.borderOffset]}`}>
+        {props.children}
     </span>
 );

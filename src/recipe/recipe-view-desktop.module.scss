@@ -9,8 +9,8 @@
 
     display: grid;
     grid-template-areas:
-        " top     top      top "
-        " aside directions directions";
+        ' top     top      top '
+        ' aside directions directions';
     grid-template-columns: 40% 1fr;
     gap: 50px 30px;
 
@@ -76,7 +76,7 @@
     .top {
         grid-area: top;
         display: grid;
-        grid-template-columns: 1fr  auto;
+        grid-template-columns: 1fr auto;
 
         .stats {
             margin-left: 40px;

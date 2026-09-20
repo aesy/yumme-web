@@ -3,10 +3,10 @@ import { MobileNavigation } from '@/common/mobile-navigation';
 import { Header } from '@/common/header';
 import { Footer } from '@/common/footer';
 
-export const Layout: FC<PropsWithChildren<unknown>> = props => (
+export const Layout: FC<PropsWithChildren> = (props) => (
     <>
         <Header />
-        { props.children }
+        {props.children}
         <Footer />
         <MobileNavigation />
     </>

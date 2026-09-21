@@ -13,7 +13,7 @@ type View = 'Summary' | 'Recipes' | 'Collections';
 
 export function Profile(): ReactNode {
     const yummeClient = useInjection<YummeClient>(YUMME_CLIENT_TYPE);
-    const { id } = useParams();
+    const { slug } = useParams();
 
     const [user, setUser] = useState<User | null>(null);
     const [view, setView] = useState<View>('Summary');
@@ -24,15 +24,14 @@ export function Profile(): ReactNode {
 
     useEffect(() => {
         const refresh = async (): Promise<void> => {
-            const userId = Number(id);
-            const fetchedUser = await yummeClient.getUserById(userId);
+            const fetchedUser = await yummeClient.getUserBySlug(slug ?? '');
 
             setUser(fetchedUser);
         };
 
         setUser(null);
         void refresh();
-    }, [id, yummeClient]);
+    }, [slug, yummeClient]);
 
     const handler = (newView: string): void => {
         setView(newView as View);

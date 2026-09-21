@@ -14,6 +14,10 @@ function generateId(): number {
     return Math.ceil(maxId * Math.random());
 }
 
+function generateSlug(prefix: string): string {
+    return `${prefix}-${generateId()}`;
+}
+
 @injectable()
 export class FakeYummeClient implements YummeClient {
     public async createRecipe(): Promise<Recipe> {
@@ -35,7 +39,7 @@ export class FakeYummeClient implements YummeClient {
 
     public async getAllRecipes(): Promise<Recipe[]> {
         return Array.from({ length: 3 }).map(() => {
-            return { ...this.createFakeRecipe(), id: generateId() };
+            return { ...this.createFakeRecipe(), slug: generateSlug('recipe') };
         });
     }
 
@@ -45,7 +49,7 @@ export class FakeYummeClient implements YummeClient {
 
     public async getPopularRecipes(): Promise<Recipe[]> {
         return Array.from({ length: 3 }).map(() => {
-            return { ...this.createFakeRecipe(), id: generateId() };
+            return { ...this.createFakeRecipe(), slug: generateSlug('recipe') };
         });
     }
 
@@ -55,13 +59,13 @@ export class FakeYummeClient implements YummeClient {
 
     public async getRecentCollections(): Promise<Collection[]> {
         return Array.from({ length: 4 }).map(() => {
-            return { ...this.createFakeCollection(), id: generateId() };
+            return { ...this.createFakeCollection(), slug: generateSlug('collection') };
         });
     }
 
     public async getRecentRecipes(): Promise<Recipe[]> {
         return Array.from({ length: 4 }).map(() => {
-            return { ...this.createFakeRecipe(), id: generateId() };
+            return { ...this.createFakeRecipe(), slug: generateSlug('recipe') };
         });
     }
 
@@ -69,11 +73,11 @@ export class FakeYummeClient implements YummeClient {
         return this.getRecentRecipes();
     }
 
-    public async getRecipeById(): Promise<Recipe> {
+    public async getRecipeBySlug(): Promise<Recipe> {
         return this.createFakeRecipe();
     }
 
-    public async getUserById(): Promise<User> {
+    public async getUserBySlug(): Promise<User> {
         return this.createFakeUser();
     }
 
@@ -97,9 +101,9 @@ export class FakeYummeClient implements YummeClient {
 
     private createFakeCollection(): Collection {
         return {
-            id: generateId(),
+            slug: generateSlug('collection'),
             title: 'Barbeque heaven',
-            recipes: [generateId(), generateId(), generateId(), generateId()],
+            recipes: [generateSlug('recipe'), generateSlug('recipe'), generateSlug('recipe')],
         };
     }
 
@@ -110,18 +114,11 @@ export class FakeYummeClient implements YummeClient {
                 'This easy pizza dough recipe is great for beginners and produces a soft homemade pizza crust.',
             directions: [
                 'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-                'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-                'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-                'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
-                'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
+                'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth. Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
                 'Whisk soy sauce, oyster sauce, rice vinegar, sesame oil, brown sugar, Sriracha sauce, and garlic in a small bowl until smooth.',
             ].join('\n'),
-            id: generateId(),
+            slug: generateSlug('recipe'),
             ingredients: [
-                { name: '1 pound raw peeled and deveined shrimp' },
-                { name: '1 pound raw peeled and deveined shrimp' },
-                { name: '1 pound raw peeled and deveined shrimp' },
-                { name: '1 pound raw peeled and deveined shrimp' },
                 { name: '1 pound raw peeled and deveined shrimp' },
                 { name: '1 pound raw peeled and deveined shrimp' },
                 { name: '1 pound raw peeled and deveined shrimp' },
@@ -143,7 +140,7 @@ export class FakeYummeClient implements YummeClient {
         return {
             user_name: 'user',
             display_name: 'User',
-            id: 1,
+            slug: 'user',
         };
     }
 }

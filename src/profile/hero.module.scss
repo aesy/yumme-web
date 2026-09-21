@@ -1,32 +1,26 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
 @import '@/common/breakpoints';
 @import '@/common/paddings';
+@import '@/common/frame';
 
 .hero {
     .highlighted {
-        color: $yum_beige;
+        color: var(--color-accent);
     }
 
     .content {
         @include content-standard;
+        @include offset-frame(var(--frame-offset-lg), var(--color-ink));
 
-        background-color: $yum_black;
-        color: $font_primary;
+        background-color: var(--color-ink);
+        color: var(--color-on-accent);
         height: 400px;
         position: relative;
         display: flex;
 
-        &::before {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            height: 100%;
-            width: 100%;
-            border: 2px solid white;
-            z-index: -1;
+        &::after {
+            border-width: 2px;
         }
 
         .bg {
@@ -50,22 +44,29 @@
             }
 
             .details {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: 150px;
                 margin-left: 20px;
 
                 h1 {
                     margin: 0;
+                    font-weight: 600;
+                    font-size: var(--text-2xl);
+                    line-height: var(--lh-tight);
                 }
 
                 .stats {
                     list-style: none;
                     padding: 0;
-                    margin: 10px 0;
+                    margin: 4px 0;
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: space-between;
 
                     li:last-of-type {
-                        margin-top: 10px;
+                        margin-bottom: 6px;
                     }
                 }
 
@@ -79,7 +80,7 @@
         @media screen and (max-width: $breakpoint_tablet) {
             flex-direction: column-reverse;
 
-            &::before {
+            &::after {
                 display: none;
             }
 
@@ -87,9 +88,9 @@
                 height: auto;
                 max-width: unset;
                 width: 100%;
-                padding-left: 10px;
-                padding-right: 10px;
-                padding-bottom: 20px;
+                padding-left: var(--space-3);
+                padding-right: var(--space-3);
+                padding-bottom: var(--space-6);
 
                 .details {
                     justify-content: space-between;
@@ -102,11 +103,11 @@
                         justify-content: space-evenly;
 
                         li {
-                            margin: 0 8px 15px;
+                            margin: 0 var(--space-2) var(--space-4);
                         }
 
                         li:last-of-type {
-                            margin: 0 8px;
+                            margin: 0 var(--space-2);
                         }
                     }
 
@@ -116,7 +117,7 @@
                 }
 
                 .profile-img {
-                    border: 6px solid $yum_black;
+                    border: 6px solid var(--color-ink);
                     position: absolute;
                     top: 0;
                     left: 50%;

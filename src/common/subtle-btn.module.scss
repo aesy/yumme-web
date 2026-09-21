@@ -1,24 +1,38 @@
-@import '@/common/colors';
 @import '@/common/typography';
 
 .subtle-btn {
     border: none;
     outline: none;
-    padding: 8px 15px;
-    letter-spacing: 2px;
+    padding: var(--space-2) var(--space-4);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
     background-color: transparent;
-    font-size: 12px;
+    font-size: var(--text-xs);
+    font-weight: 600;
     cursor: pointer;
+    transition: color var(--motion-fast) var(--ease-out);
 
     &.red {
-        color: #ff6464;
+        color: var(--color-danger);
+
+        &:hover {
+            color: color-mix(in srgb, var(--color-danger) 80%, transparent);
+        }
     }
 
     &.beige {
-        color: $yum_beige;
+        color: var(--color-surface-2);
+
+        &:hover {
+            color: color-mix(in srgb, var(--color-surface-2) 80%, transparent);
+        }
     }
 
     &.orange {
-        color: $yum_orange;
+        color: var(--color-accent);
+
+        &:hover {
+            color: var(--color-accent-hover);
+        }
     }
 }

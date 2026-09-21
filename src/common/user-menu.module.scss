@@ -1,21 +1,17 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
 @import '@/common/breakpoints';
 @import '@/common/paddings';
-
-svg {
-    fill: white;
-}
 
 .user-menu {
     padding: 0;
     list-style: none;
     display: flex;
     align-items: center;
+    color: var(--color-ink);
 
     .icon {
-        fill: $yum_brown;
+        color: var(--color-ink);
     }
 
     .navigation-item {
@@ -33,10 +29,10 @@ svg {
             position: absolute;
             white-space: nowrap;
             right: 0;
-            top: calc(100% + 10px);
-            color: white;
-            background-color: $yum_brown;
-            transition: opacity 0.1s ease-out;
+            top: calc(100% + var(--space-3));
+            color: var(--color-on-accent);
+            background-color: var(--color-muted);
+            transition: opacity var(--motion-fast) var(--ease-out);
 
             &::after {
                 content: '';
@@ -47,8 +43,8 @@ svg {
             }
 
             .menu-item {
-                border-bottom: 1px solid lighten($yum_brown, 10%);
-                transition: background-color 0.1s ease-out;
+                border-bottom: var(--border-hairline) solid color-mix(in srgb, var(--color-muted) 88%, var(--color-ink));
+                transition: background-color var(--motion-fast) var(--ease-out);
                 cursor: pointer;
                 position: relative;
 
@@ -57,7 +53,7 @@ svg {
                     justify-content: space-between;
                     align-items: center;
                     width: 100%;
-                    padding: 18px;
+                    padding: var(--space-4);
                 }
 
                 svg {
@@ -74,17 +70,17 @@ svg {
                         height: 0;
                         border-left: 10px solid transparent;
                         border-right: 10px solid transparent;
-                        border-bottom: 10px solid $yum_brown;
-                        transition: border-bottom 0.1s ease-out;
+                        border-bottom: 10px solid var(--color-muted);
+                        transition: border-bottom var(--motion-fast) var(--ease-out);
                     }
                 }
 
                 &:hover {
-                    background-color: lighten($yum_brown, 10%);
+                    background-color: color-mix(in srgb, var(--color-muted) 88%, var(--color-ink));
 
                     &:first-of-type {
                         &::after {
-                            border-bottom: 10px solid lighten($yum_brown, 10%);
+                            border-bottom: 10px solid color-mix(in srgb, var(--color-muted) 88%, var(--color-ink));
                         }
                     }
                 }
@@ -99,7 +95,7 @@ svg {
         }
 
         + .navigation-item {
-            margin-left: 30px;
+            margin-left: var(--space-8);
         }
     }
 

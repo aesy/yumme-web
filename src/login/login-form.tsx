@@ -4,11 +4,11 @@ import styles from '@/registration/registration-form.module.scss';
 import { StandardInput } from '@/common/standard-input';
 import { StandardBtn } from '@/common/standard-btn';
 import { LoadingSpinner } from '@/common/loading-spinner';
-import { AuthState } from '@/authentication/auth-state';
+import { SessionStore } from '@/authentication/session-store';
 import { type YummeClient, YUMME_CLIENT_TYPE, type AuthError } from '@/api/yumme-client';
 
 export function LoginForm(): ReactNode {
-    const authState = useInjection<AuthState>(AuthState);
+    const sessionStore = useInjection<SessionStore>(SessionStore);
     const yummeClient = useInjection<YummeClient>(YUMME_CLIENT_TYPE);
 
     const [username, setUsername] = useState('');
@@ -38,7 +38,7 @@ export function LoginForm(): ReactNode {
                 grant_type: 'password' as const,
             });
 
-            authState.logInWithEmailAndPassword(response);
+            sessionStore.login(response);
         } catch (err: unknown) {
             setLoading(false);
             setError((err as AuthError).error_description ?? null);

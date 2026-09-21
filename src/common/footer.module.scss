@@ -1,11 +1,11 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
 
 .footer {
     min-height: 200px;
     margin-top: auto;
-    background-color: $yum_black;
+    background-color: var(--color-ink);
+    color: var(--color-on-accent);
     justify-self: flex-end;
 
     div {

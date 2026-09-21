@@ -1,4 +1,5 @@
 import { Container } from 'inversify';
+import { AuthInterceptor } from '@/authentication/auth-interceptor';
 import { HttpYummeClient } from '@/api/yumme-client-impl';
 import { YUMME_CLIENT_TYPE } from '@/api/yumme-client';
 import { FakeYummeClient } from '@/api/fake-yumme-client';
@@ -17,4 +18,5 @@ if (mock === 'true') {
 } else {
     container.bind(API_CLIENT_TYPE).toDynamicValue(createApiClient);
     container.bind(YUMME_CLIENT_TYPE).to(HttpYummeClient);
+    container.get(AuthInterceptor);
 }

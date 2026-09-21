@@ -1,4 +1,3 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
 
@@ -6,6 +5,7 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -23,30 +23,34 @@
             resize: none;
             overflow: hidden;
             width: 100%;
-            padding: 10px;
+            padding: var(--space-3);
             outline: none;
-            border: 1px solid $yum_orange;
+            background: var(--color-surface);
+            color: var(--color-ink);
+            border: var(--border-hairline) solid var(--color-accent);
+            border-radius: var(--radius-sm);
             letter-spacing: inherit;
             font-family: inherit;
             font-size: inherit;
             font-style: inherit;
+            transition: border-color var(--motion-fast) var(--ease-out);
 
             &.invalid {
-                border: 1px solid #ff6961;
+                border-color: var(--color-danger);
             }
         }
     }
 
     .errors {
         width: 100%;
-        background-color: #ff6961;
-        color: white;
-        padding: 0 20px 0 40px;
+        background-color: var(--color-danger);
+        color: var(--color-on-accent);
+        padding: 0 var(--space-6) 0 var(--space-8);
         margin: 0;
         animation: fadeIn 0.5s forwards;
 
         .error {
-            padding: 10px 0;
+            padding: var(--space-3) 0;
         }
     }
 }

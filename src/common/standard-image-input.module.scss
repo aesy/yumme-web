@@ -1,9 +1,8 @@
-@import '@/common/colors';
-
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -18,8 +17,8 @@
     align-items: center;
     height: 100%;
     width: 100%;
-    background-color: rgba(#eaeaea, 0.65);
-    transition: background-color 0.2s ease-out;
+    background-color: color-mix(in srgb, var(--color-surface-2) 65%, transparent);
+    transition: background-color var(--motion-fast) var(--ease-out);
     cursor: pointer;
 
     input {
@@ -35,16 +34,16 @@
         position: absolute;
         bottom: 0;
         width: 100%;
-        background-color: #ff6961;
-        padding: 0 20px 0 40px;
+        background-color: var(--color-danger);
+        padding: 0 var(--space-6) 0 var(--space-8);
         margin: 0;
         animation: fadeIn 0.5s forwards;
 
         .error {
             width: 100%;
             background-color: inherit;
-            color: white;
-            padding: 10px 0;
+            color: var(--color-on-accent);
+            padding: var(--space-3) 0;
         }
     }
 
@@ -53,15 +52,15 @@
         width: 80px;
 
         &.white {
-            fill: white;
+            fill: var(--color-surface);
         }
 
         &.gray {
-            fill: gray;
+            fill: var(--color-muted);
         }
     }
 
     &:hover {
-        background-color: rgba(#eaeaea, 0.3);
+        background-color: color-mix(in srgb, var(--color-surface-2) 30%, transparent);
     }
 }

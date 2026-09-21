@@ -18,7 +18,6 @@ const INITIAL_RECIPE: Recipe = {
     description: 'The PERFECT recipe for..',
     directions: '',
     ingredients: [],
-    id: 0,
     image_attachments: [],
     rating: {
         average: 0,
@@ -70,7 +69,7 @@ export function EmptyRecipe(): ReactNode {
         };
         const createdRecipe = await yummeClient.createRecipe(request);
 
-        void navigate(`/recipe/${createdRecipe.id}`);
+        void navigate(`/recipe/${createdRecipe.slug}`);
     };
 
     return (

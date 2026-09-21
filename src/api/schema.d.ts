@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/recipe/{id}": {
+    "/recipe/{slug}": {
         parameters: {
             query?: never;
             header?: never;
@@ -20,7 +20,7 @@ export interface paths {
         patch: operations["updateRecipe"];
         trace?: never;
     };
-    "/collection/{id}": {
+    "/recipe/{slug}/share/{userSlug}": {
         parameters: {
             query?: never;
             header?: never;
@@ -28,6 +28,22 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
+        put: operations["shareRecipe"];
+        post?: never;
+        delete: operations["unshareRecipe"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/collection/{slug}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["inspectCollection"];
         put: operations["replaceCollection"];
         post?: never;
         delete: operations["deleteCollectionById"];
@@ -36,7 +52,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/user/{id}/role/{name}": {
+    "/collection/{slug}/share/{userSlug}": {
         parameters: {
             query?: never;
             header?: never;
@@ -44,9 +60,9 @@ export interface paths {
             cookie?: never;
         };
         get?: never;
-        put?: never;
-        post: operations["assignRole"];
-        delete: operations["revokeRole"];
+        put: operations["shareCollection"];
+        post?: never;
+        delete: operations["unshareCollection"];
         options?: never;
         head?: never;
         patch?: never;
@@ -84,7 +100,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/recipe/{id}/rating": {
+    "/recipe/{slug}/rating": {
         parameters: {
             query?: never;
             header?: never;
@@ -100,7 +116,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/recipe/{id}/image": {
+    "/recipe/{slug}/image": {
         parameters: {
             query?: never;
             header?: never;
@@ -116,7 +132,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/recipe/{id}/cover": {
+    "/recipe/{slug}/cover": {
         parameters: {
             query?: never;
             header?: never;
@@ -142,22 +158,6 @@ export interface paths {
         get: operations["listCollections"];
         put?: never;
         post: operations["createCollection"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/category": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["listAllCategories"];
-        put?: never;
-        post: operations["createCategory"];
         delete?: never;
         options?: never;
         head?: never;
@@ -196,46 +196,14 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/user": {
+    "/user/{slug}": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get: operations["listUsers"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/user/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["inspectUserById"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/user/{id}/role": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["listRolesByUser"];
+        get: operations["inspectUser"];
         put?: never;
         post?: never;
         delete?: never;
@@ -276,39 +244,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/tag": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["listTags"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/role": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["listRoles"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/recipe/{id}/tag": {
+    "/recipe/{slug}/tag": {
         parameters: {
             query?: never;
             header?: never;
@@ -324,7 +260,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/recipe/{id}/image/{name}.png": {
+    "/recipe/{slug}/share": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["listRecipeShares"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/recipe/{slug}/image/{name}.png": {
         parameters: {
             query?: never;
             header?: never;
@@ -340,7 +292,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/recipe/{id}/category": {
+    "/recipe/{slug}/category": {
         parameters: {
             query?: never;
             header?: never;
@@ -348,6 +300,22 @@ export interface paths {
             cookie?: never;
         };
         get: operations["listCategoriesByRecipe"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/recipe/shared": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["listSharedRecipes"];
         put?: never;
         post?: never;
         delete?: never;
@@ -420,17 +388,49 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/category/{name}": {
+    "/collection/{slug}/share": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        get: operations["listCollectionShares"];
         put?: never;
         post?: never;
-        delete: operations["deleteCategoryByName"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/collection/shared": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["listSharedCollections"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/category": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["listAllCategories"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -524,8 +524,7 @@ export interface components {
             count?: number | null;
         };
         RecipeDto: {
-            /** Format: int64 */
-            id?: number | null;
+            slug?: string | null;
             title?: string | null;
             description?: string | null;
             directions?: string | null;
@@ -545,15 +544,18 @@ export interface components {
             image_cover?: string;
             image_attachments?: string[];
         };
+        ShareRequest: {
+            /** @enum {string|null} */
+            permission: "VIEW" | "EDIT" | null;
+        };
         UpdateCollectionRequest: {
             title: string | null;
-            recipes: number[];
+            recipes: string[];
         };
         CollectionDto: {
-            /** Format: int64 */
-            id?: number | null;
+            slug?: string | null;
             title?: string | null;
-            recipes?: number[];
+            recipes?: string[];
         };
         RegisterRequest: {
             user_name: string;
@@ -561,9 +563,6 @@ export interface components {
             password: string | null;
         };
         ImageUploadDto: {
-            name?: string | null;
-        };
-        CategoryDto: {
             name?: string | null;
         };
         TokenRequest: {
@@ -604,8 +603,7 @@ export interface components {
             ingredients?: components["schemas"]["IngredientDto"][] | null;
         };
         UserDto: {
-            /** Format: int64 */
-            id?: number | null;
+            slug?: string | null;
             user_name?: string;
             display_name?: string;
             roles?: string[];
@@ -614,6 +612,15 @@ export interface components {
             name?: string | null;
         };
         TagDto: {
+            name?: string | null;
+        };
+        ShareDto: {
+            /** @enum {string|null} */
+            permission?: "VIEW" | "EDIT" | null;
+            user_slug?: string;
+            user_name?: string;
+        };
+        CategoryDto: {
             name?: string | null;
         };
         ConfigDto: {
@@ -633,7 +640,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -657,24 +664,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     replaceRecipe: {
@@ -682,7 +671,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -711,24 +700,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     deleteRecipe: {
@@ -736,7 +707,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -758,24 +729,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     updateRecipe: {
@@ -783,7 +736,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -812,8 +765,34 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
+        };
+    };
+    shareRecipe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+                userSlug: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ShareRequest"];
+                "*/*": components["schemas"]["ShareRequest"];
+            };
+        };
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -821,8 +800,60 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Forbidden */
-            403: {
+        };
+    };
+    unshareRecipe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+                userSlug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description No Content */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Bad Request */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "*/*": components["schemas"]["ErrorDto"];
+                };
+            };
+        };
+    };
+    inspectCollection: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CollectionDto"];
+                };
+            };
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -837,7 +868,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -866,24 +897,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     deleteCollectionById: {
@@ -891,7 +904,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -906,24 +919,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -933,17 +928,22 @@ export interface operations {
             };
         };
     };
-    assignRole: {
+    shareCollection: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                id: number;
-                name: string;
+                slug: string;
+                userSlug: string;
             };
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ShareRequest"];
+                "*/*": components["schemas"]["ShareRequest"];
+            };
+        };
         responses: {
             /** @description No Content */
             204: {
@@ -954,24 +954,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -981,13 +963,13 @@ export interface operations {
             };
         };
     };
-    revokeRole: {
+    unshareCollection: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                id: number;
-                name: string;
+                slug: string;
+                userSlug: string;
             };
             cookie?: never;
         };
@@ -1002,24 +984,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1059,24 +1023,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     listRecipes: {
@@ -1102,24 +1048,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1161,24 +1089,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     getRatingSummary: {
@@ -1186,7 +1096,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -1210,24 +1120,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     rateRecipe: {
@@ -1237,7 +1129,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -1259,24 +1151,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     uploadImage: {
@@ -1284,7 +1158,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -1308,24 +1182,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1340,7 +1196,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -1364,24 +1220,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1414,24 +1252,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1473,123 +1293,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-        };
-    };
-    listAllCategories: {
-        parameters: {
-            query?: {
-                offset?: number;
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CategoryDto"][];
-                };
-            };
-            /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-        };
-    };
-    createCategory: {
-        parameters: {
-            query: {
-                name: string;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Created */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CategoryDto"];
-                };
-            };
-            /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     createAccessToken: {
@@ -1621,24 +1324,6 @@ export interface operations {
                     "application/json": components["schemas"]["AuthErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     revokeRefreshToken: {
@@ -1668,82 +1353,14 @@ export interface operations {
                     "application/json": components["schemas"]["AuthErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
-    listUsers: {
-        parameters: {
-            query?: {
-                offset?: number;
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserDto"][];
-                };
-            };
-            /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-        };
-    };
-    inspectUserById: {
+    inspectUser: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -1760,73 +1377,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-        };
-    };
-    listRolesByUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["RoleDto"][];
-                };
-            };
-            /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -1863,24 +1413,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     listRolesBySelf: {
@@ -1910,124 +1442,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-        };
-    };
-    listTags: {
-        parameters: {
-            query?: {
-                offset?: number;
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["TagDto"][];
-                };
-            };
-            /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-        };
-    };
-    listRoles: {
-        parameters: {
-            query?: {
-                offset?: number;
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description OK */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["RoleDto"][];
-                };
-            };
-            /** @description Bad Request */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     listTagsByRecipe: {
@@ -2038,7 +1452,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -2062,17 +1476,30 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
+        };
+    };
+    listRecipeShares: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                slug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ErrorDto"];
+                    "application/json": components["schemas"]["ShareDto"][];
                 };
             };
-            /** @description Forbidden */
-            403: {
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2089,7 +1516,7 @@ export interface operations {
             };
             header?: never;
             path: {
-                id: number;
+                slug: string;
                 name: string;
             };
             cookie?: never;
@@ -2114,24 +1541,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     deleteImage: {
@@ -2139,7 +1548,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
                 name: string;
             };
             cookie?: never;
@@ -2162,24 +1571,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     listCategoriesByRecipe: {
@@ -2187,7 +1578,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                id: number;
+                slug: string;
             };
             cookie?: never;
         };
@@ -2211,17 +1602,31 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
+        };
+    };
+    listSharedRecipes: {
+        parameters: {
+            query?: {
+                offset?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "*/*": components["schemas"]["ErrorDto"];
+                    "application/json": components["schemas"]["RecipeDto"][];
                 };
             };
-            /** @description Forbidden */
-            403: {
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2236,7 +1641,7 @@ export interface operations {
             query?: {
                 offset?: number;
                 limit?: number;
-                author?: number;
+                author?: string;
                 q?: string;
                 "min-prep-time"?: number;
                 "max-prep-time"?: number;
@@ -2244,16 +1649,16 @@ export interface operations {
                 "max-cook-time"?: number;
                 "created-before"?: number;
                 "created-after"?: number;
-                "include-ingredient"?: number[];
-                "exclude-ingredient"?: number[];
-                "include-tag"?: number[];
-                "exclude-tag"?: number[];
-                "include-diet"?: number[];
-                "exclude-diet"?: number[];
-                "include-cuisine"?: number[];
-                "exclude-cuisine"?: number[];
-                "include-category"?: number[];
-                "exclude-category"?: number[];
+                "include-ingredient"?: string[];
+                "exclude-ingredient"?: string[];
+                "include-tag"?: string[];
+                "exclude-tag"?: string[];
+                "include-diet"?: string[];
+                "exclude-diet"?: string[];
+                "include-cuisine"?: string[];
+                "exclude-cuisine"?: string[];
+                "include-category"?: string[];
+                "exclude-category"?: string[];
                 sort?: string;
                 order?: string;
                 "has-image"?: boolean;
@@ -2290,24 +1695,6 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
     listRecentRecipes: {
@@ -2315,7 +1702,7 @@ export interface operations {
             query?: {
                 offset?: number;
                 limit?: number;
-                user?: number;
+                user?: string;
             };
             header?: never;
             path?: never;
@@ -2334,24 +1721,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2366,7 +1735,7 @@ export interface operations {
             query?: {
                 offset?: number;
                 limit?: number;
-                user?: number;
+                user?: string;
             };
             header?: never;
             path?: never;
@@ -2385,24 +1754,6 @@ export interface operations {
             };
             /** @description Bad Request */
             400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2439,43 +1790,27 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
-            /** @description Forbidden */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "*/*": components["schemas"]["ErrorDto"];
-                };
-            };
         };
     };
-    deleteCategoryByName: {
+    listCollectionShares: {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                name: string;
+                slug: string;
             };
             cookie?: never;
         };
         requestBody?: never;
         responses: {
-            /** @description No Content */
-            204: {
+            /** @description OK */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ShareDto"][];
+                };
             };
             /** @description Bad Request */
             400: {
@@ -2486,8 +1821,31 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Unauthorized */
-            401: {
+        };
+    };
+    listSharedCollections: {
+        parameters: {
+            query?: {
+                offset?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CollectionDto"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -2495,8 +1853,31 @@ export interface operations {
                     "*/*": components["schemas"]["ErrorDto"];
                 };
             };
-            /** @description Forbidden */
-            403: {
+        };
+    };
+    listAllCategories: {
+        parameters: {
+            query?: {
+                offset?: number;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description OK */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CategoryDto"][];
+                };
+            };
+            /** @description Bad Request */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };

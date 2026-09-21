@@ -1,19 +1,29 @@
-import React, { type PropsWithChildren, type ReactNode } from 'react';
+import React, { type PropsWithChildren, type ReactNode, useEffect } from 'react';
 import { useAtomValue } from 'jotai';
 import { useInjection } from 'inversify-react';
+import { LoadingSpinner } from '@/common/loading-spinner';
+import { SessionStore } from '@/authentication/session-store';
+import { sessionAtom } from '@/authentication/session';
 import { AuthWall } from '@/authentication/auth-wall';
-import { AuthState } from '@/authentication/auth-state';
-import { accessTokenAtom } from '@/authentication/access-token-atom';
 import styles from '@/app.module.scss';
 
 export function AuthController(props: PropsWithChildren): ReactNode {
-    // Resolve AuthState for its construction side effects: it installs the auth
-    // middleware and triggers refresh-on-mount (auto-login). This wires auth at the
-    // app root, so keep it even though the resolved value isn't read here.
-    useInjection<AuthState>(AuthState);
-    const accessToken = useAtomValue(accessTokenAtom);
+    const sessionStore = useInjection<SessionStore>(SessionStore);
+    const session = useAtomValue(sessionAtom);
 
-    if (!accessToken) {
+    useEffect(() => {
+        sessionStore.restore();
+    }, [sessionStore]);
+
+    if (session.status === 'restoring') {
+        return (
+            <div className={styles.sessionLoading}>
+                <LoadingSpinner color="orange" />
+            </div>
+        );
+    }
+
+    if (session.status === 'anonymous') {
         return <AuthWall />;
     }
 

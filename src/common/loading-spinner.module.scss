@@ -1,5 +1,3 @@
-@import '@/common/colors';
-
 .ellipsis {
     display: inline-block;
     position: relative;
@@ -13,16 +11,16 @@
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: $yum_orange;
+    background: var(--color-accent);
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 
 .ellipsis.white div {
-    background: white;
+    background: var(--color-on-accent);
 }
 
 .ellipsis.orange div {
-    background: $yum_orange;
+    background: var(--color-accent);
 }
 
 .ellipsis div:nth-child(1) {

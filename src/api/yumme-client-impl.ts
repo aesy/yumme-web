@@ -34,8 +34,8 @@ export class HttpYummeClient implements YummeClient {
         return unwrap(this.client.POST('/recipe', { body: request }));
     }
 
-    public async deleteRecipe(id: number): Promise<void> {
-        await unwrap(this.client.DELETE('/recipe/{id}', { params: { path: { id } } }));
+    public async deleteRecipe(slug: string): Promise<void> {
+        await unwrap(this.client.DELETE('/recipe/{slug}', { params: { path: { slug } } }));
     }
 
     public getAccessToken(request: LoginRequest): Promise<LoginResponse> {
@@ -72,7 +72,7 @@ export class HttpYummeClient implements YummeClient {
         return unwrap(this.client.GET('/recipe/popular', { params: { query: { limit } } }));
     }
 
-    public getPopularRecipesByUser(user: number, limit?: number): Promise<Recipe[]> {
+    public getPopularRecipesByUser(user: string, limit?: number): Promise<Recipe[]> {
         return unwrap(this.client.GET('/recipe/popular', { params: { query: { user, limit } } }));
     }
 
@@ -84,38 +84,38 @@ export class HttpYummeClient implements YummeClient {
         return unwrap(this.client.GET('/recipe/recent', { params: { query: { limit } } }));
     }
 
-    public getRecentRecipesByUser(user: number, limit?: number): Promise<Recipe[]> {
+    public getRecentRecipesByUser(user: string, limit?: number): Promise<Recipe[]> {
         return unwrap(this.client.GET('/recipe/recent', { params: { query: { user, limit } } }));
     }
 
-    public getRecipeById(id: number): Promise<Recipe> {
-        return unwrap(this.client.GET('/recipe/{id}', { params: { path: { id } } }));
+    public getRecipeBySlug(slug: string): Promise<Recipe> {
+        return unwrap(this.client.GET('/recipe/{slug}', { params: { path: { slug } } }));
     }
 
-    public getUserById(id: number): Promise<User> {
-        return unwrap(this.client.GET('/user/{id}', { params: { path: { id } } }));
+    public getUserBySlug(slug: string): Promise<User> {
+        return unwrap(this.client.GET('/user/{slug}', { params: { path: { slug } } }));
     }
 
     public async register(request: RegisterRequest): Promise<void> {
         await unwrap(this.client.POST('/user/register', { body: request }));
     }
 
-    public replaceRecipe(id: number, request: CreateRecipeRequest): Promise<Recipe> {
-        return unwrap(this.client.PUT('/recipe/{id}', { params: { path: { id } }, body: request }));
+    public replaceRecipe(slug: string, request: CreateRecipeRequest): Promise<Recipe> {
+        return unwrap(this.client.PUT('/recipe/{slug}', { params: { path: { slug } }, body: request }));
     }
 
-    public updateRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe> {
-        return unwrap(this.client.PATCH('/recipe/{id}', { params: { path: { id } }, body: request }));
+    public updateRecipe(slug: string, request: UpdateRecipeRequest): Promise<Recipe> {
+        return unwrap(this.client.PATCH('/recipe/{slug}', { params: { path: { slug } }, body: request }));
     }
 
-    public uploadImage(id: number, file: File): Promise<ImageUploadResult> {
+    public uploadImage(slug: string, file: File): Promise<ImageUploadResult> {
         const formData = new FormData();
 
         formData.append('file', file);
 
         return unwrap(
-            this.client.POST('/recipe/{id}/image', {
-                params: { path: { id } },
+            this.client.POST('/recipe/{slug}/image', {
+                params: { path: { slug } },
                 // openapi-fetch types multipart bodies from the `format: binary` schema as `string`;
                 // a real upload must submit a FormData instance, so the shape is asserted here.
                 // openapi-fetch's default bodySerializer passes FormData through untouched.

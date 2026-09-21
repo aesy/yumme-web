@@ -1,60 +1,35 @@
-@import '@/common/colors';
+@import '@/common/frame';
 
 .standard-header {
     display: inline-block;
-    background-color: $yum_brown;
-    padding: 5px;
-    color: white;
+    background-color: var(--color-muted);
+    padding: var(--space-2) var(--space-3);
+    color: var(--color-on-accent);
     position: relative;
-    margin: 0 0 40px;
-
-    &::before {
-        content: '';
-        position: absolute;
-        z-index: -1;
-        top: 10px;
-        left: 10px;
-        height: 100%;
-        width: 100%;
-    }
-
-    &.brown {
-        &::before {
-            border: 1px solid $yum_brown;
-        }
-    }
-
-    &.white {
-        &::before {
-            border: 1px solid white;
-        }
-    }
-
-    &.orange {
-        &::before {
-            border: 1px solid $yum_orange;
-        }
-    }
+    margin: 0 0 var(--space-8);
 
     &.small {
-        &::before {
-            top: 5px;
-            left: 5px;
-        }
+        @include offset-frame(var(--frame-offset-sm), var(--color-muted));
     }
 
     &.medium {
-        &::before {
-            top: 10px;
-            left: 10px;
-        }
+        @include offset-frame(var(--frame-offset-md), var(--color-muted));
     }
 
     &.large {
-        &::before {
-            top: 15px;
-            left: 15px;
-        }
+        @include offset-frame(var(--frame-offset-lg), var(--color-muted));
+    }
+
+    &.brown::after {
+        border-color: var(--color-muted);
+    }
+
+    &.white::after {
+        border-color: var(--color-ink);
+    }
+
+    &.orange::after {
+        border-color: var(--color-accent);
     }
 
     * {

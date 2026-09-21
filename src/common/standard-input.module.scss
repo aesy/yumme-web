@@ -1,16 +1,26 @@
-@import '@/common/colors';
 @import '@/common/typography';
 
 .standard-input {
     width: 100%;
-    padding: 10px;
+    padding: var(--space-3);
     outline: none;
-    border: 1px solid $yum_orange;
-    font-family: $font_body;
+    border: var(--border-hairline) solid var(--color-hairline);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    transition: border-color var(--motion-fast) var(--ease-out);
+
+    &:focus {
+        border-color: var(--color-accent);
+    }
 }
 
 .label {
-    font-size: 12px;
-    font-family: $font_body;
-    margin-bottom: 6px;
+    font-size: var(--text-xs);
+    font-family: var(--font-body);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: var(--space-2);
 }

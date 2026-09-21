@@ -23,8 +23,8 @@ export function RecentCollectionList(props: RecentCollectionListProps): ReactNod
         const getImages = async (collection: Collection): Promise<string[]> => {
             const images: string[] = [];
 
-            for (const id of collection.recipes ?? []) {
-                const recipe = await yummeClient.getRecipeById(id);
+            for (const recipeSlug of collection.recipes ?? []) {
+                const recipe = await yummeClient.getRecipeBySlug(recipeSlug);
 
                 images.push(recipe.image_cover || DefaultRecipeImage);
             }
@@ -74,7 +74,7 @@ export function RecentCollectionList(props: RecentCollectionListProps): ReactNod
     return (
         <ul>
             {collections.map((elem) => (
-                <li className={styles.collectionListItem} key={elem.collection.id}>
+                <li className={styles.collectionListItem} key={elem.collection.slug}>
                     <CollectionListItem collection={elem.collection} images={elem.images} />
                 </li>
             ))}

@@ -16,13 +16,13 @@ export function PopularRecipeList(props: RecentRecipeListProps): ReactNode {
 
     useEffect(() => {
         const refresh = async (): Promise<void> => {
-            const popularRecipes = await yummeClient.getPopularRecipesByUser(props.user.id ?? 0, props.amount);
+            const popularRecipes = await yummeClient.getPopularRecipesByUser(props.user.slug ?? '', props.amount);
 
             setRecipes(popularRecipes);
         };
 
         void refresh();
-    }, [yummeClient, props.user.id, props.amount]);
+    }, [yummeClient, props.user.slug, props.amount]);
 
     const placeholders = [];
 
@@ -47,7 +47,7 @@ export function PopularRecipeList(props: RecentRecipeListProps): ReactNode {
     return (
         <ul>
             {recipes.map((recipe) => (
-                <li className={styles.recipeListItem} key={recipe.id}>
+                <li className={styles.recipeListItem} key={recipe.slug}>
                     <RecipeListItem recipe={recipe} type="column" />
                 </li>
             ))}

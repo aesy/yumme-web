@@ -1,0 +1,27 @@
+@mixin offset-frame($offset: var(--frame-offset-md), $color: var(--color-accent)) {
+    position: relative;
+
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        border: var(--frame-border) solid #{$color};
+        transform: translate(#{$offset}, #{$offset});
+    }
+}
+
+@mixin clickable-offset-frame($offset: var(--frame-offset-md)) {
+    @include offset-frame($offset);
+
+    cursor: pointer;
+
+    .wrapper {
+        border: var(--border-hairline) solid var(--color-accent);
+        transition: transform var(--motion-fast) var(--ease-out);
+    }
+
+    &:hover .wrapper {
+        transform: translate(#{$offset}, #{$offset});
+    }
+}

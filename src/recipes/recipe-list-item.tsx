@@ -21,12 +21,12 @@ interface RecipeListItemProps {
 }
 
 export const RecipeListItem: FC<RecipeListItemProps> = (props) => (
-    <Link to={`/recipe/${props.recipe.id}`}>
+    <Link to={`/recipe/${props.recipe.slug}`}>
         <ClickableCard borderOffset="medium">
             <article className={`${styles.recipeListItem} ${styles[props.type]}`}>
                 {props.recipe.image_cover ? (
                     <img
-                        src={recipeImageUrl(props.recipe.id, props.recipe.image_cover, 'thumbnail')}
+                        src={recipeImageUrl(props.recipe.slug, props.recipe.image_cover, 'thumbnail')}
                         alt={props.recipe.title ?? 'Recipe'}
                     />
                 ) : (

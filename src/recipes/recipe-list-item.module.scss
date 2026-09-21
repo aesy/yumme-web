@@ -1,11 +1,11 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
 
 .recipe-list-item {
     display: flex;
     width: 100%;
-    background-color: gray;
+    overflow: hidden;
+    background-color: var(--color-surface);
 
     img {
         display: block;
@@ -15,8 +15,9 @@
 
     .info {
         padding: 10px 20px 15px;
-        background-color: white;
+        background-color: var(--color-surface);
         flex-grow: 1;
+        min-width: 0;
 
         .top {
             display: flex;
@@ -24,38 +25,52 @@
 
             .rating,
             .time {
-                font-size: 11px;
+                font-size: var(--text-xs);
                 margin: 0;
                 display: flex;
                 align-items: center;
+                color: var(--color-muted);
 
                 svg {
-                    margin-right: 7px;
+                    flex-shrink: 0;
+                    margin-right: var(--space-2);
                 }
             }
 
-            .rating svg {
-                fill: $yum_yellow;
+            .time {
+                flex-shrink: 0;
             }
 
-            .time svg {
-                fill: $yum_brown;
+            .rating svg {
+                fill: var(--color-warning);
             }
+        }
+
+        h3 {
+            font-size: var(--text-lg);
+            line-height: var(--lh-snug);
+            margin: 6px 0 2px;
+        }
+
+        p {
+            font-size: var(--text-sm);
+            line-height: var(--lh-snug);
+            margin: 0 0 var(--space-2);
         }
 
         ul {
             display: flex;
             list-style: none;
             padding: 0;
-            margin: 15px 0 0;
+            margin: 12px 0 0;
 
             li {
-                font-family: $font_body;
-                font-size: 12px;
-                color: #6b6b6b;
+                font-family: var(--font-body);
+                font-size: var(--text-xs);
+                color: var(--color-muted);
 
                 + li {
-                    margin-left: 10px;
+                    margin-left: var(--space-3);
                 }
             }
         }
@@ -63,7 +78,6 @@
 
     &.column {
         flex-direction: column;
-        height: 330px;
 
         img {
             height: 160px;
@@ -73,11 +87,10 @@
 
     &.row {
         flex-direction: row;
-        height: 170px;
 
         img {
-            max-width: 170px;
-            width: 100%;
+            width: 170px;
+            align-self: stretch;
         }
     }
 }

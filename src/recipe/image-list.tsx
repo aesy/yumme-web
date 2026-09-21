@@ -88,7 +88,7 @@ export function ImageList(props: ImageListProps): ReactNode {
                     <li key={i}>
                         <img
                             className={styles.image}
-                            src={recipeImageUrl(props.recipe.id, image)}
+                            src={recipeImageUrl(props.recipe.slug, image)}
                             alt={props.recipe.title ?? 'Recipe'}
                         />
                         <div className={`${editStyles.editButtons} ${styles.deleteBtnWrapper}`}>
@@ -112,7 +112,7 @@ export function ImageList(props: ImageListProps): ReactNode {
                 <li key={i}>
                     <img
                         className={styles.image}
-                        src={recipeImageUrl(props.recipe.id, image)}
+                        src={recipeImageUrl(props.recipe.slug, image)}
                         alt={props.recipe.title ?? 'Recipe'}
                     />
                 </li>

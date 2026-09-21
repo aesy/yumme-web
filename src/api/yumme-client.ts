@@ -14,21 +14,21 @@ export type ImageUploadResult = components['schemas']['ImageUploadDto'];
 
 export interface YummeClient {
     createRecipe(request: CreateRecipeRequest): Promise<Recipe>;
-    deleteRecipe(id: number): Promise<void>;
+    deleteRecipe(slug: string): Promise<void>;
     getAccessToken(request: LoginRequest): Promise<LoginResponse>;
     getAllRecipes(): Promise<Recipe[]>;
     getCurrentUser(): Promise<User>;
     getPopularRecipes(limit?: number): Promise<Recipe[]>;
-    getPopularRecipesByUser(user: number, limit?: number): Promise<Recipe[]>;
+    getPopularRecipesByUser(user: string, limit?: number): Promise<Recipe[]>;
     getRecentRecipes(limit?: number): Promise<Recipe[]>;
-    getRecentRecipesByUser(user: number, limit?: number): Promise<Recipe[]>;
-    getRecipeById(id: number): Promise<Recipe>;
+    getRecentRecipesByUser(user: string, limit?: number): Promise<Recipe[]>;
+    getRecipeBySlug(slug: string): Promise<Recipe>;
     getRecentCollections(limit?: number): Promise<Collection[]>;
-    getUserById(id: number): Promise<User>;
+    getUserBySlug(slug: string): Promise<User>;
     register(request: RegisterRequest): Promise<void>;
-    replaceRecipe(id: number, request: CreateRecipeRequest): Promise<Recipe>;
-    updateRecipe(id: number, request: UpdateRecipeRequest): Promise<Recipe>;
-    uploadImage(id: number, file: File): Promise<ImageUploadResult>;
+    replaceRecipe(slug: string, request: CreateRecipeRequest): Promise<Recipe>;
+    updateRecipe(slug: string, request: UpdateRecipeRequest): Promise<Recipe>;
+    uploadImage(slug: string, file: File): Promise<ImageUploadResult>;
 }
 
 export const YUMME_CLIENT_TYPE = Symbol.for('YummeClient');

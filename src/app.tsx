@@ -12,9 +12,9 @@ export const App: FC = () => (
         <BrowserRouter>
             <Layout>
                 <Routes>
-                    <Route path="/profile/:id" element={<Profile />} />
+                    <Route path="/profile/:slug" element={<Profile />} />
                     <Route path="/recipe/new" element={<EmptyRecipe />} />
-                    <Route path="/recipe/:id" element={<Recipe />} />
+                    <Route path="/recipe/:slug" element={<Recipe />} />
                     <Route element={<NotFound />} />
                 </Routes>
             </Layout>

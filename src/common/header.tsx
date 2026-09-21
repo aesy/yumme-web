@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import React, { FC } from 'react';
 import { IconChevronDown } from '@tabler/icons-react';
 import { UserMenu } from '@/common/user-menu';
+import { ThemeToggle } from '@/common/theme-toggle';
 import styles from '@/common/header.module.scss';
 
 export const Header: FC<unknown> = () => (
@@ -20,7 +21,8 @@ export const Header: FC<unknown> = () => (
                     </ul>
                 </nav>
             </div>
-            <div>
+            <div className={styles.controls}>
+                <ThemeToggle />
                 <UserMenu />
             </div>
         </div>

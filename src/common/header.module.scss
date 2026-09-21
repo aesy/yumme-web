@@ -1,4 +1,3 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
 @import '@/common/breakpoints';
@@ -6,8 +5,8 @@
 
 .header {
     z-index: 999;
-    padding: 10px $padding_page;
-    background-color: lighten($yum_beige, 10%);
+    padding: var(--space-3) $padding_page;
+    background-color: var(--color-profile-tint);
     position: relative;
 
     @media screen and (max-width: $breakpoint_tablet) {
@@ -21,15 +20,21 @@
         align-items: center;
         justify-content: space-between;
 
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: var(--space-4);
+        }
+
         .logo {
-            font-family: 'Playfair Display', serif;
+            font-family: var(--font-display);
             letter-spacing: -1px;
-            font-size: 30px;
+            font-size: var(--text-2xl);
             font-style: italic;
-            font-weight: bold;
+            font-weight: 600;
             bottom: 4px;
             position: relative;
-            color: $yum_orange;
+            color: var(--color-accent);
         }
 
         .left {
@@ -37,11 +42,11 @@
             align-items: center;
 
             * + * {
-                margin-left: 35px;
+                margin-left: var(--space-8);
             }
 
             nav {
-                font-family: $font_body;
+                font-family: var(--font-body);
 
                 ul {
                     list-style: none;

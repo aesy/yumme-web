@@ -1,4 +1,4 @@
-export function recipeImageUrl(recipeId: number | null | undefined, name: string, size?: string): string {
+export function recipeImageUrl(recipeSlug: string | null | undefined, name: string, size?: string): string {
     // Freshly added images are held as base64 data URLs until the recipe is
     // saved and refetched; render those directly instead of the API path.
     if (name.startsWith('data:')) {
@@ -7,5 +7,5 @@ export function recipeImageUrl(recipeId: number | null | undefined, name: string
 
     const query = size ? `?size=${size}` : '';
 
-    return `/api/v1/recipe/${recipeId}/image/${name}${query}`;
+    return `/api/v1/recipe/${recipeSlug}/image/${name}${query}`;
 }

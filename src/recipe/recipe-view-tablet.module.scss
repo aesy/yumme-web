@@ -1,8 +1,8 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
 @import '@/common/breakpoints';
 @import '@/common/css-functions';
+@import '@/common/frame';
 
 .recipe-view-tablet {
     @include content-standard;
@@ -16,12 +16,12 @@
             top: 5px;
             left: 0;
             border: none;
-            border-bottom: 2px solid white;
+            border-bottom: 2px solid var(--color-hairline);
         }
     }
 
     .stats {
-        border: 2px solid white;
+        border: 2px solid var(--color-hairline);
         padding: 20px 0;
         margin: 3px -15px;
         border-left: none;
@@ -33,38 +33,18 @@
     }
 
     .ingredients {
-        position: relative;
-        background-color: white;
-        padding: 20px 20px 20px 30px;
-        border: 1px solid $yum_beige;
+        @include offset-frame(var(--frame-offset-md), var(--color-accent));
 
-        &::after {
-            content: '';
-            position: absolute;
-            z-index: -1;
-            height: 100%;
-            width: 100%;
-            top: 10px;
-            left: 10px;
-            border: 1px solid $yum_beige;
-        }
+        background-color: var(--color-surface);
+        padding: 20px 20px 20px 30px;
+        border: 1px solid var(--color-hairline);
     }
 
     .directions {
-        padding: 50px 20px 20px;
-        position: relative;
-        background-color: white;
-        border: 1px solid $yum_beige;
+        @include offset-frame(var(--frame-offset-md), var(--color-accent));
 
-        &::after {
-            content: '';
-            position: absolute;
-            z-index: -1;
-            height: 100%;
-            width: 100%;
-            top: 10px;
-            left: 10px;
-            border: 1px solid $yum_beige;
-        }
+        padding: 50px 20px 20px;
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-hairline);
     }
 }

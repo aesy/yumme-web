@@ -13,7 +13,7 @@ const BREAKPOINT = 811;
 
 export function Recipe(): ReactNode {
     const yummeClient = useInjection<YummeClient>(YUMME_CLIENT_TYPE);
-    const { id } = useParams();
+    const { slug } = useParams();
     const navigate = useNavigate();
 
     const [currentRecipe, setCurrentRecipe] = useState<RecipeType | undefined>(undefined);
@@ -23,8 +23,8 @@ export function Recipe(): ReactNode {
     const [tabletView, setTabletView] = useState<boolean>(window.innerWidth < BREAKPOINT);
 
     const refresh = useCallback(
-        async (recipeId: number): Promise<void> => {
-            const recipe = await yummeClient.getRecipeById(recipeId);
+        async (recipeSlug: string): Promise<void> => {
+            const recipe = await yummeClient.getRecipeBySlug(recipeSlug);
 
             setEditing(false);
             setLoading(false);
@@ -51,14 +51,16 @@ export function Recipe(): ReactNode {
     }, []);
 
     useEffect(() => {
-        void refresh(Number(id));
-    }, [id, refresh]);
+        if (slug) {
+            void refresh(slug);
+        }
+    }, [slug, refresh]);
 
     const deleteRecipe = async (): Promise<void> => {
         setLoading(true);
 
         try {
-            await yummeClient.deleteRecipe(Number(id));
+            await yummeClient.deleteRecipe(slug ?? '');
         } catch {
             setLoading(false);
         }
@@ -85,10 +87,10 @@ export function Recipe(): ReactNode {
             tags: editedRecipe.tags ?? [],
             title: editedRecipe.title ?? '',
         };
-        const recipeId = Number(id);
-        await yummeClient.replaceRecipe(recipeId, request);
+        const recipeSlug = slug ?? '';
+        await yummeClient.replaceRecipe(recipeSlug, request);
 
-        await refresh(recipeId);
+        await refresh(recipeSlug);
     };
 
     const toggleEditing = (): void => {

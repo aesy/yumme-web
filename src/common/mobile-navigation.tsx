@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import React, { ReactNode, useState } from 'react';
 import { IconSearch, IconBell, IconMessageCircle, IconPlus } from '@tabler/icons-react';
 import DefaultProfileImage from '@/images/DefaultProfileImage.png';
+import { ThemeToggle } from '@/common/theme-toggle';
 import styles from '@/common/mobile-navigation.module.scss';
 import { User } from '@/api/yumme-client';
 
@@ -22,8 +23,9 @@ export function MobileNavigation(): ReactNode {
             </div>
 
             <div className={styles.right}>
+                <ThemeToggle />
                 <IconBell />
-                <Link to={`/profile/${currentUser?.id ?? 1}`}>
+                <Link to={`/profile/${currentUser?.slug ?? ''}`}>
                     <img
                         className={styles.profile}
                         src={DefaultProfileImage}

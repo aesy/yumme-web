@@ -1,67 +1,46 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
+@import '@/common/frame';
 
 .static-card {
     display: block;
-    position: relative;
-    background-color: white;
-    border: 1px solid $yum_orange;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-accent);
     animation: fadeSlideIn 0.5s forwards;
 
-    &::after {
-        content: '';
-        position: absolute;
-        z-index: -1;
-        height: 100%;
-        width: 100%;
-        top: 10px;
-        left: 10px;
-        border: 1px solid $yum_orange;
-    }
-
     &.small {
-        &::after {
-            top: 5px;
-            left: 5px;
-        }
+        @include offset-frame(var(--frame-offset-sm));
     }
 
     &.medium {
-        &::after {
-            top: 10px;
-            left: 10px;
-        }
+        @include offset-frame(var(--frame-offset-md));
     }
 
     &.large {
-        &::after {
-            top: 15px;
-            left: 15px;
-        }
+        @include offset-frame(var(--frame-offset-lg));
     }
 
     &.white {
-        border: 2px solid white;
+        border: 2px solid var(--color-ink);
 
         &::after {
-            border: 2px solid white;
+            border: 2px solid var(--color-ink);
         }
     }
 
     &.black {
-        border: 2px solid black;
+        border: 2px solid var(--color-ink);
 
         &::after {
-            border: 2px solid black;
+            border: 2px solid var(--color-ink);
         }
     }
 
     &.orange {
-        border: 2px solid $yum_orange;
+        border: 2px solid var(--color-accent);
 
         &::after {
-            border: 2px solid $yum_orange;
+            border: 2px solid var(--color-accent);
         }
     }
 }

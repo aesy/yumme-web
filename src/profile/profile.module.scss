@@ -1,18 +1,17 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
 @import '@/common/breakpoints';
 @import '@/common/paddings';
 
 .profile {
-    background-color: #f5f5f5;
+    background-color: var(--color-bg);
     position: relative;
     z-index: 1;
     padding: 0 $padding_page;
     flex-grow: 1;
 
     .view {
-        padding: 50px 0 170px;
+        padding: var(--space-12) 0 170px;
     }
 
     &::after {
@@ -20,15 +19,15 @@
         position: absolute;
         top: 0;
         left: 0;
-        height: 510px;
+        height: 530px;
         width: 100%;
-        background: linear-gradient(lighten($yum_beige, 10%), $yum_beige);
+        background: linear-gradient(var(--color-profile-tint), var(--color-surface-2));
         z-index: -999;
         transform: skewY(-2deg);
         transform-origin: top left;
 
         @media screen and (max-width: $breakpoint_tablet) {
-            height: 480px;
+            height: 500px;
         }
     }
 }

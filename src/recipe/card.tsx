@@ -186,7 +186,7 @@ export function Card(props: CardProps): ReactNode {
     }
 
     const image = props.recipe.image_cover;
-    const imageUrl = image ? recipeImageUrl(props.recipe.id, image) : DefaultRecipeImage;
+    const imageUrl = image ? recipeImageUrl(props.recipe.slug, image) : DefaultRecipeImage;
 
     if (props.editing) {
         return (

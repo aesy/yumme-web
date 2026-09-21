@@ -1,5 +1,14 @@
-@import '@/common/colors';
-
 .input {
-    border: 5px solid $primary_red;
+    padding: var(--space-3);
+    border: var(--border-hairline) solid var(--color-hairline);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    transition: border-color var(--motion-fast) var(--ease-out);
+
+    &:focus {
+        border-color: var(--color-accent);
+        outline: none;
+    }
 }

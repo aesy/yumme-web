@@ -1,28 +1,29 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
+@import '@/common/frame';
 
 .recipe-list-item-placeholder {
     display: flex;
-    position: relative;
     width: 100%;
-    background: white;
+    background: var(--color-surface);
     background-size: 200% 200%;
     animation: backgroundAnimation 3s ease infinite;
 
+    @include offset-frame(var(--frame-offset-md), var(--color-hairline));
+
     .img-placeholder {
-        background: linear-gradient(270deg, #b9b9b9, lighten(#b9b9b9, 10%));
+        background: linear-gradient(270deg, var(--color-hairline), var(--color-surface-2));
         background-size: 400% 400%;
         animation: backgroundAnimation 1.5s ease infinite;
     }
 
     .text-placeholder {
         flex-grow: 1;
-        padding: 10px 20px;
+        padding: var(--space-3) var(--space-6);
 
         span {
             display: block;
-            background: linear-gradient(270deg, #b9b9b9, lighten(#b9b9b9, 10%));
+            background: linear-gradient(270deg, var(--color-hairline), var(--color-surface-2));
             background-size: 200% 200%;
             animation: backgroundAnimation 3s ease infinite;
         }
@@ -38,7 +39,7 @@
         }
 
         .title-placeholder {
-            margin: 10px 0;
+            margin: var(--space-3) 0;
             height: 23px;
             width: 60%;
         }
@@ -67,26 +68,17 @@
             width: 100%;
         }
     }
-
-    &::after {
-        content: '';
-        position: absolute;
-        z-index: -1;
-        top: 10px;
-        left: 10px;
-        height: 100%;
-        width: 100%;
-        border: 1px solid $yum_beige;
-    }
 }
 
 @keyframes backgroundAnimation {
     0% {
         background-position: 0 50%;
     }
+
     50% {
         background-position: 100% 50%;
     }
+
     100% {
         background-position: 0 50%;
     }

@@ -1,8 +1,8 @@
-@import '@/common/colors';
 @import '@/common/typography';
 @import '@/common/content';
 @import '@/common/breakpoints';
 @import '@/common/css-functions';
+@import '@/common/frame';
 
 .recipe-view-desktop {
     @include content-standard;
@@ -22,21 +22,11 @@
 
     .directions,
     .ingredients {
-        position: relative;
-        background-color: white;
-        border: 1px solid $yum_beige;
-        padding: 50px 30px;
+        @include offset-frame(var(--frame-offset-md), var(--color-accent));
 
-        &::after {
-            content: '';
-            position: absolute;
-            z-index: -1;
-            height: 100%;
-            width: 100%;
-            top: 10px;
-            left: 10px;
-            border: 1px solid $yum_beige;
-        }
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-hairline);
+        padding: 50px 30px;
 
         h2 {
             margin-bottom: 40px;
@@ -47,18 +37,7 @@
 
     .card,
     .stats {
-        position: relative;
-
-        &::after {
-            content: '';
-            position: absolute;
-            z-index: -1;
-            height: 100%;
-            width: 100%;
-            top: 10px;
-            left: 10px;
-            border: 2px solid white;
-        }
+        @include offset-frame(var(--frame-offset-md), var(--color-accent));
     }
 
     .directions {
@@ -81,7 +60,7 @@
         .stats {
             margin-left: 40px;
             padding: 0 25px;
-            background-color: white;
+            background-color: var(--color-surface);
         }
     }
 }
